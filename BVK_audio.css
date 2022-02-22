@@ -228,3 +228,10 @@ div#popular {
     color: white;
     display: none;
 }
+
+/*UPD*/
+
+.audio_head .bigPlay_but.play:before {
+    font-size: 13px;
+    margin-left: 5px !important;
+}
