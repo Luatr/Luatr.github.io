@@ -254,3 +254,9 @@ div#pad_names {
 .icon-plus-6:before {
     font-size: 20px;
 }
+
+/*UPD FIX*/
+
+div#page {
+    position: unset;
+}
