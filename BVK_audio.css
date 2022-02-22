@@ -235,3 +235,24 @@ div#popular {
     font-size: 13px;
     margin-left: 5px !important;
 }
+
+
+div#pad_cont_progress {
+    width: 245px !important;
+}
+
+div#pad_volume {
+    width: 35px;
+}
+
+div#pad_names {
+    font-size: 11px;
+}
+
+div#pad_names b {
+    display: block;
+}
+
+.icon-plus-6:before {
+    font-size: 20px;
+}
