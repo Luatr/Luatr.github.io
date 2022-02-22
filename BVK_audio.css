@@ -205,20 +205,19 @@ div#pl_time {
     border-radius: 3px;
 }
 
-div#page {
-    position: relative;
-}
+
 
 div#popular {
     position: absolute;
-    left: 476px;
-    top: 235px;
+    top: 280px;
+    margin-left: -128px;
     background: white;
     color: #2e2e2e;
     font-weight: 100;
     font-size: 13px;
     border-radius: 3px;
 }
+
 
 .audio_page_title {
     position: absolute;
