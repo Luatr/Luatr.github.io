@@ -641,3 +641,12 @@ div#box_gifts .box_bg {
 .wall_fast_block .public_likes_user_block {
     bottom: 35px;
 }
+
+.wall_fast_block_news {
+    width: 535px;
+}
+
+.wall_fast_block_news+.wall_fast_opened_form {
+    width: 482px;
+    border-radius: 4px;
+}
