@@ -671,3 +671,7 @@ div#box_gifts .box_bg {
 .infowalltext_f.clear .public_likes_user_block {
     margin-left: -60px !important;
 }
+
+.wall_fast_block_news [id^="wall_like_link"] {
+    width: 41px !important;
+}
