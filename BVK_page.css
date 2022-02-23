@@ -680,3 +680,11 @@ div#box_gifts .box_bg {
 .public_wall_all_comm {
     width: 530px;
 }
+
+.profile_rate_pos.mgclr {
+    width: 100%;
+}
+
+div#rateLeftGold100 {
+    width: 100%;
+}
