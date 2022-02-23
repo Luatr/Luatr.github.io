@@ -607,3 +607,7 @@ div#box_gifts .box_bg {
     border-radius: 4px;
     overflow: hidden;
 }
+
+.wall_fast_form {
+    margin-bottom: 20px !important;
+}
