@@ -615,3 +615,19 @@ div#box_gifts .box_bg {
 .news_comm_wr {
     position: relative;
 }
+
+
+/*UPD*/
+
+.news_comm_wr {
+    position: relative;
+}
+
+.news_comm_wr .fast_comm_link {
+    background: url(https://beonvk.com/templates/Default/images/icons/comm.png) no-repeat center;
+    width: 20px;
+    height: 20px;
+    font-size: 0;
+    left: 481px;
+    bottom: 13px;
+}
