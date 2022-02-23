@@ -611,3 +611,7 @@ div#box_gifts .box_bg {
 .wall_fast_form {
     margin-bottom: 20px !important;
 }
+
+.news_comm_wr {
+    position: relative;
+}
