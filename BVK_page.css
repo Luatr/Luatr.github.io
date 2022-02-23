@@ -696,3 +696,7 @@ div#box_c_all_photos_1 .box_bg{
 .box_bg {
     box-shadow: unset;
 }
+
+span#pcomments .comm_wr {
+    box-shadow: unset;
+}
