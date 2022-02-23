@@ -662,3 +662,7 @@ div#box_gifts .box_bg {
     margin-left: 5px !important;
     margin-top: -1px !important;
 }
+
+.wall_fast_block .wall_fast_date {
+    margin-left: 0px;
+}
