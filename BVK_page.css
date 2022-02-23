@@ -675,3 +675,8 @@ div#box_gifts .box_bg {
 .wall_fast_block_news [id^="wall_like_link"] {
     width: 41px !important;
 }
+
+
+.public_wall_all_comm {
+    width: 530px;
+}
