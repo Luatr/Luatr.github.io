@@ -689,6 +689,7 @@ div#rateLeftGold100 {
     width: 100%;
 }
 
-[id^="box_all_photos_"] .box_bg {
+[id^="box_all_photos_"] .box_bg,
+div#box_c_all_photos_1 .box_bg{
     box-shadow: unset;
 }
