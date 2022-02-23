@@ -657,3 +657,8 @@ div#box_gifts .box_bg {
     bottom: 13px;
     font-size: 13px;
 }
+
+.wall_fast_block_news span.wall_fast_date.fl_l {
+    margin-left: 5px !important;
+    margin-top: -1px !important;
+}
