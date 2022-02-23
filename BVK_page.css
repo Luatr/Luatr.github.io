@@ -692,3 +692,7 @@ div#rateLeftGold100 {
 div#box_c_all_photos_1 .box_bg{
     box-shadow: unset;
 }
+
+.box_bg {
+    box-shadow: unset;
+}
