@@ -688,3 +688,7 @@ div#box_gifts .box_bg {
 div#rateLeftGold100 {
     width: 100%;
 }
+
+[id^="box_all_photos_"] .box_bg {
+    box-shadow: unset;
+}
