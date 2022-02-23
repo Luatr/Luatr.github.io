@@ -619,6 +619,10 @@ div#box_gifts .box_bg {
 
 /*UPD*/
 
+.newwallX.wall_rec_autoresize {
+    width: 100%;
+}
+
 .news_comm_wr {
     position: relative;
 }
