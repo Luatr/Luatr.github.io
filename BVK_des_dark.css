@@ -684,3 +684,7 @@ a._im_start_new {
 .audio.preactiv .audio_cont {
     background: transparent !important;
 }
+
+.audio.preactiv .tools li {
+    color: #f22f2f;
+}
