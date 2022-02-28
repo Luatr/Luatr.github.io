@@ -726,3 +726,11 @@ div#moreInfoText {
 #menu {
     margin: 56px 0px 0px -403px;
 }
+
+a.page_module_upload {
+    padding: 15px;
+}
+
+div#feddbackusers {
+    margin: 0px;
+}
