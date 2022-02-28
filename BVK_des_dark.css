@@ -727,3 +727,72 @@ button#upload {
     border-radius: 0 0 4px 4px;
 }
 
+
+/*-------------*/
+
+div#qnotifications_news {
+    background: #141414;
+    color: white;
+    border-radius: 4px;
+}
+
+#qnotifications_box .notification {
+    background: transparent;
+    border: unset;
+}
+
+.unp-date-separator {
+    background: #f22f2f !important;
+    border: unset !important;
+}
+
+.qnotifications_head {
+    border: unset !important;
+    background: #141414;
+    color: #5a5a5a !important;
+}
+
+div#qnotifications_news a.user,
+#qnotifications_box .notification .date {
+    color: #5a5a5a !important;
+}
+
+#qnotifications_box .notification:hover {
+    background: #323232;
+}
+
+
+
+.show_all_button {
+    background: #f22f2f;
+    color: white;
+    border-radius: 4px;
+    padding: 5px;
+}
+
+div#qnotifications_box {
+    border-radius: 4px !important;
+    border: unset;
+    overflow: hidden;
+    background: transparent;
+}
+
+
+div#qnotifications_content [style="display: inline-flex;"] img {
+    width: 40px !important;
+    image-rendering: -webkit-optimize-contrast;
+}
+
+#qnotifications_box .notification .icon {
+    background: #f22f2f;
+}
+
+#qnotifications_box [src^="/uploads/gifts/"] {
+    margin-top: 0px;
+    width: 48px !important;
+}
+
+#qnotifications_box .icn {
+    filter: brightness(0) invert(1);
+}
+
