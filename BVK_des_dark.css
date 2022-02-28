@@ -688,3 +688,10 @@ a._im_start_new {
 .audio.preactiv .tools li {
     color: #f22f2f;
 }
+
+/*-------------*/
+
+.phet+.bg_block {
+    display: none;
+}
+
