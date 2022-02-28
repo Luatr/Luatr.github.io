@@ -742,3 +742,7 @@ div#feddbackusers {
 .news_wall_msg_bg {
     z-index: 2;
 }
+
+[class^="dateline num"] {
+    font-size: 12px;
+}
