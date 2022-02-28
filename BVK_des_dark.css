@@ -706,3 +706,13 @@ a._im_start_new {
 }
 
 
+div#info_save {
+    background: white;
+    border-radius: 4px;
+    margin-top: 10px;
+    border: unset;
+}
+
+
+
+
