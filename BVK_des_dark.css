@@ -825,9 +825,9 @@ div#rateGold .clearFix {
 
 .scroller .scroller_panel .slider:hover {
     background: #f22f2f;
-    width: 5px;
+    width: 6px;
 }
 .scroller .scroller_panel .slider {
     background: #6e6e6e;
-    width: 5px;
+    width: 6px;
 }
