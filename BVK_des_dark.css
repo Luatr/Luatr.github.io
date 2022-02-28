@@ -844,3 +844,14 @@ div#rateGold .clearFix {
     font-size: 20px;
     color: #f22f2f;
 }
+
+.audioTAP_strlka {
+    background: #323232;
+    border-color: #323232;
+    color: white;
+}
+
+.audioTAP_strlka:before,
+.audioTAP_strlka:after {
+    border-top-color: #323232;
+}
