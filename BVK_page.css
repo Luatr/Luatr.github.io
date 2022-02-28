@@ -708,3 +708,8 @@ span#pcomments .comm_wr {
     width: 100%;
     padding-left: 46px;
 }
+
+
+.public_wall_all_comm {
+    padding-bottom: 23px;
+}
