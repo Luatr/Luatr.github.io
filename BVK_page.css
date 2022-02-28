@@ -721,3 +721,8 @@ div#wall_records .public_wall_all_comm {
 div#moreInfoText {
     width: calc(100% - 3px);
 }
+
+
+#menu {
+    margin: 56px 0px 0px -403px;
+}
