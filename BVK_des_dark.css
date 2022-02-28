@@ -813,3 +813,7 @@ div#rateGold .clearFix {
     border-radius: 4px;
     overflow: hidden;
 }
+
+.wallrecord.wall_upage b#artist {
+    color: #141414;
+}
