@@ -695,3 +695,7 @@ a._im_start_new {
     display: none;
 }
 
+#qnotifications_box::after {
+    display: none;
+}
+
