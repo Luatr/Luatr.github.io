@@ -700,3 +700,11 @@ div#box_c_all_photos_1 .box_bg{
 span#pcomments .comm_wr {
     box-shadow: unset;
 }
+
+/*UPD*/
+
+.wall_fast_date.fl_l {
+    display: block;
+    width: 100%;
+    padding-left: 46px;
+}
