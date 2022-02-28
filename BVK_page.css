@@ -710,6 +710,6 @@ span#pcomments .comm_wr {
 }
 
 
-.public_wall_all_comm {
+div#wall_records .public_wall_all_comm {
     padding-bottom: 23px;
 }
