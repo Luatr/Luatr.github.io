@@ -734,3 +734,7 @@ a.page_module_upload {
 div#feddbackusers {
     margin: 0px;
 }
+
+.menuleft {
+    border-radius: 4px;
+}
