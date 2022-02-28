@@ -717,3 +717,7 @@ div#wall_records .public_wall_all_comm {
 .wall_strlen_full {
     padding-bottom: 5px;
 }
+
+.public_wall_all_comm {
+    width: 100%;
+}
