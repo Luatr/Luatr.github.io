@@ -743,3 +743,9 @@ div#feddbackusers {
     z-index: 2;
 }
 
+/*Фикс кнопок*/
+
+.texta+div button#saveform {
+    display: block;
+}
+
