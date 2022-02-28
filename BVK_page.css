@@ -757,5 +757,21 @@ button#upload:hover {
     display: block !important;
 }
 
+/*UPD 2*/
+
+.wall_fast_ava img {
+    height: 35px;
+    object-fit: cover;
+}
+
+.ava_mini img {
+    height: 50px;
+    object-fit: cover;
+}
 
 
+.wall_fast_block.wall_fast_block_news .wall_fast_date.fl_l {
+    display: unset !important;
+    width: auto;
+    padding-left: 8px;
+}
