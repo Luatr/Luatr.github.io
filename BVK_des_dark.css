@@ -1,3 +1,12 @@
+/*CORE*/
+
+@import url('https://vtloa.github.io/BeonVk_chat.css');
+@import url('https://Luatr.github.io/BVK_audio.css');
+@import url('https://Luatr.github.io/BVK_page.css');
+
+/*CORE END*/
+
+
 .head {
     background-color: #141414;
 }
@@ -491,4 +500,153 @@ input#query_full,
 
 .wall_strlen_full:hover {
     color: #f22f2f;
+}
+
+
+
+/*UPD*/
+
+
+
+.audioPage.play .area {
+    background: #f22f2f;
+    color: white;
+}
+
+.audioPage.play span#name {
+    color: white;
+}
+
+.audio.pause .play_btn:before, .audio.play .play_btn:before {
+    color: white;
+}
+
+.al_audio_progress_wrap .play_line {
+    background: #f22f2f;
+}
+
+ul#rightmenu [onclick="videos.add(); return false;"] {
+    width: calc(100% - -35px);
+    background: #f22f2f;
+    color: white;
+    border-radius: 4px;
+    text-align: center;
+    font-weight: bold;
+    margin: auto;
+    margin-left: -35px;
+}
+
+.al_audios_panel .menu_item.active:hover,
+ul#rightmenu [onclick="videos.add(); return false;"]:hover {
+    background: #323232;
+}
+
+ul#rightmenu [onclick="videos.add(); return false;"] {
+    cursor: pointer;
+}
+
+.al_audios_panel .menu_item.active .al_audio_add_but:hover {
+    background: #f22f2f;
+}
+
+div#box_title_upload,
+div#box_title_add_video {
+    background: #f22f2f;
+}
+
+.upload_limits_title {
+    color: black;
+}
+
+div#box_content_add_video {
+    border-radius: 0 0 4px 4px;
+}
+
+.head_bell_block:hover {
+    background-color: #323232;
+    border-radius: 4px;
+}
+
+.headmenu a:hover {
+    background-color: #3a3a3a29;
+    border-radius: 4px;
+}
+
+
+
+.nSDelPg {
+    margin: 0px;
+}
+
+
+
+.buttonsprofileSec a {
+    color: #f22f2f;
+    border-color: #f22f2f;
+}
+
+ul#leftmenu a:hover,
+.footer a:hover {
+    color: #f22f2f !important;
+    transition: 0.2s;
+}
+
+.im_messages_all::-webkit-scrollbar-thumb:hover {
+    background-color: #f22f2f6e;
+}
+
+.im_no_read {
+    background: #131313;
+}
+
+.im_class_new {
+    background: #32323226;
+}
+
+a.dont_select {
+    color: #ffffff !important;
+    background: #f22f2f;
+    border-radius: 4px;
+    padding: 2px;
+    font-size: 12px;
+}
+
+a.dont_select:hover {
+    background: #323232;
+}
+
+
+
+.im-page--dialogs-settings,
+div#menu_dialog_user {
+    filter: hue-rotate(140deg) saturate(5.5);
+}
+
+
+
+
+a.video_name {
+    color: white;
+}
+
+a._im_start_new {
+    color: #f22f2f;
+}
+
+
+.dialog:hover {
+    background: #32323226;
+}
+
+.walltext.im_msg_mag a {
+    color: #f22f2f;
+}
+
+.wallauthor.fl_l a, .wall_fast_ava+div a, .wallauthor a {
+    color: #525252;
+    text-shadow: unset;
+}
+
+.im_text.support_answer.im_msg.selected {
+    background: #f22f2f12;
 }
