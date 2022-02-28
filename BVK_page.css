@@ -745,9 +745,6 @@ div#feddbackusers {
 
 /*Фикс кнопок*/
 
-.texta+div button#saveform {
-    display: block;
-}
 
 
 button#upload:hover {
@@ -755,5 +752,10 @@ button#upload:hover {
     margin-left: -77px;
     height: 100px;
 }
+
+.texta+div button#saveform {
+    display: block !important;
+}
+
 
 
