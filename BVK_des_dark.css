@@ -818,3 +818,16 @@ div#rateGold .clearFix {
 .wallrecord.wall_upage b#artist {
     color: #141414;
 }
+
+.scroller_panel {
+    background: transparent !important;
+}
+
+.scroller .scroller_panel .slider:hover {
+    background: #f22f2f;
+    width: 5px;
+}
+.scroller .scroller_panel .slider {
+    background: #6e6e6e;
+    width: 5px;
+}
