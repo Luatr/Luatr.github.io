@@ -666,3 +666,17 @@ a._im_start_new {
 .public_obefeed a {
     color: #6a6a6a;
 }
+
+
+.audioPage.audioElem .audioBGProgress {
+    background: white;
+}
+
+.audioPage.audioElem .audioLoadProgress {
+    background: #f22f2f6b;
+}
+
+.audioPage.audioElem div#playerPlayLine,
+.audioPage.audioElem div#playerVolumeBar {
+    background: #141414;
+}
