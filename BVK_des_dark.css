@@ -680,3 +680,7 @@ a._im_start_new {
 .audioPage.audioElem div#playerVolumeBar {
     background: #141414;
 }
+
+.audio.preactiv .audio_cont {
+    background: transparent !important;
+}
