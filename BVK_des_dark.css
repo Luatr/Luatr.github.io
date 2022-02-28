@@ -714,5 +714,16 @@ div#info_save {
 }
 
 
+.box_title {
+    background: #f22f2f;
+}
 
+button#upload {
+    filter: brightness(0) opacity(0.7);
+    background-color: transparent;
+}
+
+.box_conetnt {
+    border-radius: 0 0 4px 4px;
+}
 
