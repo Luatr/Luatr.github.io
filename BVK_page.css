@@ -791,7 +791,7 @@ a#answer_lnk {
     background-size: cover !important;
 }
 
-.wall_fast_comment_text {
+.wallrecord.comm_wr.news_comm_wr+div .wall_fast_comment_text {
     padding-bottom: 15px;
 }
 
