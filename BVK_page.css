@@ -659,7 +659,7 @@ div#box_gifts .box_bg {
 }
 
 .wall_fast_block_news span.wall_fast_date.fl_l {
-    margin-left: 5px !important;
+    margin-left: unset !important;
     margin-top: -1px !important;
 }
 
