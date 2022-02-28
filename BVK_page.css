@@ -784,3 +784,8 @@ a#answer_lnk {
 .wallrecord.comm_wr.news_comm_wr+div .public_wall_all_comm {
     width: 531px !important;
 }
+
+
+[style^="background:url('https://beonvk.com/uploads/users/"] {
+    background-size: cover !important;
+}
