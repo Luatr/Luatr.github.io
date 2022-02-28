@@ -1,0 +1,494 @@
+.head {
+    background-color: #141414;
+}
+
+html, body {
+    background: url(https://i.ibb.co/XsyVPmn/star.png) center bottom fixed !important;
+    background-size: cover !important;
+    background-color: #141414 !important;
+}
+
+.search_input {
+    background: #323232 !important;
+}
+
+.head_bell {
+    filter: invert(1);
+}
+
+a.pointer,
+[src="/templates/Default/images/icons/exit.png"] {
+    filter: brightness(0) invert(1) opacity(0.5);
+}
+
+
+ul#leftmenu .menu_ic {
+    filter: brightness(0) invert(1) opacity(0.4);
+}
+
+
+
+.bg_block, .left_box.attention,[href^="/gifts"],
+.audioPage.audioElem,.wall_upage,
+.public_wall_all_comm,
+.wall_fast_block,
+.news_comm_wr {
+    box-shadow: unset !important;
+    border: unset !important;
+}
+
+
+.left_box.attention * {
+    color: #aeaeae !important;
+    text-shadow: unset !important;
+}
+
+ul#leftmenu a {
+    color: #717171;
+    text-shadow: unset;
+}
+
+.left_box.attention, .left_box.attention a {
+    background: transparent !important;
+    box-shadow: unset !important;
+}
+
+
+.public_wall_all_comm, .photo_all_comm_bg.wall_upgwi,
+.button_div button {
+    background: #f22f2f;
+    border-radius: 4px !important;
+    color: white;
+    transition: 0.2s;
+}
+
+.public_wall_all_comm:hover,
+.photo_all_comm_bg.wall_upgwi:hover,
+.button_div button:hover {
+    background: #212121;
+    transition: 0.2s;
+}
+
+
+.wall_fast_block {
+    border-top: 1px solid #32323224 !important;
+}
+
+.audioPage .new_play_btn .bl {
+    background: #f22f2f;
+}
+
+
+.audioPage .audioNames .author,
+.onesubscriptiontitle a,
+.newmesnobg a,
+.wall_strlen_full,
+.albtitle a {
+    color: #323232;
+    text-shadow: unset;
+}
+
+.online_ic {
+    background: #f22f2f;
+}
+
+.public_wall_like_yes,
+div#wall_attach_comment,
+.im-mess--check.fl_l,
+#rate_warning_posts div.img {
+    filter: hue-rotate(140deg) saturate(5.5);
+}
+
+.wallauthor.fl_l a, .wall_fast_ava+div a,
+.wallauthor a {
+    color: #ff7a7a;
+    text-shadow: unset;
+}
+
+
+div#rateLeftGold60 {
+    background: #f22f2f;
+    border-radius: 4px 0 0 4px;
+}
+
+div#rateRightGold60 {
+    background: #f22f2f40;
+    border-radius: 0 4px 4px 0;
+}
+
+div#percentGold60 {
+    color: white !important;
+}
+
+.profile_rate_pos.mgclr {
+    border: unset;
+}
+
+.al_audio_result_wrap.shadow_box:before {
+    background: url(https://i.pinimg.com/originals/a3/82/e0/a382e0a60209ec131b5cca5a670e951d.gif) no-repeat center;
+    background-size: cover;
+}
+
+.left_box.attention {
+    display: none;
+}
+
+.footer {
+    transform: translate(-410px, 445px);
+}
+
+body::-webkit-scrollbar-track:hover {
+    border: unset;
+    background: transparent;
+}
+
+body::-webkit-scrollbar-thumb {
+    background-color: #6e6e6e;
+}
+
+body::-webkit-scrollbar-thumb:hover {
+    background: #f22f2f;
+}
+
+.photo_all_comm_bg.wall_upgwi {
+    border: unset;
+}
+
+:hover {
+    text-decoration: unset !important;
+}
+
+div#audioPad {
+    background: #141414;
+    border: unset;
+    border-radius: 4px;
+    box-shadow: 0 0 20px black;
+}
+
+.audio_head,.padFooter {
+    border: unset;
+}
+
+div#pad_play,
+.al_audio_player .bigPlay_but {
+    background: #f22f2f;
+}
+
+.audio_head .icon-fast-bw:before, .audio_head .icon-fast-fw:before,
+.icon-play-4:before,
+.icon-fast-bw:before, .icon-fast-fw:before {
+    color: #f22f2f;
+}
+
+.audio.play .audio_cont {
+    background: #f22f2f !important;
+}
+
+.audio.play .audio_cont span#artist {
+    text-shadow: unset;
+    color: #ffffff;
+}
+
+.audio.play .audio_cont span#name,
+.audio.play .audio_cont .name {
+    color: white;
+}
+
+span#artist,
+span#name,
+.name,
+.audio .time,
+div#pl_names {
+    text-shadow: unset;
+    color: #868686;
+}
+
+.audio .audio_cont:hover {
+    background: #323232;
+    border-radius: 4px;
+}
+
+div#pad_names *,
+div#pad_names,
+.audio_head .time,
+div#pl_names b,
+div#pl_time {
+    color: white;
+}
+
+.audio_head .audio_progres_bl .play,
+.audio_head .volume_line,
+div#pl_play_line {
+    background: #f22f2f;
+}
+
+.audio_head .audio_progres_bl .bg,
+.audio_head .volume_bg,
+.al_audio_progress_wrap .bg_line {
+    background: white;
+}
+
+div#pad_load_line,
+div#pl_load_line {
+    background: #f22f2f59;
+}
+
+.icon-loop-1:before,
+.icon-shuffle-2:before,
+.icon-plus-2:before,
+.audio .tools li {
+    color: #f22f2f;
+}
+
+.audio.play .time {
+    color: #ffffff;
+}
+
+.al_audio_player.shadow_box,
+.al_audio_result_wrap,
+.al_audios_panel.fl_l.bsbb,
+ul#rightmenu,
+.search_sotrt_tab {
+    background: #141414;
+    border: unset;
+}
+
+
+
+div#popular,
+.al_audios_panel .menu_item.active {
+    background: #f22f2f;
+    color: white;
+}
+
+input#search_audio_val,
+.big_title {
+    background: #323232 !important;
+    border: unset;
+    border-radius: 4px;
+}
+
+input#search_audio_val::placeholder,
+input#query,
+.big_title {
+    color: #626262 !important;
+}
+
+div#friendBlockMain {
+    border-color: #f22f2f;
+}
+
+.audioFriendsBlock li:hover {
+    background: #323232;
+}
+
+.audioFriendsBlock li {
+    border-radius: 4px;
+    margin-top: 5px;
+}
+
+.audioFriendsBlock li {
+    color: white;
+}
+
+.menu_gray {
+    border-top: 1px solid #717171;
+}
+
+.fl_l.label,
+.albtitle {
+    color: #454545;
+}
+
+.audioPage.audioElem {
+    background: transparent;
+    color: #868686;
+}
+
+.audioPage.audioElem b#artist {
+    color: white;
+}
+
+.audioPage .area:hover {
+    background: #323232;
+}
+
+div#moreInfo *,
+.flpodinfo * {
+    color: #5c5c5c !important;
+}
+
+.wallauthor a {
+    text-shadow: unset;
+}
+
+div#e_public_title {
+    color: black;
+    font-size: 19px;
+}
+
+a.page_module_upload {
+    background: #323232;
+    color: #787878;
+}
+
+a.page_module_upload:hover, .page_module_upload.hover {
+    background: #f22f2f;
+    color: white;
+}
+
+
+.page_photos_upload_label, .page_topics_upload_label, .page_audios_upload_label, .page_links_upload_label, .page_videos_upload_label, .page_docs_upload_label, .page_events_upload_label, .page_contacts_upload_label, .page_places_upload_label {
+    filter: grayscale(1) brightness(0) invert(1) opacity(0.7);
+}
+
+.public_wall_like_yes_color {
+    color: #ff4d44;
+    text-shadow: unset;
+}
+
+div#wall_attach_link {
+    filter: hue-rotate(140deg) saturate(5.5);
+}
+
+.friends_onefriend a {
+    color: #f22f2f;
+}
+.friends_m.menuleft.fl_r {
+    background: transparent;
+}
+
+.friends_m.menuleft.fl_r a,
+ul#rightmenu * {
+    border: unset;
+    color: #686868;
+}
+
+.friends_m.menuleft.fl_r a:hover {
+    background: #323232;
+}
+
+ul#rightmenu *,
+.wallauthor_notif a {
+    text-shadow: unset;
+}
+
+.activetabnews div {
+    filter: grayscale(1) invert(1);
+}
+
+.wallauthor_notif a {
+    color: #f22f2f;
+}
+
+
+div#im_content, div#lblock_im {
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: unset;
+}
+
+
+
+div#im_head_user * {
+    color: #707070 !important;
+}
+
+div#im_content>script+script+div {
+    background: #ff000000 !important;
+}
+
+
+
+div#lblock_im {
+    box-shadow: unset !important;
+}
+
+
+.dialog.selected,
+.dialog.selected:hover {
+    background: #f22f2f;
+}
+
+.dialog:hover {
+    background: #f22f2f2b;
+}
+
+div#show_dialogs_button {
+    color: #626262 !important;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+}
+
+
+/*-------------------------*/
+
+[id^="box_title_msg_attach"] {
+    background: #f22f2f;
+}
+
+.box_footer,
+.box_bg .box_conetnt {
+    border: unset;
+}
+
+.box_footer {
+    border-radius: 0 0 4px 4px;
+}
+
+.box_close {
+    filter: brightness(0) invert(1);
+}
+
+input#query_full,
+.buttonsprofileSec_b a {
+    background: #f22f2f;
+}
+
+
+
+
+.bg_block a {
+    color: #6d6d6d;
+}
+
+.buttonsprofileSec_b a {
+    color: white;
+}
+
+.margin_top_10+div {
+    color: #f22f2f !important;
+}
+
+.search_sotrt_tab td.selector,
+.search_sotrt_tab .selector input,
+.search_sotrt_tab .inpst {
+    background: #323232 !important;
+    border-radius: 4px;
+}
+
+.search_sotrt_tab table.selector_table,
+.search_sotrt_tab .inpst {
+    border: 1px solid #2c2c2c !important;
+}
+
+.search_sotrt_tab .selector_container td.selector_dropdown {
+    background-color: #484848;
+}
+
+.search_sotrt_tab .selector_container {
+    background: transparent !important;
+    border-radius: 4px !important;
+    overflow: hidden;
+}
+
+.allbar_title {
+    color: #5a5a5a;
+    border: unset;
+}
+
+.wall_strlen_full:hover {
+    color: #f22f2f;
+}
