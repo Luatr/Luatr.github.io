@@ -650,3 +650,19 @@ a._im_start_new {
 .im_text.support_answer.im_msg.selected {
     background: #f22f2f12;
 }
+
+[id^="box_title_all_groups_users_"] {
+    background: #f22f2f;
+}
+
+.cover_edit_title {
+    color: #686868;
+}
+
+[id^="box_content_all_groups_users_"] {
+    border-radius: 0 0 4px 4px;
+}
+
+.public_obefeed a {
+    color: #6a6a6a;
+}
