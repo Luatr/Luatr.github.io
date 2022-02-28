@@ -775,3 +775,8 @@ button#upload:hover {
     width: auto;
     padding-left: 8px;
 }
+
+a#answer_lnk {
+    font-size: 12px;
+    color: #bcbcbc;
+}
