@@ -738,3 +738,7 @@ div#feddbackusers {
 .menuleft {
     border-radius: 4px;
 }
+
+.news_wall_msg_bg {
+    z-index: 2;
+}
