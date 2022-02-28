@@ -805,3 +805,7 @@ span.send_thumb {
     filter: brightness(0) invert(1);
 }
 
+.menuleft a {
+    color: #424242;
+}
+
