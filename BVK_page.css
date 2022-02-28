@@ -780,3 +780,7 @@ a#answer_lnk {
     font-size: 12px;
     color: #bcbcbc;
 }
+
+.wallrecord.comm_wr.news_comm_wr+div .public_wall_all_comm {
+    width: 531px !important;
+}
