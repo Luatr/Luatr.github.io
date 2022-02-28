@@ -699,3 +699,9 @@ a._im_start_new {
     display: none;
 }
 
+.headm_newac {
+    padding-left: 6px;
+    background: #f22f2f;
+    color: white;
+}
+
