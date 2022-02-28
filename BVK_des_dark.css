@@ -116,12 +116,12 @@ div#wall_attach_comment,
 
 
 [id^="rateLeftGold"] {
-    background: #f22f2f;
+    background: #f22f2f !important;
     border-radius: 4px 0 0 4px;
 }
 
 [id^="rateRightGold"] {
-    background: #f22f2f40;
+    background: #f22f2f40 !important;
     border-radius: 0 4px 4px 0;
 }
 
@@ -793,6 +793,15 @@ div#qnotifications_content [style="display: inline-flex;"] img {
 }
 
 #qnotifications_box .icn {
+    filter: brightness(0) invert(1);
+}
+
+[onclick^="gifts.box"] {
+    background: #f22f2f !important;
+    border: unset !important;
+}
+
+span.send_thumb {
     filter: brightness(0) invert(1);
 }
 
