@@ -855,3 +855,8 @@ div#rateGold .clearFix {
 .audioTAP_strlka:after {
     border-top-color: #323232;
 }
+
+.im_no_read2 {
+    background: white;
+    color: #f22f2f;
+}
