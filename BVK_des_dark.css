@@ -809,3 +809,7 @@ span.send_thumb {
     color: #424242;
 }
 
+div#rateGold .clearFix {
+    border-radius: 4px;
+    overflow: hidden;
+}
