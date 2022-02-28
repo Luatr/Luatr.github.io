@@ -115,17 +115,17 @@ div#wall_attach_comment,
 }
 
 
-div#rateLeftGold60 {
+[id^="rateLeftGold"] {
     background: #f22f2f;
     border-radius: 4px 0 0 4px;
 }
 
-div#rateRightGold60 {
+[id^="rateRightGold"] {
     background: #f22f2f40;
     border-radius: 0 4px 4px 0;
 }
 
-div#percentGold60 {
+[id^="percentGold"] {
     color: white !important;
 }
 
