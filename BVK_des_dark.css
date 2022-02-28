@@ -705,3 +705,10 @@ a._im_start_new {
     color: white;
 }
 
+/*Фикс кнопки в изменении информации о себе*/
+
+.texta+div button#saveform {
+    display: block !important;
+}
+
+
