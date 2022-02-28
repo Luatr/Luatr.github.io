@@ -795,3 +795,8 @@ a#answer_lnk {
     padding-bottom: 15px;
 }
 
+.editwall {
+    position: absolute;
+    top: 5px;
+    right: 20px;
+}
