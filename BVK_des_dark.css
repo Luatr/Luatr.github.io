@@ -835,3 +835,7 @@ div#rateGold .clearFix {
 .scroller .scroller_panel:hover .slider {
     width: 6px;
 }
+
+.audio_head .slider {
+    background: #f22f2f;
+}
