@@ -789,3 +789,8 @@ a#answer_lnk {
 [style^="background:url('https://beonvk.com/uploads/users/"] {
     background-size: cover !important;
 }
+
+.wall_fast_comment_text {
+    padding-bottom: 15px;
+}
+
