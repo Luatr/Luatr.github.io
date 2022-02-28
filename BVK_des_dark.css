@@ -245,7 +245,8 @@ div#pl_load_line {
 .icon-loop-1:before,
 .icon-shuffle-2:before,
 .icon-plus-2:before,
-.audio .tools li {
+.audio .tools li,
+.icon-plus-6:before {
     color: #f22f2f;
 }
 
