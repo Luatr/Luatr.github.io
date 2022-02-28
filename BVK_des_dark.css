@@ -839,3 +839,8 @@ div#rateGold .clearFix {
 .audio_head .slider {
     background: #f22f2f;
 }
+
+.icon-ok-3:before {
+    font-size: 20px;
+    color: #f22f2f;
+}
