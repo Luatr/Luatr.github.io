@@ -7,4 +7,9 @@
     max-height: 300px !important;
 }
 
-.diary-image {height: 562px;     margin-top: 53px;background: transparent; }img.diary-avatar { display: none; }.diary-info.margin-top {margin-top: 0px;}.col-sidebar {margin-top: 0px !important;}.col-main {width: 1000px;margin: auto;background: #bcbcbcc4;}.col-sidebar {display: none;}
+.diary-image {height: 562px;margin-top: 53px;background: transparent; }
+img.diary-avatar { display: none; }
+.diary-info.margin-top {margin-top: 0px;}
+.col-sidebar {margin-top: 0px !important;}
+.col-main {width: 1000px;margin: auto;background: #bcbcbcc4;}
+.col-sidebar {display: none;}
