@@ -72,3 +72,9 @@ div#beon-fnplayer:before,div#footer:before {
 }
     
 }
+
+/*udp для дизайна витрувиан*/
+
+.left-menu, .post-text, .comment-content {
+    backdrop-filter: unset;
+}
