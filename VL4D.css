@@ -128,3 +128,9 @@ div#beon-fnplayer:hover:before {
 .pagination:hover:before {
     background: url(https://i.ibb.co/Hh8N2Mk/12.png) no-repeat center / contain;
 }
+
+/*udp для дизайна витрувиан*/
+
+.left-menu, .post-text, .comment-content {
+    backdrop-filter: unset;
+}
