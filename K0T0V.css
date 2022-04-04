@@ -1,24 +1,24 @@
 @import url('https://Luatr.github.io/VL4D_core.css');
 
 .content:before /*основа, неактивный*/ {
-background: url(https://i.ibb.co/0j84yrp/2.png) no-repeat center / contain;
+background: url(https://i.ibb.co/VJCcccH/k3.png) no-repeat center / contain;
 z-index: 2;
 }
 
 .content:hover:before /*правый блок*/ {
-background: url(https://i.ibb.co/TgJTwHV/2-1.png) no-repeat center / contain;
+background: url(https://i.ibb.co/GMdgsmH/k9.png) no-repeat center / contain;
 }
 
 .left-menu:hover:before /*левый блок*/ {
-background: url(https://i.ibb.co/Pc1dmbj/6-1.png) no-repeat center / contain;
+background: url(https://i.ibb.co/C5B13M3/k4.png) no-repeat center / contain;
 }
 
 .comment-box+.textareabg:hover:before /*написать коммент*/ {
-background: url(https://i.ibb.co/xq5tPdv/3-1.png) no-repeat center / contain;
+background: url(https://i.ibb.co/ByrXH07/k2.png) no-repeat center / contain;
 }
 
 [href="/design/disable"]:hover:before /*отключить дизайн*/ {
-background: url(https://i.ibb.co/WHDB2xz/7-1.png) no-repeat center / contain;
+background: url(https://i.ibb.co/dg8Wxkf/k5.png) no-repeat center / contain;
 }
 
 div#footer:before{
@@ -26,20 +26,21 @@ z-index: 3;
 }
 
 div#footer:hover:before /*на себя*/ {
-background: url(https://i.ibb.co/b7Q8fLr/9.png) no-repeat center / contain;
+background: url(https://i.ibb.co/d60M4bk/k6.png) no-repeat center / contain;
 }
 
 .likebutton:hover:before /*лайк*/ {
-background: url(https://i.ibb.co/MSQMQGJ/10-01.png) no-repeat center / contain;
+background: url(https://i.ibb.co/m4s7DH5/k10.png) no-repeat center / contain;
 }
 
 span.repostbutton:hover:before,
-span.bookmarkbutton:hover:before,span.fast-quote:hover:before /*репост,закладки,ответить*/ {
-background: url(https://i.ibb.co/XzThDwc/11-1.png) no-repeat center / contain;
+span.bookmarkbutton:hover:before,span.fast-quote:hover:before /*репост,закладки,ответить*/,
+.pagination:hover:before /*страницы*/ {
+background: url(https://i.ibb.co/HxQGgCx/k11.png) no-repeat center / contain;
 }
 
 [data-target="#deleteconfirmmodal"]:hover:before /*удалить*/ {
-background: url(https://i.ibb.co/TWSPCgK/13-1.png) no-repeat center / contain;
+background: url(https://i.ibb.co/zSgk4kf/k1.png) no-repeat center / contain;
 }
 
 a.navbar-brand:hover:before /*на главную*/ {
@@ -47,9 +48,5 @@ background: url(https://i.ibb.co/4Mktjv9/14-1.png) no-repeat center / contain;
 }
 
 div#beon-fnplayer:hover:before /*плеер*/ {
-background: url(https://i.ibb.co/PwDHdxK/8-1.png) no-repeat center / contain;
-}
-
-.pagination:hover:before /*страницы*/ {
-background: url(https://i.ibb.co/XzThDwc/11-1.png) no-repeat center / contain;
+background: url(https://i.ibb.co/jhS7FPr/k7.png) no-repeat center / contain;
 }
