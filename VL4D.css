@@ -1,0 +1,39 @@
+.content:before,.left-menu:hover:before,
+.comment-box+.textareabg:hover:before,
+[href="/design/disable"]:hover:before,
+.likebutton:hover:before,span.repostbutton:hover:before,
+span.bookmarkbutton:hover:before,[data-target="#deleteconfirmmodal"]:hover:before,
+span.fast-quote:hover:before,a.navbar-brand:hover:before,
+div#beon-fnplayer:hover:before,div#footer:before {
+    content: 'владик';
+    font-size: 0;
+    display: block;
+    background: url() no-repeat center / contain;
+    width: 220px;
+    height: 220px;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    z-index: 3;
+    transition: 0.2s;
+}
+
+
+.comment-box+.textareabg:before,
+[href="/design/disable"]:before,
+.likebutton:before,span.repostbutton:before,
+span.bookmarkbutton:before,[data-target="#deleteconfirmmodal"]:before,
+span.fast-quote:before,a.navbar-brand:before,
+div#beon-fnplayer:before,div#footer:before {
+    content: 'владик2';
+    font-size: 0;
+    display: block;
+    background: url(https://i.ibb.co/gzVjzZk/no.png) no-repeat center / contain;
+    width: 220px;
+    height: 220px;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    z-index: 3;
+    transition: 0,2s;
+}
