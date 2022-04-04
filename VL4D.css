@@ -37,3 +37,38 @@ div#beon-fnplayer:before,div#footer:before {
     z-index: 3;
     transition: 0,2s;
 }
+
+
+
+@media (max-width: 700px) {
+
+.content::before,.left-menu:hover::before,
+.comment-box + .textareabg:hover::before,
+[href="/design/disable"]:hover::before,
+.likebutton:hover::before,
+span.repostbutton:hover::before,
+span.bookmarkbutton:hover::before,
+[data-target="#deleteconfirmmodal"]:hover::before,
+span.fast-quote:hover::before,
+a.navbar-brand:hover::before,
+div#beon-fnplayer:hover::before,
+div#footer::before {
+    width: 120px;
+    height: 120px;
+    right: 0;
+    left: unset;
+}
+
+.comment-box+.textareabg:before,
+[href="/design/disable"]:before,
+.likebutton:before,span.repostbutton:before,
+span.bookmarkbutton:before,[data-target="#deleteconfirmmodal"]:before,
+span.fast-quote:before,a.navbar-brand:before,
+div#beon-fnplayer:before,div#footer:before {
+    width: 120px;
+    height: 120px;
+    right: 0;
+    left: unset;
+}
+    
+}
