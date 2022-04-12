@@ -137,6 +137,6 @@ div#beon-fnplayer:hover:before {
 
 
 div#footer {
-    font-size: 0;
-    mix-blend-mode: unset;
+    font-size: 0px !important;
+    mix-blend-mode: unset !important;
 }
