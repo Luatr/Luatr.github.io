@@ -134,3 +134,9 @@ div#beon-fnplayer:hover:before {
 .left-menu, .post-text, .comment-content {
     backdrop-filter: unset;
 }
+
+
+div#footer {
+    font-size: 0;
+    mix-blend-mode: unset;
+}
