@@ -1,52 +1,150 @@
-@import url('https://Luatr.github.io/VL4D_core.css');
-
-.content:before /*основа, неактивный*/ {
-background: url(https://i.ibb.co/VJCcccH/k3.png) no-repeat center / contain;
-z-index: 2;
+.content:before,.left-menu:hover:before,
+.comment-box+.textareabg:hover:before,
+[href="/design/disable"]:hover:before,
+.likebutton:hover:before,span.repostbutton:hover:before,
+span.bookmarkbutton:hover:before,[data-target="#deleteconfirmmodal"]:hover:before,
+span.fast-quote:hover:before,a.navbar-brand:hover:before,
+div#beon-fnplayer:hover:before,div#footer:before {
+    content: 'владик';
+    font-size: 0;
+    display: block;
+    background: url() no-repeat center / contain;
+    width: 220px;
+    height: 220px;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    transition: 0.2s;
 }
 
-.content:hover:before /*правый блок*/ {
-background: url(https://i.ibb.co/GMdgsmH/k9.png) no-repeat center / contain;
+
+.comment-box+.textareabg:before,
+[href="/design/disable"]:before,
+.likebutton:before,span.repostbutton:before,
+span.bookmarkbutton:before,[data-target="#deleteconfirmmodal"]:before,
+span.fast-quote:before,a.navbar-brand:before,
+div#beon-fnplayer:before,div#footer:before,.pagination:hover:before {
+    content: 'владик2';
+    font-size: 0;
+    display: block;
+    background: url(https://i.ibb.co/gzVjzZk/no.png) no-repeat center / contain;
+    width: 220px;
+    height: 220px;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    transition: 0,2s;
 }
 
-.left-menu:hover:before /*левый блок*/ {
-background: url(https://i.ibb.co/C5B13M3/k4.png) no-repeat center / contain;
+
+
+@media (max-width: 700px) {
+
+.content::before,.left-menu:hover::before,
+.comment-box + .textareabg:hover::before,
+[href="/design/disable"]:hover::before,
+.likebutton:hover::before,
+span.repostbutton:hover::before,
+span.bookmarkbutton:hover::before,
+[data-target="#deleteconfirmmodal"]:hover::before,
+span.fast-quote:hover::before,
+a.navbar-brand:hover::before,
+div#beon-fnplayer:hover::before,
+div#footer::before {
+    width: 120px;
+    height: 120px;
+    right: 0;
+    left: unset;
 }
 
-.comment-box+.textareabg:hover:before /*написать коммент*/ {
-background: url(https://i.ibb.co/ByrXH07/k2.png) no-repeat center / contain;
+.comment-box+.textareabg:before,
+[href="/design/disable"]:before,
+.likebutton:before,span.repostbutton:before,
+span.bookmarkbutton:before,[data-target="#deleteconfirmmodal"]:before,
+span.fast-quote:before,a.navbar-brand:before,
+div#beon-fnplayer:before,div#footer:before {
+    width: 120px;
+    height: 120px;
+    right: 0;
+    left: unset;
+}
+    
 }
 
-[href="/design/disable"]:hover:before /*отключить дизайн*/ {
-background: url(https://i.ibb.co/dg8Wxkf/k5.png) no-repeat center / contain;
+.content:before {
+    background: url(https://i.ibb.co/VJCcccH/k3.png) no-repeat center / contain;
 }
 
-div#footer:before{
-z-index: 3;
+.content:hover:before {
+    background: url(https://i.ibb.co/GMdgsmH/k9.png) no-repeat center / contain;
 }
 
-div#footer:hover:before /*на себя*/ {
-background: url(https://i.ibb.co/d60M4bk/k6.png) no-repeat center / contain;
+
+.left-menu:hover:before {
+    background: url(https://i.ibb.co/C5B13M3/k4.png) no-repeat center / contain;
+    z-index: 1;
 }
 
-.likebutton:hover:before /*лайк*/ {
-background: url(https://i.ibb.co/m4s7DH5/k10.png) no-repeat center / contain;
+.comment-box+.textareabg:hover:before {
+    background: url(https://i.ibb.co/ByrXH07/k2.png) no-repeat center / contain;
+}
+
+[href="/design/disable"]:hover:before {
+    background: url(https://i.ibb.co/dg8Wxkf/k5.png) no-repeat center / contain;
+}
+
+div#footer:before {
+    z-index: 3;
+}
+
+
+div#footer:hover:before {
+    background: url(https://i.ibb.co/d60M4bk/k6.png) no-repeat center / contain;
+}
+
+.likebutton:hover:before {
+    background: url(https://i.ibb.co/m4s7DH5/k10.png) no-repeat center / contain;
 }
 
 span.repostbutton:hover:before,
-span.bookmarkbutton:hover:before,span.fast-quote:hover:before /*репост,закладки,ответить*/,
-.pagination:hover:before /*страницы*/ {
-background: url(https://i.ibb.co/HxQGgCx/k11.png) no-repeat center / contain;
+span.bookmarkbutton:hover:before,span.fast-quote:hover:before {
+    background: url(https://i.ibb.co/HxQGgCx/k11.png) no-repeat center / contain;
 }
 
-[data-target="#deleteconfirmmodal"]:hover:before /*удалить*/ {
-background: url(https://i.ibb.co/zSgk4kf/k1.png) no-repeat center / contain;
+[data-target="#deleteconfirmmodal"]:hover:before {
+    background: url(https://i.ibb.co/zSgk4kf/k1.png) no-repeat center / contain;
 }
 
-a.navbar-brand:hover:before /*на главную*/ {
-background: url(https://i.ibb.co/r3M5bNW/k-k.png) no-repeat center / contain;
+a.navbar-brand:hover:before {
+    background: url(https://i.ibb.co/r3M5bNW/k-k.png) no-repeat center / contain;
+    z-index: 3;
 }
 
-div#beon-fnplayer:hover:before /*плеер*/ {
-background: url(https://i.ibb.co/jhS7FPr/k7.png) no-repeat center / contain;
+div#beon-fnplayer:hover:before {
+    background: url(https://i.ibb.co/jhS7FPr/k7.png) no-repeat center / contain;
+    z-index: 3;
+}
+
+.pagination:hover:before {
+    background: url(https://i.ibb.co/HxQGgCx/k11.png) no-repeat center / contain;
+    z-index: 3;
+}
+
+
+
+/*udp фиксы для совместимости с другимим дизами*/
+
+.left-menu, .post-text, .comment-content {
+    backdrop-filter: unset;
+}
+
+
+div#footer {
+    font-size: 0px !important;
+    mix-blend-mode: unset !important;
+}
+
+/*конкретно с омори дизом, там где задействован бленд*/
+.crumbs *,div#beon-fnplayer,a.navbar-brand {
+    mix-blend-mode: unset;
 }
