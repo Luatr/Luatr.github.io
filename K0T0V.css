@@ -91,6 +91,7 @@ div#beon-fnplayer:before,div#footer:before {
 
 [href="/design/disable"]:hover:before {
     background: url(https://i.ibb.co/dg8Wxkf/k5.png) no-repeat center / contain;
+    z-index: 1;
 }
 
 div#footer:before {
