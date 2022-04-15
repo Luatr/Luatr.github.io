@@ -117,16 +117,17 @@ span.bookmarkbutton:hover:before,span.fast-quote:hover:before {
 
 a.navbar-brand:hover:before {
     background: url(https://i.ibb.co/cK5pGW3/10.png) no-repeat center / contain;
+    z-index: 3;
 }
 
 div#beon-fnplayer:hover:before {
     background: url(https://i.ibb.co/sFzJkbZ/11.png) no-repeat center / contain;
-    z-index: 1;
+    z-index: 3;
 }
 
 .pagination:hover:before {
     background: url(https://i.ibb.co/Hh8N2Mk/12.png) no-repeat center / contain;
-    z-index: 1;
+    z-index: 3;
 }
 
 
@@ -143,9 +144,7 @@ div#footer {
     mix-blend-mode: unset !important;
 }
 
-.crumbs * {
-    mix-blend-mode: unset;
-}
-div#beon-fnplayer {
+/*конкретно с омори дизом, там где задействован бленд*/
+.crumbs *,div#beon-fnplayer,a.navbar-brand {
     mix-blend-mode: unset;
 }
