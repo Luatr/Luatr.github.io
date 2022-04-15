@@ -145,3 +145,6 @@ div#footer {
 .crumbs * {
     mix-blend-mode: unset;
 }
+div#beon-fnplayer {
+    mix-blend-mode: unset;
+}
