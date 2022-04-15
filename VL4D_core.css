@@ -11,6 +11,7 @@ background: url() no-repeat center / contain;
 
 .left-menu:hover:before /*левый блок*/ {
 background: url() no-repeat center / contain;
+z-index: 3;
 }
 
 .comment-box+.textareabg:hover:before /*написать коммент*/ {
@@ -44,6 +45,7 @@ background: url() no-repeat center / contain;
 
 a.navbar-brand:hover:before /*на главную*/ {
 background: url() no-repeat center / contain;
+z-index: 3;
 }
 
 div#beon-fnplayer:hover:before /*плеер*/ {
