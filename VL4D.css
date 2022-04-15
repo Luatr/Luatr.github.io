@@ -121,6 +121,7 @@ a.navbar-brand:hover:before {
 
 div#beon-fnplayer:hover:before {
     background: url(https://i.ibb.co/sFzJkbZ/11.png) no-repeat center / contain;
+    z-index: 1;
 }
 
 .pagination:hover:before {
