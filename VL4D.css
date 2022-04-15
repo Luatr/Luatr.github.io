@@ -14,7 +14,6 @@ div#beon-fnplayer:hover:before,div#footer:before {
     position: fixed;
     left: 0;
     bottom: 0;
-    z-index: 3;
     transition: 0.2s;
 }
 
@@ -34,7 +33,6 @@ div#beon-fnplayer:before,div#footer:before,.pagination:hover:before {
     position: fixed;
     left: 0;
     bottom: 0;
-    z-index: 3;
     transition: 0,2s;
 }
 
@@ -75,7 +73,6 @@ div#beon-fnplayer:before,div#footer:before {
 
 .content:before {
     background: url(https://i.ibb.co/518kq3B/1.png) no-repeat center / contain;
-    z-index: 2;
 }
 
 .content:hover:before {
@@ -85,6 +82,7 @@ div#beon-fnplayer:before,div#footer:before {
 
 .left-menu:hover:before {
     background: url(https://i.ibb.co/Pw0tXbJ/3.png) no-repeat center / contain;
+    z-index: 1;
 }
 
 .comment-box+.textareabg:hover:before {
@@ -127,9 +125,12 @@ div#beon-fnplayer:hover:before {
 
 .pagination:hover:before {
     background: url(https://i.ibb.co/Hh8N2Mk/12.png) no-repeat center / contain;
+    z-index: 1;
 }
 
-/*udp для дизайна витрувиан*/
+
+
+/*udp фиксы для совместимости с другимим дизами*/
 
 .left-menu, .post-text, .comment-content {
     backdrop-filter: unset;
@@ -139,4 +140,8 @@ div#beon-fnplayer:hover:before {
 div#footer {
     font-size: 0px !important;
     mix-blend-mode: unset !important;
+}
+
+.crumbs * {
+    mix-blend-mode: unset;
 }
