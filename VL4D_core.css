@@ -71,6 +71,65 @@ div#beon-fnplayer:before,div#footer:before {
     
 }
 
+.content:before {
+    background: url(https://i.ibb.co/VJCcccH/k3.png) no-repeat center / contain;
+}
+
+.content:hover:before {
+    background: url(https://i.ibb.co/GMdgsmH/k9.png) no-repeat center / contain;
+}
+
+
+.left-menu:hover:before {
+    background: url(https://i.ibb.co/C5B13M3/k4.png) no-repeat center / contain;
+    z-index: 1;
+}
+
+.comment-box+.textareabg:hover:before {
+    background: url(https://i.ibb.co/ByrXH07/k2.png) no-repeat center / contain;
+}
+
+[href="/design/disable"]:hover:before {
+    background: url(https://i.ibb.co/dg8Wxkf/k5.png) no-repeat center / contain;
+}
+
+div#footer:before {
+    z-index: 3;
+}
+
+
+div#footer:hover:before {
+    background: url(https://i.ibb.co/d60M4bk/k6.png) no-repeat center / contain;
+}
+
+.likebutton:hover:before {
+    background: url(https://i.ibb.co/m4s7DH5/k10.png) no-repeat center / contain;
+}
+
+span.repostbutton:hover:before,
+span.bookmarkbutton:hover:before,span.fast-quote:hover:before {
+    background: url(https://i.ibb.co/HxQGgCx/k11.png) no-repeat center / contain;
+}
+
+[data-target="#deleteconfirmmodal"]:hover:before {
+    background: url(https://i.ibb.co/zSgk4kf/k1.png) no-repeat center / contain;
+}
+
+a.navbar-brand:hover:before {
+    background: url(https://i.ibb.co/r3M5bNW/k-k.png) no-repeat center / contain;
+    z-index: 3;
+}
+
+div#beon-fnplayer:hover:before {
+    background: url(https://i.ibb.co/jhS7FPr/k7.png) no-repeat center / contain;
+    z-index: 3;
+}
+
+.pagination:hover:before {
+    background: url(https://i.ibb.co/HxQGgCx/k11.png) no-repeat center / contain;
+    z-index: 3;
+}
+
 
 /*udp фиксы для совместимости с другимим дизами*/
 
