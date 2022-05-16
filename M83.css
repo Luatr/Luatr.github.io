@@ -1,2 +1,0 @@
-<script> setInterval(function() { $('[body]').load(window.location.href + ' [body] '); }, 9000); </script>
-
