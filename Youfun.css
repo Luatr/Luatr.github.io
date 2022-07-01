@@ -1,0 +1,229 @@
+textarea#csseditortext {
+    max-height: 400px;
+    overflow-y: auto !important;
+}
+.left-menu {
+    position: relative;
+    padding-top: 178px !important;
+}
+
+div#beon-fnplayer {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    margin: 0px;
+    padding-top: 160px;
+    padding-bottom: 15px;
+    image-rendering: -webkit-optimize-contrast;
+    background: url(https://64.media.tumblr.com/f978877ebd149e5c5f7e970fd9527c90/9a9ee992bf817d23-57/s540x810/e2ec749fc5e95d0f6502f0143ac62e32aa1b0b80.gifv) no-repeat center;
+    background-size: cover;
+    background-color: black;
+}
+
+
+div#beon-fnplayer:hover {
+    transition: 0.1s;
+    box-shadow: inset 0px -40px 10px #00000052;
+}
+div#beon-fnplayer {
+    transition: 0.1s;
+}
+
+div#fnplayer-slider {
+    position: absolute;
+    bottom: 32px;
+    left: 1%;
+    right: 5px;
+    width: 98%;
+    margin: 0px !important;
+    height: 3px;
+    background: #ffffffad;
+    border-radius: 5px;
+}
+
+#fnplayer-slider-inner {
+    background-color: #ff3939 !important;
+    height: 3px !important;
+    border-radius: 5px;
+}
+
+button#fnplayer-play {
+    margin-left: 11px !important;
+    background: url(https://i1.beon.fun/21/15/1521/97/79497/treugolnik.png) no-repeat center / contain;
+    border: none;
+    width: 10px;
+    height: 12px;
+}
+
+button#fnplayer-stop {
+    height: 10px;
+    width: 10px;
+    background: #f4f4f4;
+    margin-left: 12px !important;
+}
+
+
+#fnplayer-volume-mask {
+    border: none !important;
+}
+
+
+div#fnplayer-volume-inner {
+    height: 3px;
+    background: white;
+    position: relative;
+    border-radius: 5px;
+}
+
+div#fnplayer-volume-inner:after {
+    content: 'c';
+    color: transparent;
+    position: absolute;
+    top: -3px;
+    right: -2px;
+    background: white;
+    width: 9px;
+    height: 9px;
+    border-radius: 100%;
+    display: block;
+}
+
+button#fnplayer-play:before {
+    content: 's';
+    color: transparent;
+    position: absolute;
+    top: 72px;
+    left: 0;
+    right: 0;
+    width: 30px;
+    height: 30px;
+    margin: auto;
+    background: url(https://i1.beon.fun/21/15/1521/97/79497/treugolnik.png) no-repeat center;
+    background-size: 10px 12px;
+    border-radius: 100%;
+}
+
+
+#fnplayer-play.paused:before {
+    content: 'pa';
+    color: white;
+    position: absolute;
+    border-radius: unset;
+    border-style: double;
+    border-width: 0px 0 0px 10px;
+    background: transparent;
+    width: 10px;
+    height: 12px;
+    font-size: 0px;
+    margin-top: 7px;
+}
+
+
+
+div#fnplayer-volume {
+    position: relative;
+    width: 40px;
+    margin-left: 35px !important;
+    background: #ffffff73 !important;
+    height: 3px;
+    border-radius: 5px;
+}
+
+div#fnplayer-volume:before {
+    content: 'v';
+    background: url(https://i1.beon.fun/21/15/1521/1/79501/uhjv.png) no-repeat center / contain;
+    position: absolute;
+    left: -20px;
+    top: -6px;
+    width: 15px;
+    height: 15px;
+    font-size: 0px;
+}
+
+
+
+
+#fnplayer-play {
+    border-color: transparent transparent transparent #ffffffd1 !important;;
+}
+
+#fnplayer-play.paused {
+    border-style: double;
+    border-width: 0px 0 0px 10px;
+    background: transparent;
+}
+
+div#fnplayer-slider span {
+    background: url(https://i.ibb.co/DtPVjkc/av2.png) no-repeat center / cover;
+    font-size: 0;
+    position: absolute;
+    top: -135px;
+    left: 2px;
+    width: 30px;
+    height: 30px;
+    border-radius: 100%;
+    opacity: 0.7;
+    transition: 0.3s;
+}
+
+
+
+div#fnplayer-slider span:before {
+    content: 'Saya No Uta Soundtrack - Sin';
+    position: absolute;
+    left: 44px;
+    top: 8px;
+    color: #f4f4f4;
+    font-size: 14px;
+    display: block;
+    white-space: nowrap;
+}
+
+
+button#fnplayer-play,
+button#fnplayer-stop,
+div#fnplayer-volume {
+    opacity: 0.8;
+}
+
+
+
+
+div#beon-fnplayer:hover button#fnplayer-play,
+div#beon-fnplayer:hover button#fnplayer-stop,
+div#beon-fnplayer:hover div#fnplayer-volume,
+div#beon-fnplayer:hover div#fnplayer-slider span {
+    opacity: 1;
+    transition: 0.3s;
+}
+
+
+
+@media (max-width: 700px) {
+.left-menu {
+    padding: 0px !important;
+}
+
+div#beon-fnplayer {
+    top: 0;
+    left: auto;
+    width: 100%;
+    margin: 0px;
+}
+
+.blog__about [href^="//beon.fun/users/"] {
+    position: unset;
+    font-size: unset;
+    width: unset;
+    background: transparent;
+    border-radius: unset;
+    opacity: 1;
+    transition: unset;
+}
+.blog__about [href^="//beon.fun/users/"]:hover {
+    opacity: 1;
+    font-size: unset;
+    transition: unset;
+}
+}
