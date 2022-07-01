@@ -227,7 +227,7 @@ div#beon-fnplayer {
     transition: unset;
 }
 .left-menu div:first-child {
-    margin-top: 178px;
+    margin-top: 178px !important;
 }
 .left-menu > div.left-menu__user-notification {
     display: none;
