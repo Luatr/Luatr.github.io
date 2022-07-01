@@ -226,5 +226,7 @@ div#beon-fnplayer {
     font-size: unset;
     transition: unset;
 }
-
+.left-menu div:first-child {
+    margin-top: 178px;
+}
 }
