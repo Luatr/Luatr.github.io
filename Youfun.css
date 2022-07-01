@@ -229,4 +229,11 @@ div#beon-fnplayer {
 .left-menu div:first-child {
     margin-top: 178px;
 }
+.left-menu > div.left-menu__user-notification {
+    display: none;
+}
+
+.left-menu br {
+    display: none;
+}
 }
