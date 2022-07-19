@@ -1820,6 +1820,9 @@ span.pagination-goto+a:before,.pagination a:last-child:before {
     width: 100%;
     height: auto;
 }
+.left-menu__user-notification.left-menu__unread-message {
+    transform: unset !important;
+}
 }
 
 
