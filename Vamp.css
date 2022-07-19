@@ -799,7 +799,7 @@ a.navbar-brand {
     padding-right: 30px !important;
     overflow: hidden;
     transition: 0.5s;
-    transition-delay: 99s;
+    transition-delay: 99999999s;
 }
 
 .blog__last-comments h3.left-menu-text+div.left-menu-text {
