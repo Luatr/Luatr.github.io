@@ -1816,3 +1816,8 @@ a.actionfriend:before {
 .comment-text a {
     color: #359737;
 }
+
+
+[href="//beon.fun/p/discussions/unread"] {
+    top: 25px !important;
+}
