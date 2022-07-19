@@ -70,7 +70,6 @@ h3.left-menu-text {
     padding-top: 20px;
     border-radius: 3px;
     background: url(https://i.ibb.co/NWjjwM8/ma2-1.png) fixed;
-    border: 1px solid #1b1a1b;
     box-shadow: -1px -1px #c928a2, 1px 1px #359737;
 }
 
@@ -81,10 +80,6 @@ h3.left-menu-text {
 
 
 
-
-.bg-white {
-    background: black;
-}
 
 body.bodybg {
     background: url(https://www.transparenttextures.com/patterns/asfalt-light.png) fixed,
@@ -620,7 +615,10 @@ a.navbar-brand {
     right: 0;
     height: 30px;
     z-index: 3;
-    box-shadow: -1px -1px #c928a2, 1px 1px #359737;
+    box-shadow: -1px -1px #c928a2, 1px 1px #359737 !important;
+    margin-top: 1px !important;
+    margin-left: 1px !important;
+    margin-right: 1px !important;
 }
 
 .blog__gifts,.blog__last-comments {
