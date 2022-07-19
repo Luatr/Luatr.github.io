@@ -1821,3 +1821,7 @@ a.actionfriend:before {
 [href="//beon.fun/p/discussions/unread"] {
     top: 25px !important;
 }
+
+.avatar-select-label-selected {
+    border-color: #c928a2 !important;
+}
