@@ -1828,3 +1828,8 @@ a.actionfriend:before {
 ul.menu__box {
     border-radius: 3px;
 }
+
+
+.left-menu__user-notification.left-menu__unread-message {
+    display: none !important;
+}
