@@ -1777,3 +1777,44 @@ span.pagination-goto+a:before,.pagination a:last-child:before {
     left: 135px;
 }
 }
+
+
+
+/*UPD*/
+
+.blog__last-comments h3.left-menu-text+div.left-menu-text {
+    overflow: hidden;
+    line-height: 1.3;
+}
+
+
+a.readertime {
+    width: 100%;
+    display: block;
+    height: 15px;
+    overflow: hidden;
+}
+
+.blog__about [href^="//im.beon.fun/"]:before {
+    content: 'Лс';
+}
+
+a.actionfriend:before {
+    content: '[не]Друг';
+}
+
+[href$=".beon.fun/give-gift"]:before {
+    content: 'Подарок';
+}
+
+[href^="//beon.fun/p/positives/?user="]:before {
+    content: 'Дать поз';
+}
+
+.tag:before {
+    display: none;
+}
+
+.comment-text a {
+    color: #359737;
+}
