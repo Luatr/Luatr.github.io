@@ -1884,3 +1884,7 @@ ul.menu__box {
     content: 'X';
     padding-left: 61px;
 }
+
+.post-avatar img {
+    box-shadow: -1px -1px #c928a2, 1px 1px #359737;
+}
