@@ -1874,3 +1874,6 @@ ul.menu__box {
 }
 
 
+.left-menu__user-notification.left-menu__unread-message {
+    z-index: 3;
+}
