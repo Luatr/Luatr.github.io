@@ -1484,7 +1484,9 @@ p.left-menu-text {
 }
 
 
-
+.post-content.blog_total_counter+.post-content {
+    margin-left: 20px !important;
+}
 
 
 /*=============АПЧХИИИИИИИИИИИИИИ=================*/
