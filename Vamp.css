@@ -1888,3 +1888,7 @@ ul.menu__box {
 .post-avatar img {
     box-shadow: -1px -1px #c928a2, 1px 1px #359737;
 }
+
+a.actionignore:before {
+    content: 'Игнор';
+}
