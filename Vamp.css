@@ -1823,6 +1823,14 @@ span.pagination-goto+a:before,.pagination a:last-child:before {
 .left-menu__user-notification.left-menu__unread-message {
     transform: unset !important;
 }
+.left-menu__user-notification.left-menu__unread-message h3.left-menu-text:after {
+    content: 'X';
+    position: absolute;
+    right: 0;
+}
+.left-menu__user-notification.left-menu__unread-message h3.left-menu-text {
+    position: relative;
+}
 }
 
 
