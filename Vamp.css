@@ -1906,3 +1906,12 @@ ul.menu__box {
 a.actionignore:before {
     content: 'Игнор';
 }
+
+
+.bg-white {
+    border-radius: 3px;
+}
+
+.left-menu__user-notification.left-menu__friends {
+    display: none !important;
+}
