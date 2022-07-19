@@ -1813,7 +1813,7 @@ span.pagination-goto+a:before,.pagination a:last-child:before {
     left: 135px;
 }
 .left-menu__user-notification.left-menu__unread-message {
-    position: relative;
+    position: relative !important;
     left: 0;
     width: 100%;
     height: auto;
