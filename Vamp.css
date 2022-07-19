@@ -1877,3 +1877,8 @@ ul.menu__box {
 .left-menu__user-notification.left-menu__unread-message {
     z-index: 3;
 }
+
+.left-menu__user-notification.left-menu__unread-message h3.left-menu-text:after {
+    content: 'X';
+    padding-left: 61px;
+}
