@@ -1443,7 +1443,45 @@ p.left-menu-text {
 
 
 
+.left-menu__user-notification.left-menu__unread-message {
+    display: block !important;
+    font-size: 14px;
+    position: fixed;
+    bottom: 5px;
+    left: 220px;
+    width: 200px;
+    height: 200px;
+    border-radius: 3px;
+    background: #1b1a1b;
+    padding: 5px;
+    color: #f9f9f9;
+    box-shadow: -1px -1px #c928a2, 1px 1px #359737;
+}
+.left-menu__user-notification.left-menu__unread-message img {
+    width: 50px;
+    border-radius: 3px;
+}
 
+.left-menu__user-notification.left-menu__unread-message h3.left-menu-text {
+    height: 20px;
+    margin-bottom: 10px !important;
+    text-align: left;
+    background: transparent !important;
+    font-size: 14px;
+    color: #f9f9f9;
+    text-transform: uppercase;
+}
+
+.left-menu__user-notification.left-menu__unread-message {
+    transform: translateY(180px);
+    transition: 0.5s cubic-bezier(0.57, 0.06, 0.29, 0.97);
+    transition-delay: 0.8s;
+}
+
+.left-menu__user-notification.left-menu__unread-message:hover {
+    transform: translateY(0px);
+    transition: 0.5s cubic-bezier(0.57, 0.06, 0.29, 0.97);
+}
 
 
 
@@ -1774,6 +1812,12 @@ span.pagination-goto+a:before,.pagination a:last-child:before {
     width: 125px;
     left: 135px;
 }
+.left-menu__user-notification.left-menu__unread-message {
+    position: relative;
+    left: 0;
+    width: 100%;
+    height: auto;
+}
 }
 
 
@@ -1830,6 +1874,3 @@ ul.menu__box {
 }
 
 
-.left-menu__user-notification.left-menu__unread-message {
-    display: none !important;
-}
