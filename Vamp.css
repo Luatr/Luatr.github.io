@@ -2016,3 +2016,7 @@ a.actionignore:before {
     left: -40px !important;
     top: 41px !important;
 }
+
+[style="background-color: rgb(118, 174, 49); margin: 0px;"]+p.left-menu-text {
+    z-index: 3;
+}
