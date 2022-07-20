@@ -1923,20 +1923,20 @@ span.pagination-goto+a:before,.pagination a:last-child:before {
     margin: 7px !important;
 }
 [style="background-color: rgb(118, 174, 49); margin: 0px;"]+p.left-menu-text {
-    background: #1b1a1b;
-    box-shadow: -1px -1px #c928a2, 1px 1px #359737;
-    border-radius: 3px;
-    font-size: 20px !important;
-    display: block;
-    bottom: unset;
-    width: 100%;
-    height: unset;
+    background: #1b1a1b !important;
+    box-shadow: -1px -1px #c928a2, 1px 1px #359737 !important;
+    border-radius: 3px !important;
+    display: block !important;
+    bottom: unset !important;
+    width: 100% !important;
+    height: unset !important;
     min-height: 100px;
-    left: unset;
-    position: unset;
-    transform: unset;
-    transition: unset;
-    transition-delay: unset;
+    left: unset !important;
+    position: unset !important;
+    transform: unset !important;
+    transition: unset !important;
+    transition-delay: unset !important;
+    margin-bottom: 10px !important;
 }
 }
 
@@ -2025,4 +2025,7 @@ a.actionignore:before {
 }
 
 
-
+[style="background-color: rgb(118, 174, 49); margin: 0px;"]+p.left-menu-text a {
+    font-family: monospace;
+    font-size: 14px;
+}
