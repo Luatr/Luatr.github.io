@@ -1915,3 +1915,7 @@ a.actionignore:before {
 .left-menu__user-notification.left-menu__friends {
     display: none !important;
 }
+
+[src="//beon.fun/i/online.png"] {
+    display: none;
+}
