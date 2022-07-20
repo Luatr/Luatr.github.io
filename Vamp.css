@@ -1834,6 +1834,22 @@ span.pagination-goto+a:before,.pagination a:last-child:before {
 .post-content.blog_total_counter+.post-content {
     margin: 7px !important;
 }
+[style="background-color: rgb(118, 174, 49); margin: 0px;"]+p.left-menu-text {
+    background: #1b1a1b;
+    box-shadow: -1px -1px #c928a2, 1px 1px #359737;
+    border-radius: 3px;
+    font-size: 20px !important;
+    display: block;
+    bottom: unset;
+    width: 100%;
+    height: unset;
+    min-height: 100px;
+    left: unset;
+    position: unset;
+    transform: unset;
+    transition: unset;
+    transition-delay: unset;
+}
 }
 
 
@@ -1918,4 +1934,85 @@ a.actionignore:before {
 
 [src="//beon.fun/i/online.png"] {
     display: none;
+}
+
+
+/*UPD2*/
+
+
+[style="background-color: rgb(118, 174, 49); margin: 0px;"]+p.left-menu-text {
+    background: #1b1a1b;
+    box-shadow: -1px -1px #c928a2, 1px 1px #359737;
+    border-radius: 3px;
+    font-size: 20px !important;
+    display: block;
+    bottom: 5px;
+    width: 200px;
+    height: 200px;
+    left: 220px;
+    position: fixed;
+    transform: translateY(180px);
+    transition: 0.5s cubic-bezier(0.57, 0.06, 0.29, 0.97);
+    transition-delay: 0.8s;
+}
+
+[style="background-color: rgb(118, 174, 49); margin: 0px;"]+p.left-menu-text:hover {
+    transform: translateY(0px);
+    transition: 0.5s cubic-bezier(0.57, 0.06, 0.29, 0.97);
+}
+
+
+
+.left-menu__user-notification .right-menu-text {
+    display: none;
+}
+
+[style="background-color: rgb(118, 174, 49); margin: 0px;"]+p.left-menu-text a {
+    position: unset;
+    border: unset;
+    display: block;
+    text-align: center;
+    height: 30px;
+    line-height: 2;
+    text-transform: uppercase;
+    font-size: 14px;
+    width: 90%;
+    border-radius: 3px;
+    margin: auto !important;
+    box-shadow: -1px -1px #c928a2, 1px 1px #359737;
+    margin-left: 10px !important;
+    color: #f9f9f9;
+    margin-top: 35px !important;
+    transition: 0.3s;
+}
+
+[style="background-color: rgb(118, 174, 49); margin: 0px;"]+p.left-menu-text a:hover {
+    transform: translate(3px, 3px);
+    transition: 0.3s;
+    background: #bebfbf;
+    color: black;
+    text-shadow: -5px 0 #c928a2, 5px 0 #359737;
+    box-shadow: -3px -3px black, -4px -4px #c928a2;
+}
+
+[style="background-color: rgb(118, 174, 49); margin: 0px;"]+p.left-menu-text:before {
+    content: 'Новое:';
+    color: #f9f9f9;
+    font-size: 14px;
+    text-transform: uppercase;
+    padding-left: 10px;
+}
+
+[style="background-color: rgb(118, 174, 49); margin: 0px;"]+p.left-menu-text:after {
+    content: 'X';
+    font-size: 14px;
+    color: #f9f9f9 !important;
+    position: absolute;
+    top: 5px;
+    right: 6px;
+}
+
+[href="//beon.fun/p/likes?new_only=true"] {
+    left: -40px !important;
+    top: 41px !important;
 }
