@@ -2029,3 +2029,9 @@ a.actionignore:before {
     font-family: monospace;
     font-size: 14px;
 }
+
+
+.post-content .text-center {
+    display: block;
+    color: #f9f9f9;
+}
