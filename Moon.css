@@ -1250,6 +1250,13 @@ a.my-menu.for-mobile.d-none.d-md-inline {
 .post-content h1 {
     display: none;
 }
+.left-menu__user-notification.left-menu__unread-message img+p+p {
+    width: 100px !important;
+}
+
+.left-menu {
+    position: static;
+}
 }
 
 
@@ -1360,6 +1367,13 @@ a.my-menu.for-mobile.d-none.d-md-inline {
 }
 .post-content h1 {
     display: none;
+}
+.left-menu__user-notification.left-menu__unread-message img+p+p {
+    width: 100px !important;
+}
+
+.left-menu {
+    position: static;
 }
 
 }
@@ -1553,6 +1567,13 @@ span.crumb-item {
 }
 .blog__about {
     position: relative;
+}
+.left-menu__user-notification.left-menu__unread-message img+p+p {
+    width: 100px !important;
+}
+
+.left-menu {
+    position: static;
 }
 }
 
