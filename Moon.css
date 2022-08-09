@@ -1761,3 +1761,7 @@ button#fnplayer-play {
     border-width: 3px 0 3px 8px;
     height: 0px;
 }
+
+.text-center+div#beon-fnplayer {
+    margin-top: 40px;
+}
