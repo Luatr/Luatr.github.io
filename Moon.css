@@ -1639,6 +1639,7 @@ span.post-title-date {
     top: 20px;
     filter: hue-rotate(-90deg) brightness(1.8) saturate(0.8) drop-shadow(2px 4px 6px white);
     padding-right: 20px;
+    opacity: 1;
 }
 }
 
