@@ -339,7 +339,7 @@ a.blog-subscribe {
     background: url(https://img.icons8.com/material/2x/paint-palette.png) no-repeat center / contain !important;
 }
 
-[href="//beon.fun/users/disenchantment"] {
+.blog__about [href="//beon.fun/users/disenchantment"] {
     position: absolute;
     top: 17px;
     left: 0;
