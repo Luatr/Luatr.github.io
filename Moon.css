@@ -1671,3 +1671,10 @@ textarea#addtag-img-urls {
 .post-text a,a.tag {
     font-size: 14px !important;
 }
+
+
+.row.w-100 i:hover:before,
+.comment-base .comment-text+div i:hover:before{
+    transition: 0.2s;
+    text-shadow: 3px 3px 7px #8467ff;
+}
