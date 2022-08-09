@@ -820,3 +820,7 @@ a#answer_lnk {
   transform: unset;
   bottom: 0;
 }
+
+.profile_rate_warning .warning_row .img {
+  filter: hue-rotate(140deg) saturate(5.5);
+}
