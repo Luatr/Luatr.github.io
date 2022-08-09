@@ -1426,6 +1426,7 @@ a.user.post-title-user {
     padding: 0px;
     text-align: center;
     width: 100%;
+    z-index: -1;
 }
   .post-content {
     margin-top: 20px !important;
