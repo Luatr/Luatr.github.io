@@ -1470,7 +1470,8 @@ a.post-title {
     padding: 10px;
     margin-top: 45px;
 }
-a.user.post-title-user {
+a.user.post-title-user,
+.post-content a.post-title-user{
     top: 51px !important;
     left: 85px !important;
 }
