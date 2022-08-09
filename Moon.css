@@ -1198,6 +1198,10 @@ span.post-title-date {
     padding-right: 20px;
 }
 
+.post-row {
+    min-height: 190px;
+}
+
 
 /*=============МЕДИАЯ============*/
 
