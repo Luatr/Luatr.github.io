@@ -1151,6 +1151,13 @@ a.post-title:hover, a.user.post-title-user:hover {
 }
 
 
+
+.comment-content [href="//beon.fun/users/disenchantment"],
+.comment-content [href="//beon.fun/users/disenchantment"]+span.post-title-date{
+    top: -5px !important;
+}
+
+
 /*=============МЕДИАЯ============*/
 
 
