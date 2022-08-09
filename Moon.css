@@ -1153,7 +1153,35 @@ a.post-title:hover, a.user.post-title-user:hover {
 
 
 
+/*проблема с флагами и никами*/
 
+.comment-box a.user.post-title-user {
+    position: absolute;
+    top: 0px;
+    left: 110px;
+}
+
+span.post-title-date {
+  top: 0px;
+}
+
+.comment-content>div {
+    font-size: 0;
+}
+
+.comment-base {
+    font-size: 14px;
+}
+
+.comment-box .comment-base {
+    margin-top: 30px;
+}
+
+.comment-content {
+    position: relative;
+    min-height: auto;
+    margin-top: 20px;
+}
 
 /*=============МЕДИАЯ============*/
 
