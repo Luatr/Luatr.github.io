@@ -61,7 +61,7 @@ div#app {
     padding: 0px;
 }
 .text-center:after {
-    content: 'Аттрактор';
+    content: '/самокринж/';
     font-size: 20px;
     position: absolute;
     top: 180px;
