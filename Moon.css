@@ -1667,3 +1667,7 @@ textarea#addtag-img-urls {
 .post-row a:hover {
     color: black !important;
 }
+
+.post-text a,a.tag {
+    font-size: 14px !important;
+}
