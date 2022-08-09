@@ -1203,6 +1203,17 @@ span.post-title-date {
 }
 
 
+a.post-title-user {
+    position: absolute;
+    top: 70px;
+    left: 160px;
+}
+
+.post-opt {
+    text-align: right;
+}
+
+
 /*=============МЕДИАЯ============*/
 
 
