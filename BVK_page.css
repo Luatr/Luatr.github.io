@@ -802,6 +802,9 @@ a#answer_lnk {
 }
 
 
+
+/*UPD 09.08.2022*/
+
 .wall_strlen {
   background: ;
   margin-top: 44px;
@@ -809,4 +812,11 @@ a#answer_lnk {
 
 .walltext {
   margin-top: 42px;
+}
+
+.footer {
+  position: static;
+  left: 0;
+  transform: unset;
+  bottom: 0;
 }
