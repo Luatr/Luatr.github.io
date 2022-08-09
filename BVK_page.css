@@ -817,7 +817,7 @@ a#answer_lnk {
 .footer {
   position: static;
   left: 0;
-  transform: unset;
+  transform: unset !important;
   bottom: 0;
 }
 
