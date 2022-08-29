@@ -1,0 +1,860 @@
+div#app {
+    font-family: monospace;
+}
+
+body.bodybg {background-image: url(https://wac.neocities.org/space.gif);
+    background-color: black;
+}
+
+.left-menu>div, .post-content {
+    background: #000000e3;
+    padding: 5px;
+    border: 2px ridge #d0fb04;
+    margin-bottom: 20px !important;
+    color: #ffffff;
+    border-radius: 10px;
+}
+
+h3.left-menu-text {
+    color: black;
+    font-size: 14px;
+    background: linear-gradient(135deg, #ff2e67 0%, #c5fc03 75%);
+}
+
+.col-md-12 h2 {
+    background: url(https://wac.neocities.org/welc.png) no-repeat center / contain;
+    font-size: 0px;
+    height: 150px;
+}
+
+.left-menu {
+    border: unset !important;
+    overflow: visible;
+}
+
+.datebg {
+    margin: 0px !important;
+    background: url(https://uranohead.neocities.org/ezgif-6-058e2dd6566c.gif) repeat-x left bottom;
+    height: 100px;
+    color: #fb0f04;
+    text-align: center;
+}
+
+.bg-white {
+    background-color: #39ff00;
+    background-image: url(https://www.transparenttextures.com/patterns/black-twill.png);
+    box-shadow: inset 0 -20px 20px black !important;
+}
+
+
+.bg-white:before {
+    content: url(https://roberta-feelings.neocities.org/re/4.gif);
+    position: absolute;
+    top: 143px;
+    left: 340px;
+}
+
+main.py-4 {
+    width: 79%;
+    padding: 10px !important;
+    border: 2px ridge #d0fb04;
+    border-radius: 10px;
+}
+
+.col-md-12 {
+    padding-right: 5px;
+}
+
+a {
+    color: #35ec00;
+}
+
+.col-md-12 h2+div {
+    position: absolute;
+    background: black;
+    width: 36%;
+    right: -38%;
+    top: -11px;
+    border: 2px ridge #d0fb04;
+    height: 100%;
+    border-radius: 10px;
+}
+
+.left-menu {
+    width: 30%;
+}
+
+div#filters-collapse {
+    position: absolute;
+    background: #ffe817;
+    width: 36%;
+    right: -38%;
+    top: 300px;
+}
+[data-toggle="collapse"]:before {
+    content:'';
+    background: url(https://i.pinimg.com/originals/d6/68/ef/d668ef9e7f346761c804e0be43f05eca.gif) no-repeat center top / contain;
+    position: absolute;
+    top: 10px;
+    left: 0;
+    right: 0;
+    width: 250px;
+    height: 250px;
+    margin: auto;
+}
+
+span.emj-dropdown:before {
+    display: none;
+}
+
+
+
+
+
+/*++++++++++++++++++++++++++++++велком*/
+
+
+/*--------------------------------СООБЩЕСТВА---------------------------*/
+
+.left-menu-text div:first-child .flex-column a:first-child,
+.left-menu-text div:first-child .flex-column a:first-child+div+a,
+.left-menu-text div:first-child+.d-flex a,
+.left-menu-text div:first-child+.d-flex+.d-flex a,
+.left-menu-text div:first-child+.d-flex+.d-flex+.d-flex a,
+.left-menu-text div:first-child+.d-flex+.d-flex+.d-flex+.d-flex a{
+    font-size: 0px;
+}
+
+
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+span.d-flex.flex-column [src^="//i1.beon.fun/communities/"] {
+    content: url(https://i.ibb.co/93gf81T/12.png);
+}
+
+.left-menu-text div:first-child .flex-column a:first-child:after,
+.left-menu-text div:first-child .flex-column a:first-child+div+a:after{
+    content: 'МНЕ 12';
+    font-size: 14px;
+}
+
+
+
+
+
+/*============================================*/
+/*============================================*/
+
+.left-menu-text div:first-child+.d-flex a:after {
+    content: 'Defense of the Autists ';
+    font-size: 14px;
+}
+/*============================================*/
+
+.left-menu-text div:first-child+.d-flex+.d-flex a:after {
+    content: 'DeViL-in-PaRaDiSe';
+    font-size: 14px;
+}
+/*============================================*/
+
+.left-menu-text div:first-child+.d-flex+.d-flex+.d-flex a:after {
+    content: '☣TOXIC☣';
+    font-size: 14px;
+}
+
+/*============================================*/
+
+.left-menu-text div:first-child+.d-flex+.d-flex+.d-flex+.d-flex a:after {
+    content: 'SaSuSkA_KiLlErS';
+    font-size: 14px;
+}
+/*============================================*/
+
+
+
+
+
+/*---------------------ЮЗЕРЫ------------------------*/
+
+
+
+.d-flex span+span.d-flex.flex-column [src^="//i0.beon.fun/"] {
+    content: url(https://i.ibb.co/VtTmMDD/image.png);
+    display: none;
+}
+
+.d-flex span+span.d-flex.flex-column [href^="//beon.fun/users/"],
+.d-flex span+span.d-flex.flex-column [href^="//beon.fun/users/"]+div~a,
+[href^="//beon.fun/users/"]+div+div{
+    font-size: 0px;
+}
+
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+
+.d-flex span+span.d-flex.flex-column [href^="//beon.fun/users/"]:after {
+    content: 'cMepTHuk';
+    font-size: 14px;
+}
+
+.d-flex span+span.d-flex.flex-column [href^="//beon.fun/users/"]+div~a:after {
+    content: '.::Сок_из_носок::.';
+    font-size: 14px;
+}
+
+/*============================================*/
+
+.left-menu-text .d-flex+.d-flex [href^="//beon.fun/users/"]:after {
+    content: '₡҈Ⱥ҈М҈ П҈Ǿ ₡҈ɆБɆ ' !important;
+    font-size: 14px;
+}
+
+.left-menu-text .d-flex+.d-flex [href^="//beon.fun/users/"]+a:after {
+    content: 'ШкОлЬнИк_ТеРоРиСт';
+}
+/*============================================*/
+
+/*============================================*/
+.left-menu-text .d-flex+.d-flex+.d-flex [href^="//beon.fun/users/"]:after {
+    content: 'Потрошитель' !important;
+    font-size: 14px;
+}
+
+.left-menu-text .d-flex+.d-flex+.d-flex [href^="//beon.fun/users/"]+a:after {
+    content: 'paradox' !important;
+}
+/*============================================*/
+/*============================================*/
+
+.left-menu-text .d-flex+.d-flex+.d-flex+.d-flex [href^="//beon.fun/users/"]:after {
+    content: 'Я просто ангел' !important;
+    font-size: 14px;
+}
+
+.left-menu-text .d-flex+.d-flex+.d-flex+.d-flex [href^="//beon.fun/users/"]+a:after {
+    content: '🍒SWEET CHERRY🍒' !important;
+}
+/*============================================*/
+/*============================================*/
+
+.left-menu-text .d-flex+.d-flex+.d-flex+.d-flex+.d-flex [href^="//beon.fun/users/"]:after {
+    content: 'ШаМаН_НаРкОмАн' !important;
+    font-size: 14px;
+}
+
+.left-menu-text .d-flex+.d-flex+.d-flex+.d-flex+.d-flex [href^="//beon.fun/users/"]+a:after {
+    content: 'Фэсовый призрак' !important;
+}
+/*============================================*/
+/*============================================*/
+
+
+[href^="//beon.fun/users/"]+div+div:before {
+    content: 'Бесплатный сыр';
+    font-size: 11px;
+}
+
+h3.left-menu-text {
+    font-size: 0px;
+    height: 30px;
+    border: 2px ridge #d0fb04;
+}
+
+[style="background-color: rgb(153, 0, 0);"]:before {
+    content: '♔В ТОПЕ!!!♔';
+    font-size: 24px;
+    font-weight: bold;
+}
+
+
+.left-menu-text div:first-child+.d-flex a+a:before {
+    content: '';
+    display: block;
+    width: 100px;
+    height: 100px;
+    background: url(https://i.ibb.co/p1KFr3p/ava3.png);
+}
+
+.left-menu-text div:first-child+.d-flex [href^="//beon.fun/users/"]+a:before {
+    background: url(https://i.ibb.co/0GBJMZS/ava2.png);
+}
+
+
+/*вы чё*/
+
+
+.left-menu-text .sign:before {
+    content: '';
+    background: url(https://i.ibb.co/VtTmMDD/image.png) no-repeat center;
+    display: block;
+    width: 170px;
+    height: 242px;
+}
+
+[href="//lalaki.beon.fun"]+a:before {
+    content: '';
+    background: url(https://i.ibb.co/93gf81T/12.png) no-repeat center;
+    display: block;
+    width: 170px;
+    height: 170px;
+}
+
+
+/*================================================*/
+
+img.flag {
+    display: none;
+}
+
+span.post-title-date,.sign {
+    padding: 0px;
+    color: #0a90ff;
+}
+
+.left-menu__friends.left-menu__friends_offline {
+    background: url(https://odditycommoddity.neocities.org/Images/Backgrounds/canvas60.png);
+}
+
+div#filters-collapse {
+    position: absolute;
+    background: white;
+    width: 300px;
+    height: 130px;
+    right: -7%;
+    top: 57px;
+    border-radius: 100px;
+    z-index: 3;
+    text-align: center !important;
+    padding: 24px;
+}
+
+
+/*=============NEW============*/
+
+div#filters-collapse div {
+    font-size: 0px;
+}
+
+div#filters-collapse div:before {
+    font-size: 16px;
+}
+div#filters-collapse div+div+div:before {
+    content: 'Замена текста';
+}
+div#filters-collapse div+div:before {
+    content: 'Замена картинок';
+}
+div#filters-collapse div:before {
+    content: 'Замена фона';
+}
+
+
+
+/*=============NEW============*/
+
+div#filters-collapse:after {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 39px;
+    background: #ffffff;
+    position: absolute;
+    right: -5px;
+    top: 39px;
+    transform: rotate(35deg);
+}
+
+i.fas.fa-filter {
+    background: url(https://wewarriors.life/pics/media.giphy.com/media/1vZejRhFBEi3fSiIEX/giphy.gif) no-repeat center / contain;
+    font-size: 0px;
+    display: block;
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    left: 0px;
+    right: 0;
+    margin: auto;
+    top: -12px;
+}
+
+div#app {
+    padding: 10px;
+}
+
+.mobile_open_menu {
+    display: block !important;
+    position: absolute;
+    top: 400px;
+    width: 19%;
+    right: 23px;
+    z-index: 33;
+    height: 300px;
+    background: url(https://i.pinimg.com/originals/15/a7/5e/15a75e64237c0e7d2e1c58b49be3b2fe.gif) no-repeat center / cover !important;
+    border: 2px ridge #d0fb04;
+}
+
+.mobile_open_menu h3.left-menu-text {
+    display: none;
+}
+
+.left-menu br {
+    display: none;
+}
+
+.left-menu div[style="margin-bottom: 0px;"] {
+    background: url(https://ratpilled.neocities.org/graphics/9bow.gif) no-repeat center,url(https://rabidrodent.neocities.org/static2.webp);
+    display: block !important;
+    position: absolute;
+    top: 725px;
+    width: 19%;
+    right: 23px;
+    z-index: 33;
+    height: 300px;
+}
+
+.left-menu div[style="margin-bottom: 0px;"] h3.left-menu-text {
+    display: none;
+}
+
+.left-menu div[style="margin-bottom: 0px;"]:after {
+    content: '♫ Playlist:';
+    background: #103bb3 url(https://img1.picmix.com/output/stamp/normal/1/3/6/8/1438631_a303f.gif) no-repeat bottom right / 80px;
+    display: block;
+    width: 100%;
+    position: absolute;
+    bottom: -330px;
+    left: 0;
+    height: 300px;
+    border: 2px ridge #d0fb04;
+    padding: 5px;
+    white-space: pre-wrap;
+    border-radius: 10px;
+}
+
+
+
+.left-menu div[style="margin-bottom: 0px;"]:after {
+    content: '♫ Playlist:'
+      '\A''1. Tim Sheehy - CHRONOTORIOUS'
+      '\A''2. Undertale - Fallen Down'
+      '\A''3. Deltarune  - Rude Buster'
+      '\A''4. Deltarune - Field of Hopes and Dreams'
+}
+
+
+div#filters-collapse:before {
+    content: url(https://i.ibb.co/6DDcBL6/whats-new.gif);
+    position: absolute;
+    top: -65px;
+    left: 25px;
+}
+
+.post-opt1,.post-opt>div1 {
+    position: sticky !important;
+    top: 100%;
+}
+
+
+.crumbs {
+    background: #f6f6f6;
+    border: 20px solid;
+    border-left: 250px solid;
+    padding: 2px;
+    border-color: #53d92c;
+    border-radius: 5px;
+    box-shadow: 0 0 0 2px #daff05;
+}
+
+a.navbar-brand:hover:after, [href="//beon.fun/communities"]:hover:before, tbody tr+tr+tr td:first-child a:hover:after{
+    transform: translate(3px, 3px);
+    filter: hue-rotate(70deg);
+}
+
+a.navbar-brand:after {
+    content: '';
+    background: url(https://img.icons8.com/ios-glyphs/2x/refresh--v2.gif) no-repeat center / 30px;
+    background-color: #88ff65;
+    position: absolute;
+    top: 83px;
+    left: 170px;
+    height: 50px;
+    width: 70px;
+    overflow: hidden;
+    border-radius: 10px;
+    border: 2px outset #9dff80;
+    background-blend-mode: darken;
+}
+
+
+
+[href="//beon.fun/communities"]:before {
+    content: '';
+    background: url(https://img.icons8.com/external-those-icons-fill-those-icons/2x/external-Planet-space-those-icons-fill-those-icons.png) no-repeat center / 24px;
+    position: absolute;
+    top: 83px;
+    left: 90px;
+    height: 50px;
+    width: 70px;
+    overflow: hidden;
+    border-radius: 10px;
+    border: 2px outset #9dff80;
+    background-color: #88ff65;
+}
+
+tbody tr+tr+tr td:first-child a:after {
+    content: '';
+    background: url(https://img.icons8.com/material-rounded/2x/home.png) no-repeat center / 24px;
+    background-color: #88ff65;
+    position: absolute;
+    top: 83px;
+    left: 10px;
+    height: 50px;
+    width: 70px;
+    overflow: hidden;
+    border-radius: 10px;
+    border: 2px outset #9dff80;
+    background-blend-mode: darken;
+}
+
+
+.left-menu-text.col-md-6.col-sm-12 {
+    position: unset;
+}
+
+.left-menu-text.col-md-6.col-sm-12 [href="//Twiber.beon.fun/"] {
+    background: linear-gradient(135deg, #ff2e67 39%, #c5fc03 89%);
+    position: absolute;
+    top: 148px;
+    right: 108px;
+    width: 100px;
+    height: 100px;
+    padding: 10px;
+    border: 2px ridge;
+    box-shadow: 9px 9px #c5fc0366, 4px 4px #ff2e67a3;
+    z-index: 44;
+    color: #d3ff00;
+    font-size: 24px;
+}
+
+.left-menu-text.col-md-6.col-sm-12 [href="//Twiber.beon.fun/"] [src="/i/community.png"] {
+    display: none;
+}
+
+.left-menu-text.col-md-6.col-sm-12 [href="//Twiber.beon.fun/"]:before {
+    content: '';
+    display: block;
+    width: 200px;
+    height: 200px;
+    background: url(https://64.media.tumblr.com/1b8c3156682dc50aa7b2659b0647c4d3/tumblr_p9zekyyDAL1vfmsdno3_250.png) no-repeat center / contain;
+    position: absolute;
+    left: -140px;
+}
+
+.left-menu-text.col-md-6.col-sm-12 [href="//Twiber.beon.fun/"]:after {
+    content: '';
+    display: block;
+    width: 200px;
+    height: 200px;
+    background: url(https://64.media.tumblr.com/a6bc644bc579b5c7def452ce75c57a3f/tumblr_p9zekyyDAL1vfmsdno4_400.png) no-repeat center / contain;
+    position: absolute;
+    right: -100px;
+}
+
+
+img:hover,.left-menu-text.col-md-6.col-sm-12 [href="//Twiber.beon.fun/"]:hover,
+.left-menu-text div:first-child+.d-flex a+a:hover:before,
+.left-menu-text .sign:hover:before {
+    animation: shake 0.5s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes shake {
+  0% { transform: translate(1px, 1px) rotate(0deg); }
+  10% { transform: translate(-1px, -2px) rotate(-1deg); }
+  20% { transform: translate(-3px, 0px) rotate(1deg); }
+  30% { transform: translate(3px, 2px) rotate(0deg); }
+  40% { transform: translate(1px, -1px) rotate(1deg); }
+  50% { transform: translate(-1px, 2px) rotate(-1deg); }
+  60% { transform: translate(-3px, 1px) rotate(0deg); }
+  70% { transform: translate(3px, 1px) rotate(-1deg); }
+  80% { transform: translate(-1px, -1px) rotate(1deg); }
+  90% { transform: translate(1px, 2px) rotate(0deg); }
+  100% { transform: translate(1px, -2px) rotate(-1deg); }
+}
+
+
+[href*="lusiferin"] {
+    pointer-events: none;
+}
+
+
+.container-fluid .left-menu-text.col-md-6.col-sm-12 {
+    background: black;
+    border: 2px ridge #c5fc03;
+    padding: 5px;
+    color: #fe3265;
+}
+
+
+.pagination {
+    border-radius: unset;
+    margin-top: -2px;
+    height: 27px;
+    margin-right: -4px;
+    padding-left: 130px;
+    padding-right: 23px;
+    background: #53d92c;
+}
+span.pagination-goto {
+    display: none;
+}
+
+.pagination a:last-child {
+    font-size: 0px;
+}
+
+.pagination a:last-child:after {
+    content: '';
+    background: url(https://img.icons8.com/fluency-systems-regular/2x/arrows-follow-right.png) no-repeat center / 48px;
+    background-color: #88ff65;
+    position: absolute;
+    top: 30px;
+    right: 20px;
+    height: 50px;
+    width: 70px;
+    overflow: hidden;
+    border-radius: 10px;
+    border: 2px outset #9dff80;
+    background-blend-mode: darken;
+    transition: 0.2s;
+}
+
+
+.pagination,.pagination a {
+    font-size: 0px;
+}
+
+span.pagination-goto+a:after {
+    content: '';
+    background: url(https://img.icons8.com/fluency-systems-regular/2x/arrows-follow-right.png) no-repeat center / 48px;
+    background-color: #88ff65;
+    position: absolute;
+    top: 30px;
+    right: 100px;
+    height: 50px;
+    width: 70px;
+    overflow: hidden;
+    border-radius: 10px;
+    border: 2px outset #9dff80;
+    background-blend-mode: darken;
+    transform: rotateY(180deg);
+    transition: 0.2s;
+}
+
+span.pagination-goto+a:hover:after, .pagination a:last-child:hover:after {
+    filter: hue-rotate(70deg);
+    width: 75px;
+    transition: 0.2s;
+    background-position: right 5px center;
+}
+
+.bg-white {
+    height: 0px;
+    padding: 0px;
+    top: -64px;
+}
+
+.pc-menu * {
+    height: 0px;
+    font-size: 0px;
+}
+
+.d-flex [src="/i/user.png"] {
+    margin-top: -10px;
+}
+
+.post-text {
+    color: #c5fc03;
+    font-size: 16px;
+    line-height: normal;
+    font-style: italic;
+}
+
+a.post-title {
+    font-style: italic;
+}
+
+main.py-4+.crumbs {
+    display: none;
+}
+
+
+.left-menu-text.col-md-6.col-sm-12 [href="//CSS.beon.fun/"] {
+    position: absolute;
+    right: 20px;
+    top: 396px;
+    z-index: 333;
+    width: calc(19% + 8px);
+    border-radius: 10px;
+    height: 308px;
+    background: url(https://i.pinimg.com/originals/68/ab/b4/68abb44f8987547b7572502463ea7832.gif) no-repeat center / 500px;
+    background-color: black;
+    padding-top: 250px;
+    font-size: 24px;
+    color: yellow;
+    font-weight: bold;
+    text-align: center;
+    text-shadow: 0 0 12px #b651b0;
+}
+
+
+.left-menu-text.col-md-6.col-sm-12 [href="//CSS.beon.fun/"]:hover,
+.left-menu-text.col-md-6.col-sm-12 [href="//cvolc.beon.fun/"]:hover{
+    animation: shake 0.5s;
+    animation-iteration-count: infinite;
+}
+.left-menu-text.col-md-6.col-sm-12 [href="//CSS.beon.fun/"] img,
+.left-menu-text.col-md-6.col-sm-12 [href="//cvolc.beon.fun/"] img{
+    display: none;
+}
+
+
+
+.left-menu-text.col-md-6.col-sm-12 [href="//cvolc.beon.fun/"] {
+    position: absolute;
+    right: 20px;
+    top: 723px;
+    z-index: 333;
+    width: calc(19% + 8px);
+    border-radius: 10px;
+    height: 308px;
+    background: url(https://i.pinimg.com/564x/2c/c7/fa/2cc7fa0363a0ec6077cec77fc7d908e8.jpg) no-repeat center / 400px;
+    background-color: black;
+    padding-top: 250px;
+    font-size: 24px;
+    color: yellow;
+    font-weight: bold;
+    text-align: center;
+    text-shadow: 0 0 12px #b651b0;
+}
+
+.left-menu-text.col-md-6.col-sm-12 [href="//cvolc.beon.fun/"]:before {
+    content: '! РАЗРАБОТКА !';
+    display: block;
+    margin-top: -50px;
+    color: #7900ff;
+    text-shadow: 0 0 2px #ffffff;
+}
+
+
+.left-menu>div {
+    background: url(https://rexalted.neocities.org/art/teeth4.gif) no-repeat bottom 10px right 10px;
+}
+
+.post-opt div {
+    font-size: 17px;
+    text-transform: uppercase;
+    color: #ff0500 !important;
+}
+
+.post-opt div a {
+    color: #e103fc;
+}
+
+
+.datebg123 {
+  animation: ticker 6s linear infinite;
+}
+
+/*бегущая строка*/
+
+@keyframes ticker {
+  0% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(-100%, 0);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+/*пока что нет*/
+
+
+.comment-box,form#messageform {
+    background: black;
+    margin: 30px;
+    color: #078fff;
+}
+
+div#commentpreviewplace+div {
+    display: none;
+}
+
+textarea {
+    background: black;
+    color: #c5fc03;
+    border: 1px solid;
+}
+
+input[type="submit"] {
+    background: linear-gradient(
+45deg
+, #fe3464, #c5fc03);
+    border: 1px solid #c6f606;
+    color: black;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.left-menu__user-notification.left-menu__friends {
+    background: url(https://i.pinimg.com/originals/86/f4/fb/86f4fb3a83bdca697b5f6c188c2a95ba.gif) no-repeat center / 40px;
+}
+
+
+
+span.crumb-item:before {
+    content: 'https://beon.fun/';
+    font-size: 13px;
+}
+
+span.crumb-item {
+    font-size: 0px;
+}
+
+.crumbs:hover span.crumb-item {
+    color: #0088ff;
+}
+
+div#filters-collapse div {
+    background: url(https://i.pinimg.com/originals/86/f4/fb/86f4fb3a83bdca697b5f6c188c2a95ba.gif) no-repeat right 35px center / 20px;
+    color: black;
+    font-style: italic;
+}
+
+
+.content {
+    color: #c5fc03;
+}
+
+.mobile_open_menu:before {
+    content: '';
+    display: block;
+    background: url(https://i.pinimg.com/originals/ba/fb/56/bafb568e0510cb7f9600265523c93ba2.gif) no-repeat bottom right -120px / 700px;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    transition: 1s;
+    border-radius: 10px;
+}
+
+.mobile_open_menu:hover:before {
+    background-size: 800px;
+    transition: 1s;
+    opacity: 1;
+}
