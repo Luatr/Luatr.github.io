@@ -1302,10 +1302,14 @@ i.far.fa-smile-wink {
 }
 }
 
-
+/*UPD*/
 div#app {
     cursor: url(https://i.ibb.co/nP4m4b9/finalcurgreen-22.png), pointer;
 }
-a,img,span {
+a,img,span,label.menu__btn {
     cursor: url(https://i.ibb.co/LvgrG8N/finalcurgreen-33.png), pointer !important;
+}
+
+a.user.post-title-user:hover,.post-opt *:hover {
+    color: #787878 !important;
 }
