@@ -484,8 +484,8 @@ div#beon-fnplayer {
 }
 
 #fnplayer-play {
-    border-color: transparent transparent transparent #141414;
-    border-width: 4px 0 4px 8px;
+    border-color: transparent transparent transparent #141414 !important;
+    border-width: 4px 0 4px 8px !important;
 }
 
 button#fnplayer-stop {
@@ -498,8 +498,8 @@ div#fnplayer-slider,div#fnplayer-volume {
 }
 
 #fnplayer-slider-inner, div#fnplayer-volume-inner {
-    background: #1c1c1c;
-    height: 6px;
+    background: #1c1c1c !important;
+    height: 6px !important;
 }
 
 div#fnplayer-slider span {
