@@ -1330,3 +1330,7 @@ a.user.post-title-user:hover,.post-opt *:hover {
     border-width: 0px 0 0px 9px !important;
     height: 7px;
 }
+
+.post-opt.col-12.col-md-6 i {
+    font-family: 'Font Awesome 5 Free';
+}
