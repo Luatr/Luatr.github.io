@@ -982,7 +982,7 @@ i.fas.fa-chevron-down {
 
 .avatar-select-label-selected {
     border: 1px solid #1e1e1e !important;
-    filter: opacity(0.5);
+    opacity: 0.5;
 }
 /*--------------------------------------*/
 
