@@ -1313,3 +1313,11 @@ a,img,span,label.menu__btn {
 a.user.post-title-user:hover,.post-opt *:hover {
     color: #787878 !important;
 }
+
+.left-menu a {
+    transition: 0.3s;
+}
+.left-menu a:hover {
+    padding-left: 10px;
+    transition: 0.3s;
+}
