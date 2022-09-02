@@ -1301,3 +1301,11 @@ i.far.fa-smile-wink {
     font-size: 17px;
 }
 }
+
+
+div#app {
+    cursor: url(https://i.ibb.co/nP4m4b9/finalcurgreen-22.png), pointer;
+}
+a,img,span {
+    cursor: url(https://i.ibb.co/LvgrG8N/finalcurgreen-33.png), pointer !important;
+}
