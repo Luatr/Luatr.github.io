@@ -1295,3 +1295,7 @@ a.user.post-title-user:hover,.post-opt *:hover {
     line-height: normal;
     padding-top: 5px;
 }
+
+.mobile_open_menu h3.left-menu-text {
+    font-weight: 100 !important;
+}
