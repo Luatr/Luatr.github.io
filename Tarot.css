@@ -1248,6 +1248,10 @@ i.far.fa-smile-wink {
 .crumbs,.pagination {
     background: linear-gradient(45deg, #151515, #313131,#151515);
 }
+main.py-4+.crumbs * {
+    background: transparent;
+    border: unset;
+}
 }
 
 /*UPD*/
