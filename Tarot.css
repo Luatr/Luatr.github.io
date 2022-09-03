@@ -1271,3 +1271,8 @@ a.user.post-title-user:hover,.post-opt *:hover {
 .left-menu__user-notification a {
     padding-left: 5px;
 }
+
+.sign {
+    line-height: normal;
+    padding-top: 5px;
+}
