@@ -1233,20 +1233,8 @@ a.menu__item {
 i.far.fa-smile-wink {
     font-size: 17px;
 }
-.pagination {
-    display: block;
-    width: calc(100% + 16px);
-    margin: 0px !important;
-    border: 1px solid black;
-    border-radius: 3px;
-    margin-top: 5px !important;
-    margin-bottom: 5px !important;
-    height: 32px;
-    padding-top: 2px;
-    text-align: right;
-}
 
-.crumbs,.pagination {
+.crumbs {
     background: linear-gradient(45deg, #151515, #313131,#151515);
 }
 main.py-4+.crumbs * {
