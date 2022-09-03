@@ -1234,7 +1234,6 @@ i.far.fa-smile-wink {
     font-size: 17px;
 }
 .pagination {
-    background: #141414;
     display: block;
     width: calc(100% + 16px);
     margin: 0px !important;
@@ -1245,6 +1244,9 @@ i.far.fa-smile-wink {
     height: 32px;
     padding-top: 2px;
     text-align: right;
+}
+.crumbs,.pagination {
+    background: linear-gradient(45deg, #151515, #313131,#151515);
 }
 }
 
