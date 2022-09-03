@@ -1233,7 +1233,9 @@ a.menu__item {
 i.far.fa-smile-wink {
     font-size: 17px;
 }
-
+.pagination a {
+    color: #e1e1e1eb !important;
+}
 .crumbs {
     background: linear-gradient(45deg, #151515, #313131,#151515);
 }
