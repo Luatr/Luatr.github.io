@@ -1290,3 +1290,11 @@ a.user.post-title-user:hover,.post-opt *:hover {
 .mobile_open_menu h3.left-menu-text {
     font-weight: 100 !important;
 }
+
+.left-menu__user-notification.left-menu__unread-message input[type="submit"] {
+    color: #151515 !important;
+}
+
+.left-menu__user-notification.left-menu__unread-message img {
+    border-radius: 3px;
+}
