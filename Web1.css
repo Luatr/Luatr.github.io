@@ -896,3 +896,31 @@ div#filters-collapse div {
     margin-top: 10px;
     border-radius: 10px;
 }
+
+
+
+.post-content [href="//beon.fun/users/princess"] {
+    background: url(https://i.pinimg.com/originals/e2/32/f0/e232f0f5020c9072284efadfbb1adda1.gif) no-repeat center / contain;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 300px;
+    height: 300px;
+    z-index: 333;
+    border-radius: 10px;
+    display: block;
+    font-size: 0px;
+}
+
+.post-content [href="//beon.fun/users/kevin"] {
+    background: url(https://i.pinimg.com/originals/86/88/14/8688149b1bc0f56c88ce3a50c80ea618.gif) no-repeat center / contain;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 300px;
+    height: 300px;
+    z-index: 333;
+    border-radius: 10px;
+    display: block;
+    font-size: 0px;
+}
