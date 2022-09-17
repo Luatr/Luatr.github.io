@@ -1298,3 +1298,9 @@ a.user.post-title-user:hover,.post-opt *:hover {
 .left-menu__user-notification.left-menu__unread-message img {
     border-radius: 3px;
 }
+
+/*UPD*/
+
+[src="/i/online.png"] {
+    filter: hue-rotate(-80deg) saturate(2);
+}
