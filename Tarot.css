@@ -1304,3 +1304,9 @@ a.user.post-title-user:hover,.post-opt *:hover {
 [src="/i/online.png"] {
     filter: hue-rotate(-80deg) saturate(2);
 }
+
+button.btn.btn-secondary:focus, button.btn.btn-primary:focus, input[type="submit"]:focus {
+    box-shadow: unset !important;
+    background: #545252 !important;
+    border: unset;
+}
