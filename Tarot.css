@@ -1302,7 +1302,7 @@ a.user.post-title-user:hover,.post-opt *:hover {
 /*UPD*/
 
 [src="/i/online.png"] {
-    filter: hue-rotate(-80deg) saturate(2);
+    filter: hue-rotate(-80deg) saturate(2) opacity(0.9);
 }
 
 button.btn.btn-secondary:focus, button.btn.btn-primary:focus, input[type="submit"]:focus {
