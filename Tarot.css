@@ -1310,3 +1310,18 @@ button.btn.btn-secondary:focus, button.btn.btn-primary:focus, input[type="submit
     background: #545252 !important;
     border: unset;
 }
+
+
+/*UPD*/
+.post-content a {
+    color: #000000 !important;
+}
+.post-text a {
+    color: #797979 !important;
+    line-height: normal;
+}
+
+.post-text {
+    font-size: 14px;
+    font-family: 'Raleway', sans-serif;
+}
