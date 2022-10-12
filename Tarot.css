@@ -1325,3 +1325,7 @@ button.btn.btn-secondary:focus, button.btn.btn-primary:focus, input[type="submit
     font-size: 14px;
     font-family: 'Raleway', sans-serif;
 }
+
+[data-deletelink="/p/design/delete"] {
+    color: #ff5722 !important;
+}
