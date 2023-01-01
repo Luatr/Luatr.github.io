@@ -933,3 +933,7 @@ div#filters-collapse div {
 [href="https://beon.fun/2048"] {
     display: none;
 }
+
+.pc-menu [href$=".beon.fun/preview"] {
+    display: none !important;
+}
