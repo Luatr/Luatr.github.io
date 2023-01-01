@@ -924,3 +924,8 @@ div#filters-collapse div {
     display: block;
     font-size: 0px;
 }
+
+
+.admin-notification {
+    display: none;
+}
