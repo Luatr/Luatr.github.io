@@ -929,3 +929,7 @@ div#filters-collapse div {
 .admin-notification {
     display: none;
 }
+
+[href="https://beon.fun/2048"] {
+    display: none;
+}
