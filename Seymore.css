@@ -1077,4 +1077,8 @@ a.my-menu.for-mobile.mobile-scroll-down.d-inline.d-md-none {
   [style="float:right;cursor:pointer;text-shadow: 1px 1px 1px white;"] {
     margin-top: 10px;
 }
+  .left-menu-text [action="/search"] {
+    margin: auto;
+    width: fit-content;
+}
 }
