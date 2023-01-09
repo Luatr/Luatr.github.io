@@ -1082,3 +1082,14 @@ a.my-menu.for-mobile.mobile-scroll-down.d-inline.d-md-none {
     width: fit-content;
 }
 }
+
+
+/*-----UPD-----*/
+
+.post-text {
+    min-height: 78px;
+}
+.row.w-100 {
+    position: sticky;
+    top: 100%;
+}
