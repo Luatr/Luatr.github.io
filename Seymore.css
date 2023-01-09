@@ -907,3 +907,9 @@ a.user {
 a.navbar-brand:hover:after {
     filter: drop-shadow(0px 1px 10px #ff9b9b);
 }
+
+a.navbar-brand {
+    position: absolute;
+    left: 125px;
+    top: 55px;
+}
