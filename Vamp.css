@@ -2035,3 +2035,7 @@ a.actionignore:before {
     display: block;
     color: #f9f9f9;
 }
+
+.left-menu-text [href$=".beon.fun/compliments/"]:before {
+    content: 'Инхарт';
+}
