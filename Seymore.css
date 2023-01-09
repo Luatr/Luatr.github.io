@@ -1081,6 +1081,9 @@ a.my-menu.for-mobile.mobile-scroll-down.d-inline.d-md-none {
     margin: auto;
     width: fit-content;
 }
+a.post-title,span.crumb-item {
+    font-size: 24px;
+}
 }
 
 
