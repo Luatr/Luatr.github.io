@@ -2039,3 +2039,7 @@ a.actionignore:before {
 .left-menu-text [href$=".beon.fun/compliments/"]:before {
     content: 'Инхарт';
 }
+
+.left-menu-text [href$=".beon.fun/birthdays/"]:before {
+    content: 'Др';
+}
