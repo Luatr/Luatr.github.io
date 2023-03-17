@@ -794,6 +794,7 @@ a.navbar-brand {
 }
 
 .blog__last-comments div.left-menu-text {
+    height: 29px;
     text-align: right;
     padding-right: 30px !important;
     overflow: hidden;
