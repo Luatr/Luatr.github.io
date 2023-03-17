@@ -2043,3 +2043,6 @@ a.actionignore:before {
 .left-menu-text [href$=".beon.fun/birthdays/"]:before {
     content: 'Др';
 }
+.bg-white .m2 {
+    font-size: 0px;
+}
