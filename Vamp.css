@@ -569,7 +569,7 @@ span.post-title-date+span {
 
 #menu__toggle:checked ~ .menu__box {
     visibility: visible;
-    height: 455px;
+    height: 540px;
 }
 
 a.menu__item {
