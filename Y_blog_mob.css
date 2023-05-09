@@ -781,3 +781,8 @@ span.card-text a {
 .profile_comment_date {
     text-align: right !important;
 }
+
+blockquote.blockquote {
+    border-color: #5e5e5e;
+    margin-top: 10px;
+}
