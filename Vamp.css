@@ -2060,3 +2060,9 @@ a.actionignore:before {
 .footer__infolinks.p-1,div#page__admincontact,div#page__rendertime {
     display: none;
 }
+
+a.btn.btn-outline-primary.mb-2 {
+    border: unset;
+    padding: 0px;
+    margin-right: 10px;
+}
