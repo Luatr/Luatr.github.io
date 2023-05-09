@@ -2053,3 +2053,10 @@ a.actionignore:before {
 .new-comment-scroll-notice {
     display: none;
 }
+
+/*-----UPD fix-------*/
+
+
+.footer__infolinks.p-1,div#page__admincontact,div#page__rendertime {
+    display: none;
+}
