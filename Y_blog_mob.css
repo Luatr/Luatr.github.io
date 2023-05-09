@@ -777,3 +777,7 @@ span.card-text a {
     color: #673243;
     text-decoration: unset;
 }
+
+.profile_comment_date {
+    text-align: right !important;
+}
