@@ -740,9 +740,6 @@ div#postcomment_userphotos {
     padding: 0;
 }
 
-h2.card-title a {
-    font-family: sans-serif;
-}
 .post_data a, p.card-link.post_views, .post_data, .profile_comment_links {
     color: #c7b3a8 !important;
 }
