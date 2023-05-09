@@ -772,3 +772,8 @@ div#designs {
     border: unset;
     filter: unset;
 }
+
+span.card-text a {
+    color: #673243;
+    text-decoration: unset;
+}
