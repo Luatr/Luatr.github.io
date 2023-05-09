@@ -786,3 +786,7 @@ blockquote.blockquote {
     border-color: #5e5e5e;
     margin-top: 10px;
 }
+
+.blog_leftsearch {
+    margin-bottom: 0px !important;
+}
