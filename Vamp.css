@@ -2066,3 +2066,7 @@ a.btn.btn-outline-primary.mb-2 {
     padding: 0px;
     margin-right: 10px;
 }
+
+.post-content {
+    color: #f9f9f9;
+}
