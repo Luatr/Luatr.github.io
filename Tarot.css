@@ -1118,6 +1118,9 @@ main.py-4+.crumbs {
     border: unset;
     padding: 0px;
 }
+ul.menu__box:before {
+    right: -35px;
+}
 }
 
 
@@ -1243,9 +1246,19 @@ main.py-4+.crumbs * {
     background: transparent;
     border: unset;
 }
+ul.menu__box:before {
+    right: -35px;
+}
 }
 
-/*UPD*/
+
+
+
+
+
+
+/*----UPD----*/
+
 div#app {
     cursor: url(https://i.ibb.co/nP4m4b9/finalcurgreen-22.png), pointer;
 }
