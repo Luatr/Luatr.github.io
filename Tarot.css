@@ -1329,3 +1329,31 @@ button.btn.btn-secondary:focus, button.btn.btn-primary:focus, input[type="submit
 [data-deletelink="/p/design/delete"] {
     color: #ff5722 !important;
 }
+
+
+
+/*----FIX 13.08.23----*/
+
+.m2 {
+    display: none;
+}
+
+.footer__infolinks.p-1,div#footer,div#page__rendertime {
+    display: none;
+}
+
+div#fnplayer-volume-inner {
+    border: unset;
+}
+
+
+div#usermenu {
+    border-radius: 3px;
+    background: #1e1e1e;
+    border-color: #1e1e1e;
+    padding: 5px;
+}
+
+div#usermenu a {
+    color: #e3e3e3;
+}
