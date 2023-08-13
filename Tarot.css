@@ -1338,7 +1338,7 @@ button.btn.btn-secondary:focus, button.btn.btn-primary:focus, input[type="submit
     display: none;
 }
 
-.footer__infolinks.p-1,div#footer,div#page__rendertime {
+.footer__infolinks.p-1,div#footer,div#page__rendertime,div#page__admincontact {
     display: none;
 }
 
