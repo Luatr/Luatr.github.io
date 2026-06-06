@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Мини RPG Maker - Pixel Move & DB</title>
+    <style>
+        body { margin: 0; font-family: Arial, sans-serif; background-color: #2b2b2b; color: white; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+        
+        /* --- РЕДАКТОР --- */
+        #editor-view { display: flex; flex-direction: column; height: 100%; }
+        #toolbar { background-color: #1e1e1e; padding: 8px; display: flex; gap: 10px; align-items: center; border-bottom: 2px solid #444; flex-wrap: wrap; }
+        .toolbar-group { display: flex; gap: 5px; align-items: center; border-right: 1px solid #555; padding-right: 10px; }
+        #toolbar input { width: 45px; padding: 4px; background: #333; color: white; border: 1px solid #555; }
+        #toolbar button { padding: 5px 10px; background-color: #4CAF50; color: white; border: none; cursor: pointer; font-size: 13px; }
+        #toolbar button:hover { background-color: #45a049; }
+        .mode-btn { font-size: 18px !important; padding: 5px 8px !important; background-color: #555 !important; }
+        .mode-btn.active { background-color: #2196F3 !important; }
+        .play-btn { background-color: #ff9800 !important; font-weight: bold; }
+        .db-btn { background-color: #9C27B0 !important; } /* База данных */
+
+        #workspace { display: flex; flex: 1; overflow: hidden; }
+        #sidebar { width: 160px; background-color: #333; border-right: 2px solid #444; display: flex; flex-direction: column; }
+        .sidebar-section { display: flex; flex-direction: column; height: 50%; }
+        .sidebar-section:first-child { border-bottom: 1px solid #555; }
+        .sidebar-header { text-align: center; padding: 5px; background-color: #222; font-weight: bold; font-size: 12px; border-bottom: 1px solid #555; }
+        .sidebar-content { flex: 1; overflow-y: auto; padding: 5px; }
+        #palette-grid { display: grid; grid-template-columns: repeat(2, 48px); gap: 2px; justify-content: center; }
+        .tile-btn { width: 48px; height: 48px; border: 2px solid #222; cursor: pointer; box-sizing: border-box; }
+        .tile-btn.active { border-color: yellow; }
+        .tileset-tabs { display: flex; background-color: #222; border-top: 1px solid #555; }
+        .tileset-tab { flex: 1; text-align: center; padding: 5px 0; cursor: pointer; font-size: 12px; color: #aaa; }
+        .tileset-tab.active { background-color: #444; color: white; }
+
+        .map-item { display: flex; align-items: center; gap: 5px; padding: 6px; cursor: pointer; font-size: 12px; color: #ccc; border-bottom: 1px solid #444; }
+        .map-item.active { background-color: #3a3a5a; color: white; border-left: 3px solid #2196F3; }
+        #add-map-btn { width: 100%; padding: 8px; background-color: #555; color: white; border: none; border-top: 1px solid #777; cursor: pointer; }
+
+        #map-container { flex: 1; overflow: auto; padding: 20px; display: flex; justify-content: center; align-items: flex-start; background-color: #111; }
+        #editor-canvas { image-rendering: pixelated; touch-action: none; }
+
+        /* --- ИГРОВОЙ РЕЖИМ --- */
+        #game-view { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #000; z-index: 500; flex-direction: column; }
+        #game-canvas-container { flex: 1; display: flex; justify-content: center; align-items: center; overflow: hidden; }
+        #game-canvas { image-rendering: pixelated; }
+        #game-message-box { display: none; position: absolute; bottom: 120px; left: 50%; transform: translateX(-50%); width: 80%; max-width: 600px; background-color: rgba(0, 0, 0, 0.85); border: 3px solid #fff; border-radius: 8px; padding: 20px; color: white; font-size: 20px; line-height: 1.4; z-index: 600; }
+        #touch-controls { height: 150px; background-color: rgba(0,0,0,0.5); display: flex; justify-content: space-between; align-items: center; padding: 0 20px; }
+        .dpad { display: grid; grid-template-columns: repeat(3, 50px); grid-template-rows: repeat(3, 50px); gap: 5px; }
+        .dpad-btn { background-color: rgba(255,255,255,0.3); border: 2px solid rgba(255,255,255,0.5); border-radius: 10px; color: white; font-size: 24px; display: flex; justify-content: center; align-items: center; user-select: none; }
+        .dpad-btn:active { background-color: rgba(255,255,255,0.6); }
+        .action-buttons { display: flex; gap: 15px; }
+        .action-btn { width: 70px; height: 70px; border-radius: 50%; background-color: rgba(255,255,255,0.3); border: 2px solid rgba(255,255,255,0.5); color: white; font-size: 24px; display: flex; justify-content: center; align-items: center; user-select: none; }
+        .action-btn:active { background-color: rgba(255,255,255,0.6); }
+
+        /* --- МОДАЛЬНЫЕ ОКНА --- */
+        .modal-base { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #2b2b2b; border: 2px solid #888; box-shadow: 0 0 20px rgba(0,0,0,0.8); flex-direction: column; z-index: 100; }
+        .modal-base.active { display: flex; }
+        .modal-header { background-color: #444; padding: 10px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #666; }
+        .modal-close-btn { background: red; color: white; border: none; cursor: pointer; padding: 2px 8px; }
+        .modal-body { display: flex; flex: 1; overflow: hidden; }
+        .modal-left { width: 150px; background-color: #333; padding: 10px; border-right: 1px solid #666; display: flex; flex-direction: column; align-items: center; }
+        .event-graphic-box { width: 96px; height: 96px; background-color: #111; border: 1px solid #555; margin-bottom: 10px; }
+        .delete-event-btn { margin-top: auto; background-color: #d9534f !important; font-size: 24px; padding: 10px !important; width: 100%; }
+        .modal-right { flex: 1; background-color: #f0f0f0; padding: 10px; overflow-y: auto; position: relative; }
+        .script-line { height: 30px; border-bottom: 1px solid #ccc; display: flex; align-items: center; padding: 0 5px; color: #333; cursor: pointer; font-family: monospace; }
+        .script-line:hover { background-color: #e0e0ff; }
+        .cmd-message { background-color: #fff; border: 1px solid #aaa; padding: 2px 5px; border-radius: 3px; font-size: 12px; width: 100%; }
+        #add-cmd-modal { width: 400px; height: auto; z-index: 150; }
+        #add-cmd-body { padding: 20px; display: flex; flex-direction: column; gap: 10px; }
+        .cmd-choice-btn { background-color: #555; color: white; border: 1px solid #777; padding: 10px; cursor: pointer; text-align: left; }
+        #message-input-area { display: none; flex-direction: column; gap: 10px; }
+        #message-input-area.active { display: flex; }
+        #message-textarea { height: 80px; background-color: #222; color: #0f0; border: 1px solid #555; padding: 10px; font-family: monospace; resize: none; }
+        .save-msg-btn { background-color: #5cb85c; color: white; border: none; padding: 8px; cursor: pointer; }
+        #create-map-modal { width: 300px; height: auto; z-index: 150; }
+        #create-map-body { padding: 20px; display: flex; flex-direction: column; gap: 15px; }
+        .map-input-group { display: flex; flex-direction: column; gap: 5px; }
+        .map-input-group input { padding: 8px; background: #222; color: white; border: 1px solid #555; }
+        .create-map-save-btn { background-color: #5cb85c; color: white; border: none; padding: 10px; cursor: pointer; font-size: 16px; }
+
+        /* База данных */
+        #database-modal { width: 500px; height: 500px; z-index: 150; }
+        #db-body { padding: 20px; display: flex; flex-direction: column; height: 100%; box-sizing: border-box; }
+        #db-tabs { display: flex; gap: 10px; margin-bottom: 20px; }
+        .db-tab { padding: 5px 15px; background: #555; cursor: pointer; }
+        .db-tab.active { background: #2196F3; }
+        #db-tile-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 15px; overflow-y: auto; }
+        .db-tile-item { display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: pointer; }
+        .db-tile-color { width: 48px; height: 48px; border: 1px solid #aaa; position: relative; display: flex; justify-content: center; align-items: center; font-size: 24px; font-weight: bold; text-shadow: 1px 1px 2px black); }
+        .db-tile-name { font-size: 12px; color: #ccc; text-align: center; }
+
+        #overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0,0,0,0.5); z-index: 50; }
+        #overlay.active { display: block; }
+    </style>
+</head>
+<body>
+
+    <div id="editor-view">
+        <div id="toolbar">
+            <div class="toolbar-group">
+                <button class="mode-btn active" id="mode-tile" onclick="setMode('tile')">🖌️</button>
+                <button class="mode-btn" id="mode-event" onclick="setMode('event')">📎</button>
+                <button class="mode-btn" id="mode-player" onclick="setMode('player')">🧍</button>
+            </div>
+            <div class="toolbar-group">
+                <label>Ш:</label> <input type="number" id="map-width" value="16" min="1">
+                <label>В:</label> <input type="number" id="map-height" value="12" min="1">
+                <button onclick="applyMapSize()">Размер</button>
+            </div>
+            <div class="toolbar-group">
+                <button class="db-btn" onclick="openDatabase()">🗄️ База данных</button>
+            </div>
+            <div class="toolbar-group">
+                <button class="play-btn" onclick="startGame()">▶ Играть</button>
+            </div>
+        </div>
+        <div id="workspace">
+            <div id="sidebar">
+                <div class="sidebar-section">
+                    <div class="sidebar-header">Тайлы</div>
+                    <div class="sidebar-content"><div id="palette-grid"></div></div>
+                    <div class="tileset-tabs">
+                        <div class="tileset-tab active" onclick="switchTileTab('A')">A</div>
+                        <div class="tileset-tab" onclick="switchTileTab('B')">B</div>
+                        <div class="tileset-tab" onclick="switchTileTab('C')">C</div>
+                        <div class="tileset-tab" onclick="switchTileTab('R')">R</div>
+                    </div>
+                </div>
+                <div class="sidebar-section">
+                    <div class="sidebar-header">Карты</div>
+                    <div class="sidebar-content" id="map-list-container"></div>
+                    <button id="add-map-btn" onclick="openCreateMapModal()">+ Карта</button>
+                </div>
+            </div>
+            <div id="map-container"><canvas id="editor-canvas"></canvas></div>
+        </div>
+    </div>
+
+    <div id="game-view">
+        <div id="game-canvas-container"><canvas id="game-canvas"></canvas></div>
+        <div id="game-message-box">Текст</div>
+        <div id="touch-controls">
+            <div class="dpad">
+                <div></div><div class="dpad-btn" data-dir="up">▲</div><div></div>
+                <div class="dpad-btn" data-dir="left">◄</div><div></div><div class="dpad-btn" data-dir="right">►</div>
+                <div></div><div class="dpad-btn" data-dir="down">▼</div><div></div>
+            </div>
+            <div class="action-buttons">
+                <div class="action-btn" onclick="gameAction()">E</div>
+                <div class="action-btn" onclick="stopGame()">✖</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="overlay" onclick="closeTopModal()"></div>
+
+    <!-- Окна -->
+    <div id="event-modal" class="modal-base">
+        <div class="modal-header"><span id="event-modal-title">Событие</span><button class="modal-close-btn" onclick="closeEventModal()">✖</button></div>
+        <div class="modal-body">
+            <div class="modal-left"><div class="event-graphic-box"></div><button>Графика</button><button class="delete-event-btn" onclick="deleteCurrentEvent()">🗑️</button></div>
+            <div class="modal-right" id="script-container"></div>
+        </div>
+    </div>
+    <div id="add-cmd-modal" class="modal-base">
+        <div class="modal-header"><span>Команда</span><button class="modal-close-btn" onclick="closeAddCmdModal()">✖</button></div>
+        <div id="add-cmd-body">
+            <div id="cmd-choices"><button class="cmd-choice-btn" onclick="showMessageInput()">💬 Сообщение</button></div>
+            <div id="message-input-area"><textarea id="message-textarea"></textarea><button class="save-msg-btn" onclick="saveMessageCommand()">ОК</button></div>
+        </div>
+    </div>
+    <div id="create-map-modal" class="modal-base">
+        <div class="modal-header"><span>Новая карта</span><button class="modal-close-btn" onclick="closeCreateMapModal()">✖</button></div>
+        <div id="create-map-body">
+            <div class="map-input-group"><label>Имя:</label><input type="text" id="new-map-name" value="MAP002"></div>
+            <div class="map-input-group"><label>Ширина:</label><input type="number" id="new-map-width" value="16"></div>
+            <div class="map-input-group"><label>Высота:</label><input type="number" id="new-map-height" value="12"></div>
+            <button class="create-map-save-btn" onclick="createNewMap()">Создать</button>
+        </div>
+    </div>
+
+    <!-- БАЗА ДАННЫХ -->
+    <div id="database-modal" class="modal-base">
+        <div class="modal-header"><span>🗄️ База данных: Тайлсеты</span><button class="modal-close-btn" onclick="closeDatabase()">✖</button></div>
+        <div id="db-body">
+            <div id="db-tabs">
+                <div class="db-tab active" onclick="switchDbTab('A')">Вкладка A</div>
+                <div class="db-tab" onclick="switchDbTab('B')">Вкладка B</div>
+                <div class="db-tab" onclick="switchDbTab('C')">Вкладка C</div>
+                <div class="db-tab" onclick="switchDbTab('R')">Вкладка R</div>
+            </div>
+            <div style="margin-bottom:10px; color:#aaa; font-size:12px;">Нажмите на тайл, чтобы сменить проходимость: ○ (Да) ➔ ✖ (Нет) ➔ ★ (Над игроком)</div>
+            <div id="db-tile-grid"></div>
+        </div>
+    </div>
+
+    <script>
+        const TILE_SIZE = 48;
+        // 0 - Проходимый (Кружок), 1 - Непроходимый (Крестик), 2 - Над игроком (Звездочка)
+        const tilesets = {
+            A: [
+                { id: 0, color: 'transparent', name: 'Стерка', passability: 0 },
+                { id: 1, color: '#4CAF50', name: 'Трава', passability: 0 },
+                { id: 2, color: '#795548', name: 'Земля', passability: 0 },
+                { id: 3, color: '#607D8B', name: 'Камень', passability: 1 },
+                { id: 4, color: '#03A9F4', name: 'Вода', passability: 1 },
+                { id: 5, color: '#FFEB3B', name: 'Песок', passability: 0 },
+                { id: 6, color: '#2E7D32', name: 'Куст', passability: 2 } // Пример "Звездочки"
+            ],
+            B: [
+                { id: 100, color: '#f44336', name: 'Кирпич', passability: 1 },
+                { id: 101, color: '#9C27B0', name: 'Магия', passability: 0 },
+                { id: 102, color: '#CDDC39', name: 'Листва', passability: 2 },
+                { id: 103, color: '#795548', name: 'Доски', passability: 0 }
+            ], C: [], R: []
+        };
+
+        let currentTileTab = 'A', selectedTileId = 1, isDrawing = false, currentMode = 'tile';
+        let maps = [], currentMapIndex = 0, currentEditEventKey = null, activeLineIndex = 0;
+
+        // --- ИГРОВЫЕ ПЕРЕМЕННЫЕ ---
+        let isPlaying = false;
+        let playerX = 0, playerY = 0; // Пиксельные координаты
+        let playerDir = 'down';
+        let isMessageShowing = false;
+        let keysPressed = {}; // Для зажатия клавиш
+        let gameLoopId = null;
+        const PLAYER_SPEED = 4; // Скорость пиксельного хождения
+
+        const editorCanvas = document.getElementById('editor-canvas');
+        const editorCtx = editorCanvas.getContext('2d');
+        const gameCanvas = document.getElementById('game-canvas');
+        const gameCtx = gameCanvas.getContext('2d');
+
+        function init() {
+            maps.push({ name: "MAP001", width: 16, height: 12, mapData: createEmptyMap(16, 12), eventsData: {}, playerStartPos: null });
+            loadCurrentMapToUI(); renderMapList(); generatePalette(); setupTouchControls();
+        }
+        function createEmptyMap(w, h) { let d=[]; for(let y=0;y<h;y++){d[y]=[];for(let x=0;x<w;x++)d[y][x]=0;} return d; }
+        function getCurrentMap() { return maps[currentMapIndex]; }
+        function getTileData(id) { for (let t in tilesets) { const f = tilesets[t].find(v=>v.id===id); if(f) return f; } return null; }
+
+        // --- ЛОГИКА РЕДАКТОРА ---
+        function switchTileTab(t) { currentTileTab=t; document.querySelectorAll('.tileset-tab').forEach(e=>e.classList.remove('active')); event.target.classList.add('active'); selectedTileId=tilesets[t].length>0?tilesets[t][0].id:0; generatePalette(); }
+        function generatePalette() { const g=document.getElementById('palette-grid'); g.innerHTML=''; const t=tilesets[currentTileTab]; if(!t.length){g.innerHTML='<div style="color:#777;font-size:12px;text-align:center;padding:10px;">Пусто</div>';return;} t.forEach(tl=>{const b=document.createElement('div');b.className='tile-btn'+(tl.id===selectedTileId?' active':'');if(tl.id===0){b.style.border='2px dashed #888';b.style.backgroundColor='#222';}else{b.style.backgroundColor=tl.color;}b.onclick=()=>{selectedTileId=tl.id;document.querySelectorAll('.tile-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active');};g.appendChild(b);}); }
+        function renderMapList() { const c=document.getElementById('map-list-container');c.innerHTML='';maps.forEach((m,i)=>{const it=document.createElement('div');it.className='map-item'+(i===currentMapIndex?' active':'');it.innerText=`🗺️ ${m.name}`;it.onclick=()=>switchMap(i);c.appendChild(it);}); }
+        function switchMap(i) { currentMapIndex=i;loadCurrentMapToUI();renderEditorMap();renderMapList(); }
+        function loadCurrentMapToUI() { const m=getCurrentMap();document.getElementById('map-width').value=m.width;document.getElementById('map-height').value=m.height; }
+        function applyMapSize() { const m=getCurrentMap();const nw=parseInt(document.getElementById('map-width').value)||m.width;const nh=parseInt(document.getElementById('map-height').value)||m.height;const nd=createEmptyMap(nw,nh);for(let y=0;y<Math.min(nh,m.height);y++)for(let x=0;x<Math.min(nw,m.width);x++)nd[y][x]=m.mapData[y][x];m.width=nw;m.height=nh;m.mapData=nd;if(m.playerStartPos&&(m.playerStartPos.x>=nw||m.playerStartPos.y>=nh))m.playerStartPos=null;renderEditorMap(); }
+        function setMode(mode) { currentMode=mode;['tile','event','player'].forEach(m=>document.getElementById('mode-'+m).classList.toggle('active',mode===m));editorCanvas.style.cursor=mode==='tile'?'crosshair':'pointer'; }
+
+        function renderEditorMap() {
+            const m=getCurrentMap();editorCanvas.width=m.width*TILE_SIZE;editorCanvas.height=m.height*TILE_SIZE;const c=editorCtx;c.clearRect(0,0,editorCanvas.width,editorCanvas.height);
+            for(let y=0;y<m.height;y++){for(let x=0;x<m.width;x++){const id=m.mapData[y][x];if(id!==0){const td=getTileData(id);if(td){c.fillStyle=td.color;c.fillRect(x*TILE_SIZE,y*TILE_SIZE,TILE_SIZE,TILE_SIZE);}}c.strokeStyle='#444';c.strokeRect(x*TILE_SIZE,y*TILE_SIZE,TILE_SIZE,TILE_SIZE);}}
+            c.fillStyle='rgba(255,0,0,0.7)';for(let k in m.eventsData){const[x,y]=k.split(',').map(Number);c.beginPath();const cx=x*TILE_SIZE+24,cy=y*TILE_SIZE+24;c.moveTo(cx,cy-12);c.lineTo(cx+12,cy);c.lineTo(cx,cy+12);c.lineTo(cx-12,cy);c.closePath();c.fill();}
+            if(m.playerStartPos){const px=m.playerStartPos.x*TILE_SIZE,py=m.playerStartPos.y*TILE_SIZE;c.fillStyle='rgba(0,150,255,0.6)';c.fillRect(px,py,TILE_SIZE,TILE_SIZE);c.fillStyle='#fff';c.font='bold 24px Arial';c.textAlign='center';c.textBaseline='middle';c.fillText('P',px+24,py+24);}
+        }
+
+        function getTileCoords(e,cv) { const r=cv.getBoundingClientRect();let cx,cy;if(e.touches){cx=e.touches[0].clientX;cy=e.touches[0].clientY;}else{cx=e.clientX;cy=e.clientY;}return{x:Math.floor((cx-r.left)/TILE_SIZE),y:Math.floor((cy-r.top)/TILE_SIZE)}; }
+        function handleMapInteraction(e) { const m=getCurrentMap();const{x,y}=getTileCoords(e,editorCanvas);if(x<0||x>=m.width||y<0||y>=m.height)return;if(currentMode==='tile'){if(m.mapData[y][x]!==selectedTileId){m.mapData[y][x]=selectedTileId;renderEditorMap();}}else if(currentMode==='event'){openEventModal(x,y);}else if(currentMode==='player'){m.playerStartPos={x,y};renderEditorMap();} }
+        editorCanvas.addEventListener('mousedown',(e)=>{if(currentMode==='tile')isDrawing=true;handleMapInteraction(e);});
+        editorCanvas.addEventListener('mousemove',(e)=>{if(isDrawing&&currentMode==='tile')handleMapInteraction(e);});
+        editorCanvas.addEventListener('mouseup',()=>isDrawing=false);editorCanvas.addEventListener('mouseleave',()=>isDrawing=false);
+        editorCanvas.addEventListener('touchstart',(e)=>{e.preventDefault();if(currentMode==='tile')isDrawing=true;handleMapInteraction(e);});
+        editorCanvas.addEventListener('touchmove',(e)=>{e.preventDefault();if(isDrawing&&currentMode==='tile')handleMapInteraction(e);});
+        editorCanvas.addEventListener('touchend',()=>isDrawing=false);
+
+        // --- МОДАЛЬНЫЕ ОКНА (События, Команды, Карты) ---
+        function openEventModal(x,y){const m=getCurrentMap();const k=`${x},${y}`;currentEditEventKey=k;if(!m.eventsData[k]){m.eventsData[k]={graphic:'none',commands:[]};renderEditorMap();}document.getElementById('event-modal-title').innerText=`Событие: ${x}, ${y}`;renderScriptLines();document.getElementById('event-modal').classList.add('active');document.getElementById('overlay').classList.add('active');}
+        function closeEventModal(){document.getElementById('event-modal').classList.remove('active');document.getElementById('overlay').classList.remove('active');currentEditEventKey=null;}
+        function deleteCurrentEvent(){const m=getCurrentMap();if(currentEditEventKey&&confirm("Удалить?")){delete m.eventsData[currentEditEventKey];closeEventModal();renderEditorMap();}}
+        function renderScriptLines(){const c=document.getElementById('script-container');c.innerHTML='';const cmd=getCurrentMap().eventsData[currentEditEventKey].commands;const lc=Math.max(10,cmd.length+2);for(let i=0;i<lc;i++){const l=document.createElement('div');l.className='script-line';if(cmd[i]){if(cmd[i].type==='message'){const s=document.createElement('span');s.className='cmd-message';s.innerText=`💬 "${cmd[i].text}"`;l.appendChild(s);}}else{l.onclick=()=>{activeLineIndex=i;openAddCmdModal();};}c.appendChild(l);}}
+        function openAddCmdModal(){document.getElementById('cmd-choices').style.display='flex';document.getElementById('message-input-area').classList.remove('active');document.getElementById('message-textarea').value='';document.getElementById('add-cmd-modal').classList.add('active');}
+        function closeAddCmdModal(){document.getElementById('add-cmd-modal').classList.remove('active');}
+        function showMessageInput(){document.getElementById('cmd-choices').style.display='none';document.getElementById('message-input-area').classList.add('active');document.getElementById('message-textarea').focus();}
+        function saveMessageCommand(){const t=document.getElementById('message-textarea').value.trim();if(t!==""){getCurrentMap().eventsData[currentEditEventKey].commands[activeLineIndex]={type:'message',text:t};renderScriptLines();closeAddCmdModal();}}
+        function openCreateMapModal(){document.getElementById('new-map-name').value="MAP"+String(maps.length+1).padStart(3,'0');document.getElementById('create-map-modal').classList.add('active');}
+        function closeCreateMapModal(){document.getElementById('create-map-modal').classList.remove('active');}
+        function createNewMap(){const n=document.getElementById('new-map-name').value||"Map";const w=parseInt(document.getElementById('new-map-width').value)||16;const h=parseInt(document.getElementById('new-map-height').value)||12;maps.push({name:n,width:w,height:h,mapData:createEmptyMap(w,h),eventsData:{},playerStartPos:null});switchMap(maps.length-1);closeCreateMapModal();}
+        
+        // --- БАЗА ДАННЫХ ---
+        let currentDbTab = 'A';
+        function openDatabase() { currentDbTab = 'A'; renderDbGrid(); document.getElementById('database-modal').classList.add('active'); document.getElementById('overlay').classList.add('active'); }
+        function closeDatabase() { document.getElementById('database-modal').classList.remove('active'); document.getElementById('overlay').classList.remove('active'); generatePalette(); } // Обновляем палитру на всякий случай
+        function switchDbTab(t) { currentDbTab = t; document.querySelectorAll('.db-tab').forEach(e=>e.classList.remove('active')); event.target.classList.add('active'); renderDbGrid(); }
+        
+        function renderDbGrid() {
+            const grid = document.getElementById('db-tile-grid');
+            grid.innerHTML = '';
+            const tiles = tilesets[currentDbTab];
+            if (!tiles.length) { grid.innerHTML = '<div style="color:#777">Пусто</div>'; return; }
+            
+            tiles.forEach(tile => {
+                const item = document.createElement('div');
+                item.className = 'db-tile-item';
+                
+                const colorBox = document.createElement('div');
+                colorBox.className = 'db-tile-color';
+                colorBox.style.backgroundColor = tile.id === 0 ? '#111' : tile.color;
+                
+                // Иконка проходимости
+                let passIcon = '';
+                let passColor = '#fff';
+                if (tile.passability === 0) { passIcon = '○'; passColor = '#4CAF50'; } // Можно
+                else if (tile.passability === 1) { passIcon = '✖'; passColor = '#f44336'; } // Нельзя
+                else if (tile.passability === 2) { passIcon = '★'; passColor = '#FFEB3B'; } // Над игроком
+                
+                colorBox.innerText = passIcon;
+                colorBox.style.color = passColor;
+                
+                item.onclick = () => {
+                    tile.passability = (tile.passability + 1) % 3; // Цикл 0->1->2->0
+                    renderDbGrid(); // Перерисовываем
+                };
+
+                const nameBox = document.createElement('div');
+                nameBox.className = 'db-tile-name';
+                nameBox.innerText = tile.name;
+
+                item.appendChild(colorBox);
+                item.appendChild(nameBox);
+                grid.appendChild(item);
+            });
+        }
+
+        function closeTopModal() { if(document.getElementById('database-modal').classList.contains('active'))closeDatabase();else if(document.getElementById('create-map-modal').classList.contains('active'))closeCreateMapModal();else if(document.getElementById('add-cmd-modal').classList.contains('active'))closeAddCmdModal();else closeEventModal(); }
+
+        // ====================================================================
+        // ==================== ИГРОВОЙ РЕЖИМ (PIXEL MOVE) ====================
+        // ====================================================================
+
+        function startGame() {
+            const m = getCurrentMap();
+            if (!m.playerStartPos) { alert("Нет стартовой позиции! (🧍)"); return; }
+            isPlaying = true;
+            isMessageShowing = false;
+            document.getElementById('game-message-box').style.display = 'none';
+            
+            // Инициализация пиксельных координат (центр тайла)
+            playerX = m.playerStartPos.x * TILE_SIZE;
+            playerY = m.playerStartPos.y * TILE_SIZE;
+            playerDir = 'down';
+
+            document.getElementById('editor-view').style.display = 'none';
+            document.getElementById('game-view').style.display = 'flex';
+            resizeGameCanvas();
+            
+            keysPressed = {};
+            gameLoop(); // Запуск игрового цикла
+        }
+
+        function stopGame() {
+            isPlaying = false;
+            cancelAnimationFrame(gameLoopId);
+            document.getElementById('editor-view').style.display = 'flex';
+            document.getElementById('game-view').style.display = 'none';
+        }
+
+        function resizeGameCanvas() { const c = document.getElementById('game-canvas-container'); gameCanvas.width = c.clientWidth; gameCanvas.height = c.clientHeight; }
+        window.addEventListener('resize', () => { if(isPlaying) resizeGameCanvas(); });
+
+        // Игровой цикл
+        function gameLoop() {
+            if (!isPlaying) return;
+            updatePlayer();
+            drawGameFrame();
+            gameLoopId = requestAnimationFrame(gameLoop);
+        }
+
+        function updatePlayer() {
+            if (isMessageShowing) return; // В диалоге стоим
+
+            let dx = 0, dy = 0;
+            if (keysPressed['ArrowUp'] || keysPressed['w'] || keysPressed['ц']) { dy = -PLAYER_SPEED; playerDir = 'up'; }
+            if (keysPressed['ArrowDown'] || keysPressed['s'] || keysPressed['ы']) { dy = PLAYER_SPEED; playerDir = 'down'; }
+            if (keysPressed['ArrowLeft'] || keysPressed['a'] || keysPressed['ф']) { dx = -PLAYER_SPEED; playerDir = 'left'; }
+            if (keysPressed['ArrowRight'] || keysPressed['d'] || keysPressed['в']) { dx = PLAYER_SPEED; playerDir = 'right'; }
+
+            // Диагональ нормализация (чтобы не бежали быстрее по диагонали)
+            if (dx !== 0 && dy !== 0) { dx *= 0.707; dy *= 0.707; }
+
+            // Проверка коллизии по X
+            if (dx !== 0) {
+                let nextX = playerX + dx;
+                if (!checkCollision(nextX, playerY)) playerX = nextX;
+            }
+            // Проверка коллизии по Y
+            if (dy !== 0) {
+                let nextY = playerY + dy;
+                if (!checkCollision(playerX, nextY)) playerY = nextY;
+            }
+        }
+
+        // Проверка столкновений (Хитбокс игрока: ноги)
+        function checkCollision(nx, ny) {
+            const m = getCurrentMap();
+            // Отступы хитбокса от углов спрайта (48x48)
+            const padX = 12, padY = 28, sizeW = 24, sizeH = 16; 
+            
+            const left = nx + padX;
+            const right = nx + padX + sizeW;
+            const top = ny + padY;
+            const bottom = ny + padY + sizeH;
+
+            // Проверяем 4 угла хитбокса
+            const points = [
+                {x: left, y: top}, {x: right, y: top},
+                {x: left, y: bottom}, {x: right, y: bottom}
+            ];
+
+            for (let p of points) {
+                const gridX = Math.floor(p.x / TILE_SIZE);
+                const gridY = Math.floor(p.y / TILE_SIZE);
+                
+                if (gridX < 0 || gridX >= m.width || gridY < 0 || gridY >= m.height) return true; // Стена карты
+                
+                const tileId = m.mapData[gridY][gridX];
+                const td = getTileData(tileId);
+                if (td && td.passability === 1) return true; // Непроходимый тайл
+            }
+            return false; // Путь свободен
+        }
+
+        function drawGameFrame() {
+            const m = getCurrentMap();
+            const ctx = gameCtx;
+            ctx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
+
+            const camX = gameCanvas.width / 2 - (playerX + TILE_SIZE / 2);
+            const camY = gameCanvas.height / 2 - (playerY + TILE_SIZE / 2);
+
+            ctx.save();
+            ctx.translate(camX, camY);
+
+            // 1. Отрисовка тайлов (Нижний слой + Стены)
+            for (let y = 0; y < m.height; y++) {
+                for (let x = 0; x < m.width; x++) {
+                    const id = m.mapData[y][x];
+                    const td = getTileData(id);
+                    if (td && td.id !== 0 && td.passability !== 2) { // Не рисуем "Звездочки" пока
+                        ctx.fillStyle = td.color;
+                        ctx.fillRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+                    }
+                }
+            }
+
+            // 2. Отрисовка Событий
+            for (let k in m.eventsData) {
+                const [x, y] = k.split(',').map(Number);
+                ctx.fillStyle = '#2196F3';
+                ctx.beginPath(); ctx.arc(x*TILE_SIZE+24, y*TILE_SIZE+24, 16, 0, Math.PI*2); ctx.fill();
+                ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.stroke();
+            }
+
+            // 3. Отрисовка Игрока
+            ctx.fillStyle = '#2196F3';
+            ctx.fillRect(playerX + 4, playerY + 4, TILE_SIZE - 8, TILE_SIZE - 8);
+            ctx.fillStyle = '#fff';
+            let ex1=14, ey1=20, ex2=26, ey2=20;
+            if(playerDir==='up'){ex1=14;ex2=26;ey1=12;ey2=12;} 
+            else if(playerDir==='left'){ex1=10;ex2=10;ey1=14;ey2=26;} 
+            else if(playerDir==='right'){ex1=28;ex2=28;ey1=14;ey2=26;}
+            ctx.fillRect(playerX+ex1, playerY+ey1, 6, 6);
+            ctx.fillRect(playerX+ex2, playerY+ey2, 6, 6);
+
+            // 4. Отрисовка верхнего слоя (Звездочки)
+            for (let y = 0; y < m.height; y++) {
+                for (let x = 0; x < m.width; x++) {
+                    const id = m.mapData[y][x];
+                    const td = getTileData(id);
+                    if (td && td.passability === 2) {
+                        ctx.fillStyle = td.color;
+                        ctx.fillRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+                    }
+                }
+            }
+
+            ctx.restore();
+        }
+
+        function gameAction() {
+            if (!isPlaying) return;
+            if (isMessageShowing) { isMessageShowing = false; document.getElementById('game-message-box').style.display = 'none'; return; }
+
+            // Куда смотрит игрок (центр спрайта + шаг вперед)
+            let checkX = playerX + TILE_SIZE / 2;
+            let checkY = playerY + TILE_SIZE / 2;
+            if (playerDir === 'up') checkY -= TILE_SIZE / 2;
+            else if (playerDir === 'down') checkY += TILE_SIZE / 2;
+            else if (playerDir === 'left') checkX -= TILE_SIZE / 2;
+            else if (playerDir === 'right') checkX += TILE_SIZE / 2;
+
+            const gridX = Math.floor(checkX / TILE_SIZE);
+            const gridY = Math.floor(checkY / TILE_SIZE);
+            const key = `${gridX},${gridY}`;
+            const m = getCurrentMap();
+
+            if (m.eventsData[key]) {
+                const ev = m.eventsData[key];
+                for (let i = 0; i < ev.commands.length; i++) {
+                    if (ev.commands[i].type === 'message') { showMessage(ev.commands[i].text); break; }
+                }
+            }
+        }
+
+        function showMessage(text) { isMessageShowing = true; const b = document.getElementById('game-message-box'); b.innerText = text; b.style.display = 'block'; }
+
+        // Клавиатура
+        document.addEventListener('keydown', (e) => {
+            if (!isPlaying) return;
+            keysPressed[e.key] = true;
+            if (e.key === ' ' || e.key === 'e' || e.key === 'у') gameAction();
+            if (e.key === 'Escape') stopGame();
+        });
+        document.addEventListener('keyup', (e) => { keysPressed[e.key] = false; });
+
+        // Тач-скрин (D-Pad)
+        function setupTouchControls() {
+            document.querySelectorAll('.dpad-btn').forEach(btn => {
+                const dir = btn.dataset.dir;
+                const keyMap = { up: 'ArrowUp', down: 'ArrowDown', left: 'ArrowLeft', right: 'ArrowRight' };
+                
+                btn.addEventListener('touchstart', (e) => { e.preventDefault(); keysPressed[keyMap[dir]] = true; });
+                btn.addEventListener('touchend', (e) => { e.preventDefault(); keysPressed[keyMap[dir]] = false; });
+                btn.addEventListener('mousedown', (e) => { keysPressed[keyMap[dir]] = true; });
+                btn.addEventListener('mouseup', (e) => { keysPressed[keyMap[dir]] = false; });
+                btn.addEventListener('mouseleave', (e) => { keysPressed[keyMap[dir]] = false; });
+            });
+        }
+
+        init();
+    </script>
+</body>
+</html>
