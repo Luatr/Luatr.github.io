@@ -1,0 +1,13 @@
+div#event-modal {
+    width: 65%;
+}
+
+.modal-left {
+    overflow: unset;
+    width: 300px;
+}
+
+div#toolbar {
+    display: flex;
+    justify-content: center;
+}
