@@ -92,9 +92,18 @@
                 </label>
             </div>
         </div>
-        <div id="workspace">
+                    <div id="workspace">
             <div id="sidebar">
-                <div class="sidebar-section"><div class="sidebar-header"><span>Тайлы</span><div style="display:flex; gap:4px;"><button class="eraser-btn" id="eraser-btn" onclick="toggleEraser()">🧹</button><button class="db-btn-sm" style="padding:2px 5px;font-size:10px;" onclick="openDatabase()">+Тайлсет</button></div></div><div class="sidebar-content" id="palette-area"><div id="palette-canvas-container"><canvas id="palette-canvas" width="48" height="48"></canvas><div id="palette-selection"></div></div></div><div class="tileset-tabs" id="tileset-tabs-container"></div></div>
+                <!-- КНОПКА-ТРЕУГОЛЬНИК ТЕПЕРЬ ВНУТРИ САЙДБАРА -->
+                <button id="sidebar-toggle-btn" onclick="toggleSidebar()">►</button>
+                
+                <div class="sidebar-section">
+                    <div class="sidebar-header"><span>Тайлы</span><div style="display:flex; gap:4px;"><button class="eraser-btn" id="eraser-btn" onclick="toggleEraser()">🧹</button><button class="db-btn-sm" style="padding:2px 5px;font-size:10px;" onclick="openDatabase()">+Тайлсет</button></div></div>
+                    <button class="scroll-arrow-btn" ontouchstart="event.stopPropagation()" onmousedown="event.stopPropagation()" onclick="scrollPalette(-1)">▲</button>
+                    <div class="sidebar-content" id="palette-area"><div id="palette-canvas-container"><canvas id="palette-canvas" width="48" height="48"></canvas><div id="palette-selection"></div></div></div>
+                    <button class="scroll-arrow-btn" ontouchstart="event.stopPropagation()" onmousedown="event.stopPropagation()" onclick="scrollPalette(1)">▼</button>
+                    <div class="tileset-tabs" id="tileset-tabs-container"></div>
+                </div>
                 <div class="sidebar-section" id="map-section"><div class="sidebar-header" onclick="toggleMapList()">Карты <span id="map-toggle-icon">▼</span></div><div class="sidebar-content" id="map-list-container"></div><button id="add-map-btn" onclick="openCreateMapModal()">+ Карта</button></div>
             </div>
             <div id="map-container"><canvas id="editor-canvas"></canvas></div>
@@ -115,23 +124,42 @@
 
     <div id="overlay" onclick="closeTopModal()"></div>
 
-    <div id="event-modal" class="modal-base">
-        <div class="modal-header"><span id="event-modal-title">Событие</span><button class="modal-close-btn" onclick="closeEventModal()">✖</button></div>
+        <div id="event-modal" class="modal-base">
+        <div class="modal-header">
+            <!-- Имя теперь вводится прямо в шапке -->
+            <input type="text" id="event-name-input" class="modal-title-input" placeholder="Событие">
+            <button class="modal-close-btn" onclick="closeEventModal()">✖</button>
+        </div>
         <div class="modal-body">
-            <div class="modal-left">
-                <div class="ev-input-group"><input type="text" id="event-name-input" placeholder="Имя"></div>
-                <div class="event-graphic-box" id="event-graphic-preview"><span style="color:#555;font-size:10px;">Нет графики</span></div>
-                <div class="ev-input-group"><label>Графика:</label><select id="event-graphic-select" onchange="updateEventGraphic()"><option value="-1">Нет</option></select></div>
-                <div class="ev-row"><div><label>Движение:</label><select id="event-movement-select"><option value="fixed">Статичное</option><option value="random">Случайное</option></select></div><div><label>Слой:</label><select id="event-priority-select"><option value="0">Обычный</option><option value="1">Под игроком</option><option value="2">Над игроком</option></select></div></div>
-                <div class="ev-row"><div><label>Проходимость:</label><select id="event-passable-select"><option value="true">Да</option><option value="false">Нет</option></select></div></div>
-                <div class="ev-input-group"><label>Активация:</label><select id="event-trigger-select"><option value="action">По кнопке</option><option value="player_touch">Касанием игрока</option><option value="event_touch">Касанием события</option></select></div>
-                <div class="ev-input-group"><label>Условие (Глоб. Переключатель):</label><select id="event-condition-sw-select" onchange="handleNewSwitchSelect(this)"><option value="-1">Нет</option></select></div>
-                <div class="ev-input-group"><label>Условие (Лок. Переключатель):</label><select id="event-condition-lsw-select"><option value="None">Нет</option><option value="A">A ВКЛ</option><option value="B">B ВКЛ</option><option value="C">C ВКЛ</option><option value="D">D ВКЛ</option></select></div>
-                <button class="delete-event-btn" onclick="deleteCurrentEvent()">🗑️ Удалить событие</button>
+                        <div class="modal-left">
+                <!-- Обертка для превью графики и кнопки переключения персонажа -->
+                <div style="position: relative; margin-bottom: 5px;">
+                    <div class="event-graphic-box" id="event-graphic-preview"><span style="color:#555;font-size:10px;">Нет графики</span></div>
+                    <button class="cycle-char-btn" onclick="cycleEventGraphic()">🔄</button>
+                </div>
+                <!-- Скрытый селект, чтобы JS не ломался -->
+                <select id="event-graphic-select" style="display: none;" onchange="updateEventGraphic()"><option value="-1">Нет</option></select>
+
+                <div class="ev-row">
+                    <div><label>Тип движения:</label><select id="event-movement-select"><option value="fixed">Без движения</option><option value="random">Случайное</option></select></div>
+                    <div><label>Положение события:</label><select id="event-priority-select"><option value="0">На одном уровне</option><option value="1">Под игроком</option><option value="2">Над игроком</option></select></div>
+                </div>
+                <div class="ev-row">
+                    <div><label>Проходимость:</label><select id="event-passable-select"><option value="true">Да</option><option value="false">Нет</option></select></div>
+                </div>
+                
+                <!-- КОМПАКТНЫЕ УСЛОВИЯ И АКТИВАЦИЯ -->
+                <div class="ev-input-group"><label>Активация:</label><select id="event-trigger-select"><option value="action">Кнопка действия</option><option value="player_touch">Касание игрока</option><option value="event_touch">Касание события</option></select></div>
+                <div class="ev-input-group"><label>Переременн.:</label><select id="event-condition-sw-select" onchange="handleNewSwitchSelect(this)"><option value="-1">Нет</option></select></div>
+                <div class="ev-input-group"><label>Лок. Пер.:</label><select id="event-condition-lsw-select"><option value="None">Нет</option><option value="A">A ВКЛ</option><option value="B">B ВКЛ</option><option value="C">C ВКЛ</option><option value="D">D ВКЛ</option></select></div>
+                
+                <button class="delete-event-btn" onclick="deleteCurrentEvent()">Delete</button>
             </div>
             <div class="modal-right">
                 <div class="page-tabs" id="event-page-tabs"></div>
+                <button class="scroll-arrow-btn" onclick="scrollScript(-1)">▲</button>
                 <div id="script-container" style="flex:1; overflow-y:auto;"></div>
+                <button class="scroll-arrow-btn" onclick="scrollScript(1)">▼</button>
             </div>
         </div>
     </div>
@@ -250,10 +278,40 @@
         function createEmptyMap(w, h) { let d=[]; for(let y=0;y<h;y++){d[y]=[];for(let x=0;x<w;x++)d[y][x]=["0","0","0"];} return d; }
         function getCurrentMap() { return maps[currentMapIndex]; }
 
-        function renderTilesetTabs() { const c = document.getElementById('tileset-tabs-container'); c.innerHTML = ''; const letters = 'ABC'; projectTilesets.forEach((ts, i) => { const tab = document.createElement('div'); tab.className = 'tileset-tab' + (ts.id === activeTilesetId ? ' active' : ''); tab.innerText = letters[i] || ts.name; tab.onclick = () => { activeTilesetId = ts.id; isEraserActive = false; document.getElementById('eraser-btn').classList.remove('active'); selectedArea = {x:0,y:0,w:1,h:1}; renderTilesetTabs(); renderPalette(); }; c.appendChild(tab); }); }
+        function renderTilesetTabs() { const c = document.getElementById('tileset-tabs-container'); c.innerHTML = ''; const letters = 'ABC'; projectTilesets.forEach((ts, i) => { const tab = document.createElement('div'); tab.className = 'tileset-tab' + (ts.id === activeTilesetId ? ' active' : ''); tab.innerText = letters[i] || ts.name;             tab.onclick = () => { 
+                activeTilesetId = ts.id; 
+                isEraserActive = false; 
+                document.getElementById('eraser-btn').classList.remove('active'); 
+                selectedArea = {x:0,y:0,w:1,h:1}; 
+                setMode('tile'); // АВТОМАТОМ ПЕРЕКЛЮЧАЕМ В РЕЖИМ РИСОВАНИЯ
+                renderTilesetTabs(); 
+                renderPalette(); 
+            }; c.appendChild(tab); }); }
         function renderPalette() { const ts = projectTilesets.find(t => t.id === activeTilesetId); if (!ts || !ts.image) { paletteCanvas.width = 48; paletteCanvas.height = 48; paletteCtx.fillStyle = '#333'; paletteCtx.fillRect(0,0,48,48); return; } const containerWidth = document.getElementById('palette-canvas-container').clientWidth; paletteCols = Math.max(1, Math.floor(containerWidth / TILE_SIZE)); const imgW = ts.image.width / TILE_SIZE; const imgH = ts.image.height / TILE_SIZE; const numChunks = Math.ceil(imgW / paletteCols); const newW = paletteCols * TILE_SIZE; const newH = numChunks * imgH * TILE_SIZE; paletteCanvas.width = newW; paletteCanvas.height = newH; paletteCtx.clearRect(0, 0, newW, newH); for (let origY = 0; origY < imgH; origY++) { for (let origX = 0; origX < imgW; origX++) { const chunkIndex = Math.floor(origX / paletteCols); const localX = origX % paletteCols; const srcX = origX * TILE_SIZE; const srcY = origY * TILE_SIZE; const destX = localX * TILE_SIZE; const destY = (chunkIndex * imgH + origY) * TILE_SIZE; paletteCtx.drawImage(ts.image, srcX, srcY, TILE_SIZE, TILE_SIZE, destX, destY, TILE_SIZE, TILE_SIZE); } } updatePaletteSelection(); }
         function updatePaletteSelection() { const sel = document.getElementById('palette-selection'); if (isEraserActive) { sel.style.display = 'none'; return; } sel.style.display = 'block'; sel.style.left = selectedArea.x * TILE_SIZE + 'px'; sel.style.top = selectedArea.y * TILE_SIZE + 'px'; sel.style.width = selectedArea.w * TILE_SIZE + 'px'; sel.style.height = selectedArea.h * TILE_SIZE + 'px'; }
-        function startPaletteDrag(e) { const rect = paletteCanvas.getBoundingClientRect(); const clientX = e.clientX || (e.touches && e.touches[0].clientX); const clientY = e.clientY || (e.touches && e.touches[0].clientY); const x = Math.floor((clientX - rect.left) * (paletteCanvas.width / rect.width) / TILE_SIZE); const y = Math.floor((clientY - rect.top) * (paletteCanvas.height / rect.height) / TILE_SIZE); if (x >= 0 && y >= 0) { isDraggingPalette = true; paletteDragStart = { x, y }; selectedArea = { x, y, w: 1, h: 1 }; isEraserActive = false; document.getElementById('eraser-btn').classList.remove('active'); updatePaletteSelection(); } }
+                function startPaletteDrag(e) { 
+            const rect = paletteCanvas.getBoundingClientRect(); 
+            const clientX = e.clientX || (e.touches && e.touches[0].clientX); 
+            const clientY = e.clientY || (e.touches && e.touches[0].clientY); 
+            const x = Math.floor((clientX - rect.left) * (paletteCanvas.width / rect.width) / TILE_SIZE); 
+            const y = Math.floor((clientY - rect.top) * (paletteCanvas.height / rect.height) / TILE_SIZE); 
+            if (x >= 0 && y >= 0) { 
+                isDraggingPalette = true; 
+                paletteDragStart = { x, y }; 
+                selectedArea = { x, y, w: 1, h: 1 }; 
+                isEraserActive = false; 
+                document.getElementById('eraser-btn').classList.remove('active'); 
+                
+                setMode('tile'); // АВТОМАТОМ ПЕРЕКЛЮЧАЕМ В РЕЖИМ РИСОВАНИЯ ПРИ ВЫБОРЕ ТАЙЛА
+                
+                updatePaletteSelection(); 
+            } 
+            // Закрываем сайдбар на мобилке после выбора тайла
+            if (window.innerWidth <= 800) {
+                document.getElementById('sidebar').classList.remove('open');
+                document.getElementById('sidebar-toggle-btn').innerHTML = '►';
+            }
+        }
         function movePaletteDrag(e) { if (!isDraggingPalette) return; e.preventDefault(); const rect = paletteCanvas.getBoundingClientRect(); const clientX = e.clientX || (e.touches && e.touches[0].clientX); const clientY = e.clientY || (e.touches && e.touches[0].clientY); let x = Math.floor((clientX - rect.left) * (paletteCanvas.width / rect.width) / TILE_SIZE); let y = Math.floor((clientY - rect.top) * (paletteCanvas.height / rect.height) / TILE_SIZE); x = Math.max(0, Math.min(x, paletteCols - 1)); y = Math.max(0, Math.min(y, (paletteCanvas.height / TILE_SIZE) - 1)); selectedArea.x = Math.min(paletteDragStart.x, x); selectedArea.y = Math.min(paletteDragStart.y, y); selectedArea.w = Math.abs(x - paletteDragStart.x) + 1; selectedArea.h = Math.abs(y - paletteDragStart.y) + 1; updatePaletteSelection(); }
         function endPaletteDrag() { isDraggingPalette = false; }
         paletteCanvas.addEventListener('mousedown', (e) => startPaletteDrag(e)); paletteCanvas.addEventListener('mousemove', (e) => movePaletteDrag(e)); paletteCanvas.addEventListener('mouseup', () => endPaletteDrag()); paletteCanvas.addEventListener('mouseleave', () => endPaletteDrag());
@@ -426,6 +484,34 @@
         let lastMapTapTime = 0; let lastMapTapIndex = -1;
         function renderMapList() { const c=document.getElementById('map-list-container'); c.innerHTML=''; maps.forEach((m,i)=>{ const it=document.createElement('div'); it.className='map-item'+(i===currentMapIndex?' active':''); it.innerText=`🗺️ ${m.name}`; it.onclick=()=>{ const now = Date.now(); if (i === lastMapTapIndex && now - lastMapTapTime < 400) { openMapSettingsModal(i); lastMapTapTime = 0; lastMapTapIndex = -1; } else { switchMap(i); lastMapTapTime = now; lastMapTapIndex = i; } }; c.appendChild(it); }); }
         function toggleMapList() { const mapSection = document.getElementById('map-section'); const icon = document.getElementById('map-toggle-icon'); mapSection.classList.toggle('collapsed'); if (mapSection.classList.contains('collapsed')) { icon.innerText = '►'; } else { icon.innerText = '▼'; } setTimeout(() => renderPalette(), 50); }
+                // --- УПРАВЛЕНИЕ САЙДБАРОМ (ДЛЯ МОБИЛОК) ---
+                function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const btn = document.getElementById('sidebar-toggle-btn');
+            sidebar.classList.toggle('open');
+            
+            if (sidebar.classList.contains('open')) {
+                btn.innerHTML = '◄'; // Если открыли - стрелка влево (закрыть)
+            } else {
+                btn.innerHTML = '►'; // Если закрыли - стрелка вправо (открыть)
+            }
+        }
+
+        // Закрывать сайдбар при выборе тайла (опционально, но очень удобно)
+        // Вставь этот вызов в конец функции startPaletteDrag:
+        // if(window.innerWidth <= 800) document.getElementById('sidebar').classList.remove('open');
+
+        // --- КНОПКИ СКРОЛЛА ---
+        function scrollPalette(dir) {
+            const el = document.getElementById('palette-area');
+            // Скроллим на 2 тайла вверх или вниз
+            el.scrollBy({ top: dir * (TILE_SIZE * 2), behavior: 'smooth' });
+        }
+
+        function scrollScript(dir) {
+            const el = document.getElementById('script-container');
+            el.scrollBy({ top: dir * 60, behavior: 'smooth' });
+        }
         function toggleFullscreen() { if (!document.fullscreenElement) { document.documentElement.requestFullscreen().catch(err => { alert(`Ошибка полного экрана: ${err.message}`); }); } else { document.exitFullscreen(); } }
         function switchMap(i) { currentMapIndex=i; ensureLayerFormat(getCurrentMap()); const m = getCurrentMap(); for(let k in m.eventsData) ensureEventPages(m.eventsData[k]); loadCurrentMapToUI();renderEditorMap();renderMapList(); }
         function loadCurrentMapToUI() { const m=getCurrentMap();document.getElementById('map-width').value=m.width;document.getElementById('map-height').value=m.height; }
@@ -434,8 +520,30 @@
         function zoomEditor(dir) { editorZoomIndex += dir; if (editorZoomIndex < 0) editorZoomIndex = 0; if (editorZoomIndex >= editorZoomLevels.length) editorZoomIndex = editorZoomLevels.length - 1; applyEditorZoom(); }
         function applyEditorZoom() { editorZoom = editorZoomLevels[editorZoomIndex]; const m = getCurrentMap(); if (m) { editorCanvas.style.width = (m.width * TILE_SIZE * editorZoom) + 'px'; editorCanvas.style.height = (m.height * TILE_SIZE * editorZoom) + 'px'; editorCanvas.style.imageRendering = 'pixelated'; } document.getElementById('zoom-label').innerText = Math.round(editorZoom * 100) + '%'; }
 
-        function openEventModal(x,y){ const m=getCurrentMap(); const k=`${x},${y}`; currentEditEventKey=k; if(!m.eventsData[k]){ m.eventsData[k]={name:"", pages: [{ conditionSwitchId: -1, conditionLocalSwitch: "None", graphicCharId: -1, graphicCharIndex: 0, movement: "fixed", passable: false, priority: 0, trigger: "action", commands:[] }]}; renderEditorMap(); } const ev = m.eventsData[k]; ensureEventPages(ev); document.getElementById('event-modal-title').innerText=`Событие: ${x}, ${y}`; document.getElementById('event-name-input').value = ev.name || ""; currentEventPageIndex = 0; renderEventPageTabs(); loadCurrentPageToUI(); renderScriptLines(); document.getElementById('event-modal').classList.add('active'); document.getElementById('overlay').classList.add('active'); }
-        function closeEventModal(){ const m=getCurrentMap(); const ev=m.eventsData[currentEditEventKey]; if(ev) { ev.name = document.getElementById('event-name-input').value; saveCurrentPageFromUI(); } document.getElementById('event-modal').classList.remove('active'); document.getElementById('overlay').classList.remove('active'); currentEditEventKey=null; renderEditorMap(); }
+                function openEventModal(x,y){ 
+            const m=getCurrentMap(); const k=`${x},${y}`; currentEditEventKey=k; 
+            if(!m.eventsData[k]){ 
+                m.eventsData[k]={name:"", pages: [{ conditionSwitchId: -1, conditionLocalSwitch: "None", graphicCharId: -1, graphicCharIndex: 0, movement: "fixed", passable: false, priority: 0, trigger: "action", commands:[] }]}; 
+                renderEditorMap(); 
+            } 
+            const ev = m.eventsData[k]; ensureEventPages(ev); 
+            
+            // ИСПРАВЛЕНО: Работа с полем имени в шапке
+            const nameInput = document.getElementById('event-name-input');
+            nameInput.value = ev.name || "";
+            nameInput.placeholder = `Событие: ${x}, ${y}`; // Координаты как подсказка
+            
+            currentEventPageIndex = 0; renderEventPageTabs(); loadCurrentPageToUI(); renderScriptLines(); 
+            document.getElementById('event-modal').classList.add('active'); document.getElementById('overlay').classList.add('active'); 
+        }
+                function closeEventModal(){ 
+            const m=getCurrentMap(); const ev=m.eventsData[currentEditEventKey]; 
+            if(ev) { 
+                ev.name = document.getElementById('event-name-input').value; // Берет из нового поля
+                saveCurrentPageFromUI(); 
+            } 
+            document.getElementById('event-modal').classList.remove('active'); document.getElementById('overlay').classList.remove('active'); currentEditEventKey=null; renderEditorMap(); 
+        }
         function deleteCurrentEvent(){const m=getCurrentMap();if(currentEditEventKey&&confirm("Удалить событие?")){delete m.eventsData[currentEditEventKey];document.getElementById('event-modal').classList.remove('active');document.getElementById('overlay').classList.remove('active');currentEditEventKey=null;renderEditorMap();}}
         function renderEventPageTabs() { const c = document.getElementById('event-page-tabs'); c.innerHTML = ''; const ev = getCurrentMap().eventsData[currentEditEventKey]; ev.pages.forEach((p, i) => { const t = document.createElement('div'); t.className = 'page-tab' + (i === currentEventPageIndex ? ' active' : ''); const nameSpan = document.createElement('span'); nameSpan.innerText = `Стр. ${i+1}`; t.appendChild(nameSpan); if (ev.pages.length > 1) { const xBtn = document.createElement('span'); xBtn.className = 'page-tab-x'; xBtn.innerText = '✖'; xBtn.onclick = (e) => { e.stopPropagation(); if (confirm(`Удалить страницу ${i+1}?`)) { ev.pages.splice(i, 1); if (currentEventPageIndex >= ev.pages.length) currentEventPageIndex = ev.pages.length - 1; loadCurrentPageToUI(); renderEventPageTabs(); renderScriptLines(); } }; t.appendChild(xBtn); } t.onclick = (e) => { if (e.target.classList.contains('page-tab-x')) return; saveCurrentPageFromUI(); currentEventPageIndex = i; loadCurrentPageToUI(); renderEventPageTabs(); renderScriptLines(); }; c.appendChild(t); }); const addBtn = document.createElement('div'); addBtn.className = 'add-page-tab'; addBtn.innerText = '+ Стр.'; addBtn.onclick = () => { ev.pages.push({ conditionSwitchId: -1, conditionLocalSwitch: "None", graphicCharId: -1, graphicCharIndex: 0, movement: "fixed", passable: false, priority: 0, trigger: "action", commands:[] }); currentEventPageIndex = ev.pages.length - 1; loadCurrentPageToUI(); renderEventPageTabs(); renderScriptLines(); }; c.appendChild(addBtn); }
         function getCurrentPage() { if(!currentEditEventKey || !getCurrentMap().eventsData[currentEditEventKey]) return null; return getCurrentMap().eventsData[currentEditEventKey].pages[currentEventPageIndex]; }
@@ -443,6 +551,33 @@
         function saveCurrentPageFromUI() { const p = getCurrentPage(); if(!p) return; p.graphicCharId = parseInt(document.getElementById('event-graphic-select').value); p.conditionSwitchId = parseInt(document.getElementById('event-condition-sw-select').value); p.conditionLocalSwitch = document.getElementById('event-condition-lsw-select').value; p.movement = document.getElementById('event-movement-select').value; p.passable = document.getElementById('event-passable-select').value === 'true'; p.priority = parseInt(document.getElementById('event-priority-select').value); p.trigger = document.getElementById('event-trigger-select').value; }
         function populateGraphicSelect(selectedId) { const sel = document.getElementById('event-graphic-select'); sel.innerHTML = '<option value="-1">Нет</option>'; projectCharacters.forEach(c => { const opt = document.createElement('option'); opt.value = c.id; opt.innerText = c.name; if (c.id === selectedId) opt.selected = true; sel.appendChild(opt); }); }
         function updateEventGraphic() { const cId = parseInt(document.getElementById('event-graphic-select').value); const box = document.getElementById('event-graphic-preview'); box.innerHTML = ''; const p = getCurrentPage(); if(cId !== -1) { if (p.passable === true) { p.passable = false; document.getElementById('event-passable-select').value = "false"; } const char = projectCharacters.find(c => c.id === cId); if(char && char.image && char.image.width > 0) { const charsPerRow = Math.floor(char.image.width / (TILE_SIZE * 3)) || 1; const charsPerCol = Math.floor(char.image.height / (TILE_SIZE * 4)) || 1; const totalChars = charsPerRow * charsPerCol; const container = document.createElement('div'); container.style.display = 'flex'; container.style.flexWrap = 'wrap'; container.style.gap = '4px'; container.style.maxWidth = '220px'; for(let i = 0; i < totalChars; i++) { const charDiv = document.createElement('div'); charDiv.style.width = '64px'; charDiv.style.height = '64px'; charDiv.style.borderRadius = '4px'; charDiv.style.cursor = 'pointer'; charDiv.style.border = i === (p.graphicCharIndex||0) ? '3px solid #4CAF50' : '3px solid #555'; charDiv.style.backgroundColor = '#111'; charDiv.style.backgroundImage = `url(${char.imageSrc})`; charDiv.style.imageRendering = 'pixelated'; const bgW = charsPerRow * 3 * 64; const bgH = charsPerCol * 4 * 64; charDiv.style.backgroundSize = `${bgW}px ${bgH}px`; const bgX = (i % charsPerRow) * 3 * 64 + 1 * 64; const bgY = Math.floor(i / charsPerRow) * 4 * 64; charDiv.style.backgroundPosition = `-${bgX}px -${bgY}px`; charDiv.onclick = () => { p.graphicCharIndex = i; updateEventGraphic(); }; container.appendChild(charDiv); } box.appendChild(container); } } else { box.innerHTML = '<span style="color:#555;font-size:10px;">Нет графики</span>'; p.graphicCharIndex = 0; } }
+                // Функция для переключения персонажа при нажатии на кнопку 🔄
+        function cycleEventGraphic() {
+            const p = getCurrentPage();
+            if (!p) return;
+            
+            const currentId = p.graphicCharId;
+            const chars = projectCharacters;
+            
+            let nextId = -1;
+            if (currentId === -1) {
+                // Если нет графики, берем первого попавшегося
+                if (chars.length > 0) nextId = chars[0].id;
+            } else {
+                // Иначе ищем следующего в списке
+                const currentIndex = chars.findIndex(c => c.id === currentId);
+                if (currentIndex !== -1 && currentIndex < chars.length - 1) {
+                    nextId = chars[currentIndex + 1].id;
+                } else {
+                    nextId = -1; // Если конец списка, сбрасываем на "Нет"
+                }
+            }
+            
+            p.graphicCharId = nextId;
+            // Синхронизируем скрытый селект, чтобы updateEventGraphic отработал корректно
+            document.getElementById('event-graphic-select').value = nextId; 
+            updateEventGraphic();
+        }
         function handleNewSwitchSelect(selectEl) { if (selectEl.value === "-2") { const name = prompt("Имя нового переключателя:"); if (name && name.trim() !== "") { const newId = gameSwitches.length > 0 ? Math.max(...gameSwitches.map(s=>s.id)) + 1 : 1; gameSwitches.push({id: newId, name: name.trim(), state: false}); populateCmdSelects(); populateConditionSelect(newId); } else { selectEl.value = "-1"; } } }
         function populateConditionSelect(selectedId) { const sel = document.getElementById('event-condition-sw-select'); sel.innerHTML = '<option value="-1">Нет</option>'; gameSwitches.forEach(sw => { const opt = document.createElement('option'); opt.value = sw.id; opt.innerText = `[S${sw.id}] ${sw.name}`; if (sw.id === selectedId) opt.selected = true; sel.appendChild(opt); }); const newOpt = document.createElement('option'); newOpt.value = "-2"; newOpt.innerText = "[ + Новый ]"; sel.appendChild(newOpt); }
         function renderScriptLines(){ const c=document.getElementById('script-container'); c.innerHTML=''; if(!currentEditEventKey) return; const p = getCurrentPage(); if(!p) return; const cmds=p.commands; const lc=Math.max(10,cmds.length+2); let depth=0; for(let i=0;i<lc;i++){ const l=document.createElement('div'); l.className='script-line'; const cmd=cmds[i]; let currentDepth = depth; if(cmd && (cmd.type==='else' || cmd.type==='choice_branch' || cmd.type==='choice_end')) currentDepth = depth - 1; if(cmd && cmd.type==='if_end') currentDepth = depth - 1; l.style.paddingLeft=(10+currentDepth*20)+'px'; if(cmd){ const s=document.createElement('span'); if(cmd.type==='message'){s.className='cmd-message';s.innerText=`💬 "${cmd.text}"`;} else if(cmd.type==='switch'){s.className='cmd-switch';s.innerText=`🔧 Глоб. [S${cmd.switchId}] ${cmd.value?'ВКЛ':'ВЫКЛ'}`;} else if(cmd.type==='local_switch'){s.className='cmd-switch';s.innerText=`⚙️ Лок. [${cmd.switch}] ${cmd.value?'ВКЛ':'ВЫКЛ'}`;} else if(cmd.type==='variable'){s.className='cmd-variable';const v=gameVariables.find(x=>x.id===cmd.variableId);const op=cmd.operation==='set'?'=':cmd.operation==='add'?'+':'-';s.innerText=`🔢 [V${cmd.variableId}] ${v?v.name:'?'} ${op} ${cmd.operand}`;} else if(cmd.type==='teleport'){s.className='cmd-teleport';const tMap=maps.find(m=>m.mapId===cmd.mapId);s.innerText=`🚀 Телепорт: ${tMap?tMap.name:'?'} (X:${cmd.x}, Y:${cmd.y})`;} else if(cmd.type==='if_start'){s.className='cmd-if';let condTxt='';if(cmd.conditionType==='switch'){condTxt=`Глоб. [S${cmd.switchId}] ${cmd.conditionValue?'ВКЛ':'ВЫКЛ'}`} else if(cmd.conditionType==='local_switch'){condTxt=`Лок. [${cmd.switch}] ${cmd.conditionValue?'ВКЛ':'ВЫКЛ'}`} else {const v=gameVariables.find(x=>x.id===cmd.variableId);condTxt=`[V${cmd.variableId}] ${v?v.name:''} ${cmd.conditionOp} ${cmd.conditionVal}`;}s.innerText=`❓ Если ${condTxt}:`;depth++;} else if(cmd.type==='else'){s.className='cmd-else';s.innerText=`↪️ Иначе:`;} else if(cmd.type==='if_end'){s.className='cmd-if-end';s.innerText=`🛑 Конец Если`;depth--;} else if(cmd.type==='choice'){s.className='cmd-choice';s.innerText=`🔀 Выбор: ${cmd.choices.filter(c=>c).join(', ')}`; depth++;} else if(cmd.type==='choice_branch'){s.className='cmd-choice-branch';s.innerText=`↪️ Вариант ${cmd.branchIndex+1}: "${cmd.text}"`;} else if(cmd.type==='choice_end'){s.className='cmd-choice-end';s.innerText=`🛑 Конец Выбора`;depth--;} l.appendChild(s); if(cmd.type !== 'else' && cmd.type !== 'if_end' && cmd.type !== 'choice_branch' && cmd.type !== 'choice_end') l.onclick = () => editCommand(i, cmd); } else { l.classList.add('empty-line'); l.innerText='@ Пусто (нажмите)'; l.onclick=()=>{activeLineIndex=i; openAddCmdModal();}; } c.appendChild(l); } }
