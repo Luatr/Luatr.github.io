@@ -5,7 +5,19 @@ body { margin: 0; font-family: Arial, sans-serif; background-color: #2b2b2b; col
 #toolbar { background-color: #1e1e1e; padding: 8px; display: flex; gap: 8px; align-items: center; border-bottom: 2px solid #444; flex-wrap: wrap; }
 .toolbar-group { display: flex; gap: 5px; align-items: center; border-right: 1px solid #555; padding-right: 8px; }
 #toolbar input { width: 45px; padding: 4px; background: #333; color: white; border: 1px solid #555; }
-#toolbar button { padding: 5px 8px; background-color: #4CAF50; color: white; border: none; cursor: pointer; font-size: 13px; }
+
+#toolbar button {
+  padding: 5px 8px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+  padding: 7px;
+  font-weight: bold;
+  min-width: 35px;
+}
+
 .mode-btn { font-size: 18px !important; padding: 5px 8px !important; background-color: #555 !important; }
 .mode-btn.active { background-color: #2196F3 !important; }
 .play-btn { background-color: #ff9800 !important; font-weight: bold; }
@@ -337,4 +349,13 @@ body {
 #toolbar {
     flex-shrink: 0;
     flex-wrap: wrap; /* Если кнопки не влезают, они перейдут на новую строку, а не сожрут карту */
+}
+
+.eraser-btn {
+  background: #f00 !important;
+  color: white !important;
+  border: none !important;
+  cursor: pointer;
+  padding: 5px 5px !important;
+  font-size: 14px !important;
 }
