@@ -59,6 +59,85 @@
             cursor: pointer;
             user-select: none;
         }
+        
+                /* --- ТОЛСТЫЕ И УДОБНЫЕ СКРОЛЛБАРЫ ДЛЯ МОБИЛОК --- */
+        ::-webkit-scrollbar {
+            width: 14px;  /* Толстый скролл, чтобы легко попасть пальцем */
+            height: 14px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1e1e1e; /* Темный фон полосы */
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #555; /* Серая ползунок */
+            border-radius: 7px; /* Скругленные углы */
+            border: 2px solid #1e1e1e; /* Отступ, чтобы ползунок не прилипал к краю */
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #777;
+        }
+        /* Для Firefox (на случай, если кто-то зайдёт с него) */
+        * {
+            scrollbar-width: thick;
+            scrollbar-color: #555 #1e1e1e;
+        }
+
+        /* --- АДАПТАЦИЯ МОДАЛОК ПОД УЗКИЕ ЭКРАНЫ --- */
+        @media (max-width: 800px) {
+            /* 1. Модалка событий становится в один столбец */
+            .modal-body {
+                flex-direction: column !important;
+                max-height: 85dvh !important; /* Чтобы не вылезала за экран с адресной строкой */
+                overflow-y: auto !important;  /* Позволяем скроллить всю модалку целиком */
+            }
+            .modal-left, .modal-right {
+                width: 100% !important;
+                max-height: none !important;
+                min-width: 0 !important;
+                border-right: none !important;
+                border-bottom: 1px solid #333; /* Разделитель между блоками */
+            }
+            .modal-right {
+                border-bottom: none !important;
+                flex: 1 !important;
+            }
+            
+            /* 2. Сайдбар становится узким, чтобы дать место карте */
+            #sidebar {
+                min-width: 90px !important;
+                width: 90px !important;
+            }
+            .sidebar-header span {
+                font-size: 10px !important;
+            }
+            
+            /* 3. Тулбар уменьшает шрифты и отступы, чтобы влезло */
+            #toolbar {
+                gap: 2px !important;
+                padding: 2px !important;
+            }
+            .toolbar-group {
+                gap: 2px !important;
+            }
+            button {
+                padding: 4px 6px !important;
+                font-size: 12px !important;
+            }
+            input[type="number"] {
+                width: 35px !important;
+                font-size: 12px !important;
+            }
+            label {
+                font-size: 11px !important;
+            }
+        }
+        
+                /* Убеждаемся, что контейнер палитты тайлов скроллится */
+        #palette-canvas-container {
+            overflow-y: auto;
+            overflow-x: hidden;
+            flex: 1;
+        }
     </style>
 </head>
 <body>
@@ -119,7 +198,7 @@
         <div class="modal-header"><span id="event-modal-title">Событие</span><button class="modal-close-btn" onclick="closeEventModal()">✖</button></div>
         <div class="modal-body">
             <div class="modal-left">
-                <div class="ev-input-group"><label>Имя:</label><input type="text" id="event-name-input" placeholder="Имя"></div>
+                <div class="ev-input-group"><input type="text" id="event-name-input" placeholder="Имя"></div>
                 <div class="event-graphic-box" id="event-graphic-preview"><span style="color:#555;font-size:10px;">Нет графики</span></div>
                 <div class="ev-input-group"><label>Графика:</label><select id="event-graphic-select" onchange="updateEventGraphic()"><option value="-1">Нет</option></select></div>
                 <div class="ev-row"><div><label>Движение:</label><select id="event-movement-select"><option value="fixed">Статичное</option><option value="random">Случайное</option></select></div><div><label>Слой:</label><select id="event-priority-select"><option value="0">Обычный</option><option value="1">Под игроком</option><option value="2">Над игроком</option></select></div></div>
@@ -479,7 +558,7 @@
         function openDatabase() { currentDbTab = 'player'; renderDbContent(); document.getElementById('database-modal').classList.add('active'); document.getElementById('overlay').classList.add('active'); document.querySelectorAll('.db-tab').forEach((t,i)=>t.classList.toggle('active', i===0)); }
         function closeDatabase() { document.getElementById('database-modal').classList.remove('active'); document.getElementById('overlay').classList.remove('active'); renderTilesetTabs(); renderPalette(); renderEditorMap(); }
         function switchDbTab(t) { currentDbTab=t; document.querySelectorAll('.db-tab').forEach(e=>e.classList.remove('active')); event.target.classList.add('active'); renderDbContent(); }
-        function renderDbContent() { const c = document.getElementById('db-content'); if (currentDbTab === 'player') { let charOptions = '<option value="-1">Нет</option>'; projectCharacters.forEach(ch => { charOptions += `<option value="${ch.id}" ${projectPlayer.graphicCharId === ch.id ? 'selected' : ''}>${ch.name}</option>`; }); c.innerHTML = `<div class="db-player-section"><div class="db-player-form"><div class="ev-input-group"><label>Имя:</label><input type="text" id="db-player-name" value="${projectPlayer.name}" onchange="projectPlayer.name=this.value"></div><div class="ev-input-group"><label>Графика:</label><select id="db-player-graphic" onchange="updatePlayerGraphicDb()">${charOptions}</select></div><div id="db-player-graphic-preview"></div></div><div class="db-player-avatar-box"><label>Аватар:</label><img src="${projectPlayer.faceSrc || ''}" class="db-avatar-preview" style="display: ${projectPlayer.faceSrc ? 'block' : 'none'};"><button class="db-btn-sm" onclick="document.getElementById('import-face-input').click()">📂 Загрузить</button></div></div>`; updatePlayerGraphicDb(); } else if (currentDbTab === 'tilesets') { let html = ''; projectTilesets.forEach(ts => { html += `<div class="db-tileset-card"><div class="db-tileset-header"><strong>${ts.name}</strong> ${ts.isDefault ? '<span class="default-badge">RTP</span>' : ''} <div>${!ts.isDefault ? `<button class="db-btn-sm" onclick="document.getElementById('import-tileset-input').dataset.tsId='${ts.id}'; document.getElementById('import-tileset-input').click();">📂 Загрузить</button>` : ''}</div></div>`; if (ts.imageSrc && ts.image) { const imgW = ts.image.width / TILE_SIZE; const imgH = ts.image.height / TILE_SIZE; html += `<div class="db-tile-img-container"><img src="${ts.imageSrc}"><div class="db-tile-grid-overlay" style="grid-template-columns: repeat(${imgW}, 1fr); grid-template-rows: repeat(${imgH}, 1fr);">`; for (let i = 1; i <= imgW * imgH; i++) { const pass = ts.passability[i] || 0; const icon = pass === 0 ? '○' : pass === 1 ? '✖' : '★'; const iconColor = pass === 0 ? '#4CAF50' : pass === 1 ? '#f44336' : '#FFEB3B'; html += `<div class="db-tile-cell" onclick="cycleTilePass(${ts.id}, ${i})"><span id="pass-icon-${ts.id}-${i}" class="pass-icon" style="color:${iconColor}">${icon}</span></div>`; } html += `</div></div>`; } else { html += `<div style="color:#888;font-size:12px; padding: 10px;">Нет изображения.</div>`; } html += `</div>`; }); html += `<button style="margin-top:10px;padding:8px;background:#4CAF50;color:white;border:none;cursor:pointer;" onclick="addNewTileset()">+ Добавить</button>`; if (isAdminMode) { html += `<button style="margin-top:10px;padding:10px;background:#9C27B0;color:white;border:none;cursor:pointer;width:100%;font-size:14px;font-weight:bold;" onclick="savePassabilityAsDefault()">🛠️ Сохранить проходимости по умолчанию (Admin)</button>`; } c.innerHTML = html; } else if (currentDbTab === 'characters') { let html = ''; projectCharacters.forEach(ch => { html += `<div class="db-char-card"><div class="db-char-header"><strong>${ch.name}</strong> ${ch.isDefault ? '<span class="default-badge">RTP</span>' : ''} <div>${!ch.isDefault ? `<button class="db-btn-sm" onclick="document.getElementById('import-char-input').dataset.charId='${ch.id}'; document.getElementById('import-char-input').click();">📂 Загрузить</button>` : ''}</div></div>`; if(ch.image) { html += `<img src="${ch.imageSrc}" class="db-char-preview">`; } html += `</div>`; }); html += `<button style="margin-top:10px;padding:8px;background:#4CAF50;color:white;border:none;cursor:pointer;" onclick="addNewCharacter()">+ Добавить</button>`; c.innerHTML = html; } else if (currentDbTab === 'switches') { let html = ''; gameSwitches.forEach(sw => { html += `<div class="db-switch-item"><span style="width:30px;color:#aaa;">S${sw.id}:</span><input type="text" value="${sw.name}" onchange="renameSwitch(${sw.id}, this.value)"></div>`; }); html += `<button style="margin-top:15px;padding:8px;background:#4CAF50;color:white;border:none;cursor:pointer;" onclick="addNewSwitch()">+ Добавить</button>`; c.innerHTML = html; } else if (currentDbTab === 'variables') { let html = ''; gameVariables.forEach(v => { html += `<div class="db-var-item"><span style="width:30px;color:#aaa;">V${v.id}:</span><input type="text" value="${v.name}" onchange="renameVariable(${v.id}, this.value)"></div>`; }); html += `<button style="margin-top:15px;padding:8px;background:#4CAF50;color:white;border:none;cursor:pointer;" onclick="addNewVariable()">+ Добавить</button>`; c.innerHTML = html; } }
+        function renderDbContent() { const c = document.getElementById('db-content'); if (currentDbTab === 'player') { let charOptions = '<option value="-1">Нет</option>'; projectCharacters.forEach(ch => { charOptions += `<option value="${ch.id}" ${projectPlayer.graphicCharId === ch.id ? 'selected' : ''}>${ch.name}</option>`; }); c.innerHTML = `<div class="db-player-section"><div class="db-player-form"><div class="ev-input-group"><input type="text" id="db-player-name" value="${projectPlayer.name}" onchange="projectPlayer.name=this.value"></div><div class="ev-input-group"><label>Графика:</label><select id="db-player-graphic" onchange="updatePlayerGraphicDb()">${charOptions}</select></div><div id="db-player-graphic-preview"></div></div><div class="db-player-avatar-box"><label>Аватар:</label><img src="${projectPlayer.faceSrc || ''}" class="db-avatar-preview" style="display: ${projectPlayer.faceSrc ? 'block' : 'none'};"><button class="db-btn-sm" onclick="document.getElementById('import-face-input').click()">📂 Загрузить</button></div></div>`; updatePlayerGraphicDb(); } else if (currentDbTab === 'tilesets') { let html = ''; projectTilesets.forEach(ts => { html += `<div class="db-tileset-card"><div class="db-tileset-header"><strong>${ts.name}</strong> ${ts.isDefault ? '<span class="default-badge">RTP</span>' : ''} <div>${!ts.isDefault ? `<button class="db-btn-sm" onclick="document.getElementById('import-tileset-input').dataset.tsId='${ts.id}'; document.getElementById('import-tileset-input').click();">📂 Загрузить</button>` : ''}</div></div>`; if (ts.imageSrc && ts.image) { const imgW = ts.image.width / TILE_SIZE; const imgH = ts.image.height / TILE_SIZE; html += `<div class="db-tile-img-container"><img src="${ts.imageSrc}"><div class="db-tile-grid-overlay" style="grid-template-columns: repeat(${imgW}, 1fr); grid-template-rows: repeat(${imgH}, 1fr);">`; for (let i = 1; i <= imgW * imgH; i++) { const pass = ts.passability[i] || 0; const icon = pass === 0 ? '○' : pass === 1 ? '✖' : '★'; const iconColor = pass === 0 ? '#4CAF50' : pass === 1 ? '#f44336' : '#FFEB3B'; html += `<div class="db-tile-cell" onclick="cycleTilePass(${ts.id}, ${i})"><span id="pass-icon-${ts.id}-${i}" class="pass-icon" style="color:${iconColor}">${icon}</span></div>`; } html += `</div></div>`; } else { html += `<div style="color:#888;font-size:12px; padding: 10px;">Нет изображения.</div>`; } html += `</div>`; }); html += `<button style="margin-top:10px;padding:8px;background:#4CAF50;color:white;border:none;cursor:pointer;" onclick="addNewTileset()">+ Добавить</button>`; if (isAdminMode) { html += `<button style="margin-top:10px;padding:10px;background:#9C27B0;color:white;border:none;cursor:pointer;width:100%;font-size:14px;font-weight:bold;" onclick="savePassabilityAsDefault()">🛠️ Сохранить проходимости по умолчанию (Admin)</button>`; } c.innerHTML = html; } else if (currentDbTab === 'characters') { let html = ''; projectCharacters.forEach(ch => { html += `<div class="db-char-card"><div class="db-char-header"><strong>${ch.name}</strong> ${ch.isDefault ? '<span class="default-badge">RTP</span>' : ''} <div>${!ch.isDefault ? `<button class="db-btn-sm" onclick="document.getElementById('import-char-input').dataset.charId='${ch.id}'; document.getElementById('import-char-input').click();">📂 Загрузить</button>` : ''}</div></div>`; if(ch.image) { html += `<img src="${ch.imageSrc}" class="db-char-preview">`; } html += `</div>`; }); html += `<button style="margin-top:10px;padding:8px;background:#4CAF50;color:white;border:none;cursor:pointer;" onclick="addNewCharacter()">+ Добавить</button>`; c.innerHTML = html; } else if (currentDbTab === 'switches') { let html = ''; gameSwitches.forEach(sw => { html += `<div class="db-switch-item"><span style="width:30px;color:#aaa;">S${sw.id}:</span><input type="text" value="${sw.name}" onchange="renameSwitch(${sw.id}, this.value)"></div>`; }); html += `<button style="margin-top:15px;padding:8px;background:#4CAF50;color:white;border:none;cursor:pointer;" onclick="addNewSwitch()">+ Добавить</button>`; c.innerHTML = html; } else if (currentDbTab === 'variables') { let html = ''; gameVariables.forEach(v => { html += `<div class="db-var-item"><span style="width:30px;color:#aaa;">V${v.id}:</span><input type="text" value="${v.name}" onchange="renameVariable(${v.id}, this.value)"></div>`; }); html += `<button style="margin-top:15px;padding:8px;background:#4CAF50;color:white;border:none;cursor:pointer;" onclick="addNewVariable()">+ Добавить</button>`; c.innerHTML = html; } }
         function updatePlayerGraphicDb() { const cId = parseInt(document.getElementById('db-player-graphic').value); projectPlayer.graphicCharId = cId; const box = document.getElementById('db-player-graphic-preview'); box.innerHTML = ''; if(cId !== -1) { const char = projectCharacters.find(c => c.id === cId); if(char && char.image && char.image.width > 0) { const container = document.createElement('div'); container.style.display = 'flex'; container.style.flexWrap = 'wrap'; container.style.gap = '4px'; container.style.maxWidth = '320px'; const charsPerRow = Math.floor(char.image.width / (TILE_SIZE * 3)) || 1; const charsPerCol = Math.floor(char.image.height / (TILE_SIZE * 4)) || 1; const totalChars = charsPerRow * charsPerCol; for(let i = 0; i < totalChars; i++) { const charDiv = document.createElement('div'); charDiv.style.width = '64px'; charDiv.style.height = '64px'; charDiv.style.borderRadius = '4px'; charDiv.style.cursor = 'pointer'; charDiv.style.border = i === projectPlayer.graphicCharIndex ? '3px solid #4CAF50' : '3px solid #555'; charDiv.style.backgroundColor = '#111'; charDiv.style.backgroundImage = `url(${char.imageSrc})`; charDiv.style.imageRendering = 'pixelated'; const bgW = charsPerRow * 3 * 64; const bgH = charsPerCol * 4 * 64; charDiv.style.backgroundSize = `${bgW}px ${bgH}px`; const bgX = (i % charsPerRow) * 3 * 64 + 1 * 64; const bgY = Math.floor(i / charsPerRow) * 4 * 64; charDiv.style.backgroundPosition = `-${bgX}px -${bgY}px`; charDiv.onclick = () => { projectPlayer.graphicCharIndex = i; updatePlayerGraphicDb(); }; container.appendChild(charDiv); } box.appendChild(container); } } }
         function handleFaceImport(event) { const file = event.target.files[0]; if (!file) return; const reader = new FileReader(); reader.onload = function(e) { projectPlayer.faceSrc = e.target.result; const img = new Image(); img.onload = () => { projectPlayer.faceImg = img; renderDbContent(); }; img.src = projectPlayer.faceSrc; }; reader.readAsDataURL(file); event.target.value = ""; }
         function cycleTilePass(tsId, tIdx) { const ts = projectTilesets.find(t => t.id === tsId); if(ts) { let val = ts.passability[tIdx] || 0; val = (val + 1) % 3; ts.passability[tIdx] = val; const span = document.getElementById(`pass-icon-${tsId}-${tIdx}`); if(span) { const icons = ['○', '✖', '★']; const colors = ['#4CAF50', '#f44336', '#FFEB3B']; span.innerText = icons[val]; span.style.color = colors[val]; } renderEditorMap(); } }
