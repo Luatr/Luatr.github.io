@@ -314,14 +314,13 @@
         // --- Управление МЫШЬЮ (для ПК) ---
         editorCanvas.addEventListener('mousedown', (e) => { 
             if (currentMode === 'move') {
-                // Начали тянуть картой мышью
                 isPanning = true;
                 panStartX = e.clientX;
                 panStartY = e.clientY;
                 const container = document.getElementById('map-container');
                 panStartScrollLeft = container.scrollLeft;
                 panStartScrollTop = container.scrollTop;
-                editorCanvas.style.cursor = 'grabbing'; // Меняем курсор на "сжатую руку"
+                editorCanvas.style.cursor = 'grabbing';
             } else {
                 handlePointerDown(e); 
             }
@@ -329,7 +328,6 @@
         
         editorCanvas.addEventListener('mousemove', (e) => { 
             if (isPanning) {
-                // Двигаем карту мышью
                 const dx = e.clientX - panStartX;
                 const dy = e.clientY - panStartY;
                 const container = document.getElementById('map-container');
@@ -362,7 +360,7 @@
                 // Начали касаться двумя пальцами - это ЗУМ
                 e.preventDefault();
                 isPinching = true;
-                isPanning = false; // Отменяем перетаскивание, если был начато
+                isPanning = false; 
                 isDrawing = false; 
                 isDraggingEvent = false;
                 lastPinchDist = getTouchDistance(e.touches[0], e.touches[1]);
@@ -392,14 +390,13 @@
                 const currentDist = getTouchDistance(e.touches[0], e.touches[1]);
                 const diff = currentDist - lastPinchDist;
 
-                // Порог чувствительности, чтобы зум не дёргался
                 if (Math.abs(diff) > 15) {
                     if (diff > 0) zoomEditor(1);
                     else zoomEditor(-1);
-                    lastPinchDist = currentDist; // Сбрасываем базу для следующего шага
+                    lastPinchDist = currentDist; 
                 }
-            } else if (isPching && e.touches.length === 1) {
-                // Двигаем карту пальцем
+            } else if (isPanning && e.touches.length === 1) {
+                // ИСПРАВЛЕНО: Двигаем карту пальцем
                 e.preventDefault();
                 const dx = e.touches[0].clientX - panStartX;
                 const dy = e.touches[0].clientY - panStartY;
