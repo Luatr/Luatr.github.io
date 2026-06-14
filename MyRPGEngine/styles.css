@@ -501,8 +501,9 @@ body {
     flex-direction: column;
 }
 
-/* 8. АДАПТАЦИЯ ПОД МОБИЛКИ (УБРАЛИ orientation: portrait, чтобы работало и горизонтально) */
-@media (max-width: 900px) {
+/* 8. АДАПТАЦИЯ ПОД МОБИЛКИ И ПЛАНШЕТЫ (УМНОЕ ОПРЕДЕЛЕНИЕ) */
+/* Срабатывает, если ширина < 1080px ИЛИ если устройство управляется пальцем (палец = мобильник) */
+@media (max-width: 1080px), (pointer: coarse) {
     /* Шторка сайдбара */
     #sidebar {
         position: absolute; left: -250px; top: 0; bottom: 0; z-index: 50;
