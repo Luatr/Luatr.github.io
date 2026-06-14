@@ -63,18 +63,44 @@ body { margin: 0; font-family: Arial, sans-serif; background-color: #2b2b2b; col
 .action-btn { width: 70px; height: 70px; border-radius: 50%; background-color: rgba(255,255,255,0.3); border: 2px solid rgba(255,255,255,0.5); color: white; font-size: 24px; display: flex; justify-content: center; align-items: center; user-select: none; }
 
 /* --- МОДАЛЬНЫЕ ОКНА --- */
-.modal-base { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #2b2b2b; border: 2px solid #888; box-shadow: 0 0 20px rgba(0,0,0,0.8); flex-direction: column; z-index: 100; max-height: 90vh; }
+.modal-base { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #2b2b2b; border: 2px solid #888; box-shadow: 0 0 20px rgba(0,0,0,0.8); flex-direction: column; z-index: 100; max-height: 99vh; }
 .modal-base.active { display: flex; }
 .modal-header { background-color: #444; padding: 10px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #666; flex-shrink: 0; }
 .modal-close-btn { background: red; color: white; border: none; cursor: pointer; padding: 2px 8px; }
 .modal-body { display: flex; flex: 1; overflow: hidden; min-height: 0; }
 
-#event-modal { width: 750px; height: 550px; }
+#event-modal { width: 750px; }
 .modal-left { width: 260px; background-color: #333; padding: 10px; border-right: 1px solid #666; display: flex; flex-direction: column; gap: 6px; overflow-y: auto;}
-.ev-input-group { display: flex; flex-direction: column; gap: 2px; font-size: 12px; }
+.ev-input-group { 
+    display: flex; 
+    flex-direction: row; /* Лейбл и инпут теперь в одну строку */
+    align-items: center; 
+    gap: 5px; 
+    font-size: 12px; 
+    margin-bottom: 2px; /* Убрали лишние отступы */
+} 
+.ev-input-group label { 
+    flex-shrink: 0; /* Чтобы лейбл не сжимался */
+    width: 85px; /* Фиксированная ширина для выравнивания */
+    white-space: nowrap; /* Чтобы текст не переносился */
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.ev-input-group input, .ev-input-group select { 
+    flex: 1; /* Инпут занимает всё оставшееся место */
+    padding: 3px; /* Чуть уменьшили паддинг для мобильных */
+    background: #111; 
+    color: white; 
+    border: 1px solid #555; 
+    box-sizing: border-box; 
+    font-size: 11px;
+    min-width: 0; /* Важно для flex, чтобы не вылезало */
+}
 .ev-input-group input, .ev-input-group select { width: 100%; padding: 4px; background: #111; color: white; border: 1px solid #555; box-sizing: border-box; }
-.ev-row { display: flex; gap: 5px; }
+.ev-row { display: flex; gap: 5px; margin-bottom: 2px; }
 .ev-row > div { flex: 1; display: flex; flex-direction: column; gap: 2px; font-size: 12px; }
+.ev-row > div label { font-size: 11px; color: #aaa; }
+.ev-row > div select { padding: 3px; background: #111; color: white; border: 1px solid #555; font-size: 11px; width: 100%; box-sizing: border-box; }
 
 .event-graphic-box { width: 100%; min-height: 100px; max-height: 150px; background-color: #111; border: 1px solid #555; margin: 0 auto; display:flex; justify-content:center; align-items:flex-start; overflow:auto; position:relative; }
 .char-sheet-container { position: relative; display: inline-block; cursor: crosshair; }
@@ -83,7 +109,17 @@ body { margin: 0; font-family: Arial, sans-serif; background-color: #2b2b2b; col
 .char-cell { border: 2px solid rgba(255,255,255,0.2); pointer-events: auto; cursor: crosshair; box-sizing: border-box; }
 .char-cell.active { border: 3px solid yellow; background: rgba(255,255,0,0.3); }
 
-.delete-event-btn { margin-top: auto; background-color: #d9534f !important; font-size: 16px; padding: 8px !important; width: 100%; border: none; cursor: pointer; color: white;}
+.delete-event-btn {
+  margin-top: auto;
+  background-color: #d9534f !important;
+  font-size: 16px;
+  padding: 6px !important;
+  width: 100%;
+  border: none;
+  cursor: pointer;
+  color: white;
+  font-size: 14px;
+}
 
 .modal-right { flex: 1; background-color: #f0f0f0; padding: 0; overflow-y: auto; position: relative; display: flex; flex-direction: column; }
 .script-line { min-height: 30px; border-bottom: 1px solid #ccc; display: flex; align-items: center; padding: 0 5px; color: #333; font-family: monospace; font-size: 12px; box-sizing: border-box; transition: padding-left 0.2s; cursor: pointer; }
@@ -163,8 +199,8 @@ div#event-modal {
 }
 
 .modal-left {
-    overflow: unset;
-    width: 215px;
+  overflow: unset;
+  width: 240px;
 }
 
 div#toolbar {
@@ -232,12 +268,9 @@ div#toolbar {
 }
 
 .modal-header {
-  padding: 5px;
+  padding: 0px;
 }
 
-.ev-input-group label {
-  display: none;
-}
 
 .toolbar-group.map-size-group {
   display: none;
@@ -320,42 +353,196 @@ div#toolbar {
 
 /*----- КАЛ -----*/
 
-/* 1. Запрещаем телу скроллиться и используем динамическую высоту */
+/* ====== АДАПТИВНОСТЬ И МОДАЛКИ ====== */
+
+/* 1. Динамическая высота */
 body {
     margin: 0;
     padding: 0;
     overflow: hidden;
-    height: 100vh; /* Запасной вариант для старых браузеров */
-    height: 100dvh; /* Динамическая высота, учитывает адресную строку Chrome */
+    height: 100vh;
+    height: 100dvh;
 }
-
-/* 2. Главный вид редактора должен занимать ровно эту динамическую высоту */
 #editor-view {
     display: flex;
     flex-direction: column;
     height: 100vh;
     height: 100dvh; 
 }
-
-/* 3. Рабочая область (сайдбар + карта) растягивается на оставшееся место */
 #workspace {
-    flex: 1; /* Занимает всё свободное место */
+    flex: 1; 
     display: flex;
-    overflow: hidden; /* Чтобы ничего не вылазило */
-    min-height: 0; /* Важно для вложенных Flexbox элементов с Canvas */
+    overflow: hidden; 
+    min-height: 0; 
 }
-
-/* 4. Чтобы тулбар не сжимался в кашу на узких экранах, разрешаем ему переносить строки */
 #toolbar {
     flex-shrink: 0;
-    flex-wrap: wrap; /* Если кнопки не влезают, они перейдут на новую строку, а не сожрут карту */
+    flex-wrap: wrap; 
 }
 
-.eraser-btn {
-  background: #f00 !important;
-  color: white !important;
-  border: none !important;
-  cursor: pointer;
-  padding: 5px 5px !important;
-  font-size: 14px !important;
+/* 2. Сайдбар (сворачивание и шторка) */
+#sidebar {
+    display: flex;
+    flex-direction: column;
+}
+.sidebar-section {
+    flex: 1 1 0%; 
+    display: flex;
+    flex-direction: column;
+    min-height: 0; 
+}
+.sidebar-section.collapsed {
+    flex: 0 0 auto; 
+}
+.sidebar-section.collapsed > .sidebar-content,
+.sidebar-section.collapsed > button {
+    display: none; 
+}
+.sidebar-header {
+    cursor: pointer;
+    user-select: none;
+}
+#map-section {
+  height: auto;
+}
+#map-container {
+    overflow: auto;
+}
+
+/* 3. Убираем тонкие скроллбары */
+.sidebar-content, #script-container {
+    scrollbar-width: none; 
+    -ms-overflow-style: none; 
+}
+.sidebar-content::-webkit-scrollbar, #script-container::-webkit-scrollbar {
+    display: none; 
+}
+
+/* 4. Кнопка-треугольник и стрелки скролла */
+#sidebar-toggle-btn {
+    display: none; 
+    position: absolute;
+    right: -35px; 
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 60;
+    background: #2a2a2a;
+    color: #aaa;
+    border: 1px solid #444;
+    border-left: none;
+    border-radius: 0 8px 8px 0;
+    padding: 20px 8px;
+    font-size: 20px;
+    cursor: pointer;
+    box-shadow: 3px 0 10px rgba(0,0,0,0.4);
+    transition: background 0.2s;
+}
+#sidebar-toggle-btn:active { background: #555; }
+
+.scroll-arrow-btn {
+    display: flex; align-items: center; justify-content: center; width: 100%;
+    background: #333; color: #aaa; border: none; padding: 8px 0; font-size: 18px; cursor: pointer; flex-shrink: 0;
+}
+.scroll-arrow-btn:active { background: #555; }
+
+/* 5. Поле имени в шапке события */
+.modal-title-input {
+    background: transparent; border: none; border-bottom: 1px solid transparent;
+    color: #fff; font-size: 16px; font-weight: bold; padding: 2px 5px; outline: none; flex: 1; min-width: 0;
+}
+.modal-title-input:focus { border-bottom-color: #4CAF50; background: rgba(255,255,255,0.05); }
+.modal-title-input::placeholder { color: #aaa; font-weight: normal; }
+
+/* 6. Кнопка переключения графики */
+.cycle-char-btn {
+    position: absolute; top: 4px; right: 4px; background: rgba(0,0,0,0.6); color: #aaa;
+    border: 1px solid #555; border-radius: 4px; padding: 2px 6px; cursor: pointer; z-index: 10; font-size: 14px;
+}
+.cycle-char-btn:active { background: #555; }
+
+/* 7. ФИКС МОДАЛОК (Горизонтальный вид по умолчанию) */
+.modal-base {
+    max-height: 95vh; 
+    flex-direction: column;
+    overflow: hidden;
+}
+.modal-base.active { display: flex !important; }
+
+.modal-body {
+    flex: 1;
+    min-height: 0; 
+    display: flex;
+    flex-direction: row; /* Бок о бок (для ПК и горизонтальных мобилок) */
+}
+
+.modal-left, .modal-right {
+    overflow-y: auto; /* ВАЖНО: Скролл внутри панелей */
+    min-height: 0;
+}
+
+.modal-left {
+    width: 260px; /* Фиксированная ширина левой панели */
+    flex-shrink: 0;
+    background-color: #333;
+    padding: 0px;
+    border-right: 1px solid #666;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.modal-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 8. АДАПТАЦИЯ ПОД ВЕРТИКАЛЬНЫЙ ЭКРАН (СТРОГО ПОРТРЕТ) */
+@media (max-width: 800px) and (orientation: portrait) {
+    /* Шторка сайдбара */
+    #sidebar {
+        position: absolute; left: -250px; top: 0; bottom: 0; z-index: 50;
+        width: 250px; background: #1e1e1e; transition: left 0.3s ease; box-shadow: 5px 0 15px rgba(0,0,0,0.5);
+    }
+    #sidebar.open { left: 0; }
+    #sidebar-toggle-btn { display: block; }
+
+    /* Модалки друг под другом */
+    .modal-body {
+        flex-direction: column !important; 
+    }
+    .modal-left, .modal-right {
+        width: 100% !important;
+        max-height: 50vh; 
+        border-right: none !important;
+        border-bottom: 1px solid #444;
+    }
+}
+
+#event-graphic-preview {
+  min-height: 70px;
+  height: 70px;
+}
+
+/*----- КНОПКА УДАЛИТЬ СОБЫТИЕ -----*/
+
+.delete-event-btn {
+  position: absolute;
+  top: 2px;
+  width: 59px;
+  height: 20px;
+  overflow: hidden;
+  right: 40px;
+  background: #f44336 !important;
+  border-radius: 3px;
+  line-height: 0;
+  font-size: 13px;
+}
+
+.modal-left > div {
+  width: calc(100% - 8px);
+}
+
+.modal-left {
+  padding-left: 4px;
 }
