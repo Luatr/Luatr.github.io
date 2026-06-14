@@ -12,23 +12,48 @@
             image-rendering: crisp-edges;
         }
         
+        /* --- СТИЛИ ДЛЯ МОБИЛЬНОЙ ВЁРСТКИ --- */
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            height: 100vh;
+            height: 100dvh; /* Динамическая высота, учитывает адресную строку Chrome */
+        }
+        #editor-view {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            height: 100dvh;
+        }
+        #workspace {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+            min-height: 0;
+        }
+        #toolbar {
+            flex-shrink: 0;
+            flex-wrap: wrap; /* Кнопки переносятся на новую строку, если не влезают */
+        }
+
         /* --- СТИЛИ ДЛЯ СВОРАЧИВАНИЯ БЛОКА КАРТ --- */
         #sidebar {
             display: flex;
             flex-direction: column;
         }
         .sidebar-section {
-            flex: 1 1 0%; /* По умолчанию делят место поровну */
+            flex: 1 1 0%; 
             display: flex;
             flex-direction: column;
             min-height: 0;
         }
         .sidebar-section.collapsed {
-            flex: 0 0 auto; /* Свернутая секция занимает только размер заголовка */
+            flex: 0 0 auto; 
         }
         .sidebar-section.collapsed > .sidebar-content,
         .sidebar-section.collapsed > button {
-            display: none; /* Скрываем содержимое */
+            display: none; 
         }
         .sidebar-header {
             cursor: pointer;
@@ -43,6 +68,7 @@
     <div id="editor-view">
         <div id="toolbar">
             <div class="toolbar-group">
+                <button class="mode-btn" id="mode-move" onclick="setMode('move')">✋</button>
                 <button class="mode-btn active" id="mode-tile" onclick="setMode('tile')">🖌️</button>
                 <button class="mode-btn" id="mode-fill" onclick="setMode('fill')">🪣</button>
                 <button class="mode-btn" id="mode-event" onclick="setMode('event')">📎</button>
@@ -56,9 +82,11 @@
             <div class="toolbar-group map-size-group"><label>Ш:</label> <input type="number" id="map-width" value="17" min="1"><label>В:</label> <input type="number" id="map-height" value="13" min="1"><button onclick="applyMapSize()">Размер</button></div>
             <div class="toolbar-group"><button class="save-btn" onclick="saveProject()">Сохранить</button><button class="load-btn" onclick="document.getElementById('load-file-input').click()">Загрузить</button><input type="file" id="load-file-input" accept=".rpgm" onchange="loadProject(event)"></div>
             <div class="toolbar-group"><button class="db-btn" onclick="openDatabase()">База</button></div>
-            <button class="play-btn" onclick="startGame()">▶ Играть</button>
-            <button class="db-btn" onclick="toggleFullscreen()">⛶</button> <!-- ВОТ ОНА -->
-            <div class="toolbar-group" style="border: none;">
+            <div class="toolbar-group">
+                <button class="play-btn" onclick="startGame()">▶ Играть</button>
+                <button class="db-btn" onclick="toggleFullscreen()">⛶</button>
+            </div>
+            <div class="toolbar-group" style="margin-left: auto; border: none;">
                 <label style="font-size:11px; color:#888; display:flex; align-items:center; gap:4px; cursor:pointer;">
                     <input type="checkbox" id="admin-toggle" onchange="toggleAdminMode()"> 🛠️Admin
                 </label>
@@ -215,11 +243,8 @@
             maps.push({mapId: 'map_' + Date.now(), name: "MAP001", width: 17, height: 13, mapData: defaultMapData, eventsData: {}, playerStartPos: {x: 8, y: 8} }); 
             currentMapIndex = 0; 
             switchMap(0); 
-            
-            // ИСПРАВЛЕНО: Рисуем вкладки и тайлы при первом запуске
             renderTilesetTabs(); 
             renderPalette();     
-            
             setupTouchControls(); 
         }
         function createEmptyMap(w, h) { let d=[]; for(let y=0;y<h;y++){d[y]=[];for(let x=0;x<w;x++)d[y][x]=["0","0","0"];} return d; }
@@ -266,29 +291,73 @@
         function handlePointerDown(e) { if (currentMode === 'tile' || currentMode === 'fill') { isDrawing = true; handleMapInteraction(e); } else if (currentMode === 'event') { const {x, y, valid} = getGridCoordsFromEvent(e); if (!valid) return; const key = `${x},${y}`; if (Date.now() - lastClickTime < 300 && lastClickKey === key) { openEventModal(x, y); lastClickTime = 0; return; } lastClickTime = Date.now(); lastClickKey = key; const m = getCurrentMap(); if (m.eventsData[key]) { isDraggingEvent = true; draggedEventKey = key; } } else if (currentMode === 'player') { handleMapInteraction(e); } }
         function handlePointerMove(e) { if (currentMode === 'tile' && isDrawing) { handleMapInteraction(e); } else if (currentMode === 'event' && isDraggingEvent && draggedEventKey) { const {x, y, valid} = getGridCoordsFromEvent(e); if (!valid) return; const newKey = `${x},${y}`; const m = getCurrentMap(); if (draggedEventKey !== newKey && !m.eventsData[newKey]) { m.eventsData[newKey] = m.eventsData[draggedEventKey]; delete m.eventsData[draggedEventKey]; draggedEventKey = newKey; renderEditorMap(); } } }
         function handlePointerUp(e) { isDrawing = false; isDraggingEvent = false; draggedEventKey = null; }
-        editorCanvas.addEventListener('mousedown', handlePointerDown); editorCanvas.addEventListener('mousemove', handlePointerMove); editorCanvas.addEventListener('mouseup', handlePointerUp); editorCanvas.addEventListener('mouseleave', handlePointerUp);
-        editorCanvas.addEventListener('touchstart', (e) => { e.preventDefault(); handlePointerDown(e); }, {passive: false}); editorCanvas.addEventListener('touchmove', (e) => { e.preventDefault(); handlePointerMove(e); }, {passive: false}); editorCanvas.addEventListener('touchend', (e) => { handlePointerUp(e); });
-        document.getElementById('map-container').addEventListener('wheel', (e) => { e.preventDefault(); if (e.deltaY < 0) zoomEditor(1); else zoomEditor(-1); }, {passive: false});
+
+        // ====================================================================
+        // ==================== ОБРАБОТКА КАСАНИЙ И КЛИКОВ ПО КАРТЕ ====================
+        // ====================================================================
+        let isPinching = false;
+        let lastPinchDist = 0;
+
+        function getTouchDistance(touch1, touch2) {
+            const dx = touch1.clientX - touch2.clientX;
+            const dy = touch1.clientY - touch2.clientY;
+            return Math.sqrt(dx * dx + dy * dy);
+        }
+
+        editorCanvas.addEventListener('mousedown', (e) => { handlePointerDown(e); });
+        editorCanvas.addEventListener('mousemove', (e) => { handlePointerMove(e); });
+        editorCanvas.addEventListener('mouseup', () => { handlePointerUp(); });
+        editorCanvas.addEventListener('mouseleave', () => { handlePointerUp(); });
+
+        editorCanvas.addEventListener('touchstart', (e) => {
+            if (e.touches.length === 2) {
+                e.preventDefault();
+                isPinching = true;
+                isDrawing = false; 
+                isDraggingEvent = false;
+                lastPinchDist = getTouchDistance(e.touches[0], e.touches[1]);
+            } else if (e.touches.length === 1) {
+                if (currentMode === 'move') {
+                    return; 
+                }
+                e.preventDefault(); 
+                handlePointerDown(e);
+            }
+        }, {passive: false});
+
+        editorCanvas.addEventListener('touchmove', (e) => {
+            if (e.touches.length === 2 && isPinching) {
+                e.preventDefault();
+                const currentDist = getTouchDistance(e.touches[0], e.touches[1]);
+                const diff = currentDist - lastPinchDist;
+                if (Math.abs(diff) > 15) {
+                    if (diff > 0) zoomEditor(1);
+                    else zoomEditor(-1);
+                    lastPinchDist = currentDist;
+                }
+            } else if (e.touches.length === 1 && currentMode !== 'move') {
+                e.preventDefault();
+                handlePointerMove(e);
+            }
+        }, {passive: false});
+
+        editorCanvas.addEventListener('touchend', (e) => {
+            if (e.touches.length < 2) {
+                isPinching = false;
+            }
+            if (currentMode !== 'move') {
+                handlePointerUp(e);
+            }
+        });
 
         let lastMapTapTime = 0; let lastMapTapIndex = -1;
         function renderMapList() { const c=document.getElementById('map-list-container'); c.innerHTML=''; maps.forEach((m,i)=>{ const it=document.createElement('div'); it.className='map-item'+(i===currentMapIndex?' active':''); it.innerText=`🗺️ ${m.name}`; it.onclick=()=>{ const now = Date.now(); if (i === lastMapTapIndex && now - lastMapTapTime < 400) { openMapSettingsModal(i); lastMapTapTime = 0; lastMapTapIndex = -1; } else { switchMap(i); lastMapTapTime = now; lastMapTapIndex = i; } }; c.appendChild(it); }); }
-        
         function toggleMapList() { const mapSection = document.getElementById('map-section'); const icon = document.getElementById('map-toggle-icon'); mapSection.classList.toggle('collapsed'); if (mapSection.classList.contains('collapsed')) { icon.innerText = '►'; } else { icon.innerText = '▼'; } setTimeout(() => renderPalette(), 50); }
-        
-        function toggleFullscreen() {
-    if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen().catch(err => {
-            alert(`Ошибка полного экрана: ${err.message}`);
-        });
-    } else {
-        document.exitFullscreen();
-    }
-}
-
+        function toggleFullscreen() { if (!document.fullscreenElement) { document.documentElement.requestFullscreen().catch(err => { alert(`Ошибка полного экрана: ${err.message}`); }); } else { document.exitFullscreen(); } }
         function switchMap(i) { currentMapIndex=i; ensureLayerFormat(getCurrentMap()); const m = getCurrentMap(); for(let k in m.eventsData) ensureEventPages(m.eventsData[k]); loadCurrentMapToUI();renderEditorMap();renderMapList(); }
         function loadCurrentMapToUI() { const m=getCurrentMap();document.getElementById('map-width').value=m.width;document.getElementById('map-height').value=m.height; }
         function applyMapSize() { const m=getCurrentMap();const nw=parseInt(document.getElementById('map-width').value)||m.width;const nh=parseInt(document.getElementById('map-height').value)||m.height;const nd=createEmptyMap(nw,nh);for(let y=0;y<Math.min(nh,m.height);y++)for(let x=0;x<Math.min(nw,m.width);x++)nd[y][x]=m.mapData[y][x];m.width=nw;m.height=nh;m.mapData=nd;if(m.playerStartPos&&(m.playerStartPos.x>=nw||m.playerStartPos.y>=nh))m.playerStartPos=null;renderEditorMap(); }
-        function setMode(mode) { currentMode=mode;['tile','fill','event','player'].forEach(m=>document.getElementById('mode-'+m).classList.toggle('active',mode===m)); editorCanvas.style.cursor=mode==='fill'?'cell':'crosshair'; if(mode==='event') editorCanvas.style.cursor='pointer'; }
+        function setMode(mode) { currentMode = mode;['move','tile','fill','event','player'].forEach(m=>document.getElementById('mode-'+m).classList.toggle('active',mode===m)); if(mode === 'move') editorCanvas.style.cursor = 'grab'; else if(mode === 'fill') editorCanvas.style.cursor = 'cell'; else if(mode === 'event') editorCanvas.style.cursor = 'pointer'; else editorCanvas.style.cursor = 'crosshair'; }
         function zoomEditor(dir) { editorZoomIndex += dir; if (editorZoomIndex < 0) editorZoomIndex = 0; if (editorZoomIndex >= editorZoomLevels.length) editorZoomIndex = editorZoomLevels.length - 1; applyEditorZoom(); }
         function applyEditorZoom() { editorZoom = editorZoomLevels[editorZoomIndex]; const m = getCurrentMap(); if (m) { editorCanvas.style.width = (m.width * TILE_SIZE * editorZoom) + 'px'; editorCanvas.style.height = (m.height * TILE_SIZE * editorZoom) + 'px'; editorCanvas.style.imageRendering = 'pixelated'; } document.getElementById('zoom-label').innerText = Math.round(editorZoom * 100) + '%'; }
 
@@ -300,40 +369,9 @@
         function loadCurrentPageToUI() { const p = getCurrentPage(); if(!p) return; populateGraphicSelect(p.graphicCharId); document.getElementById('event-movement-select').value = p.movement || "fixed"; document.getElementById('event-passable-select').value = (p.passable === false) ? "false" : "true"; document.getElementById('event-priority-select').value = p.priority || 0; document.getElementById('event-trigger-select').value = p.trigger || "action"; populateConditionSelect(p.conditionSwitchId); document.getElementById('event-condition-lsw-select').value = p.conditionLocalSwitch || "None"; updateEventGraphic(); }
         function saveCurrentPageFromUI() { const p = getCurrentPage(); if(!p) return; p.graphicCharId = parseInt(document.getElementById('event-graphic-select').value); p.conditionSwitchId = parseInt(document.getElementById('event-condition-sw-select').value); p.conditionLocalSwitch = document.getElementById('event-condition-lsw-select').value; p.movement = document.getElementById('event-movement-select').value; p.passable = document.getElementById('event-passable-select').value === 'true'; p.priority = parseInt(document.getElementById('event-priority-select').value); p.trigger = document.getElementById('event-trigger-select').value; }
         function populateGraphicSelect(selectedId) { const sel = document.getElementById('event-graphic-select'); sel.innerHTML = '<option value="-1">Нет</option>'; projectCharacters.forEach(c => { const opt = document.createElement('option'); opt.value = c.id; opt.innerText = c.name; if (c.id === selectedId) opt.selected = true; sel.appendChild(opt); }); }
-        
-        function updateEventGraphic() { 
-            const cId = parseInt(document.getElementById('event-graphic-select').value); 
-            const box = document.getElementById('event-graphic-preview'); 
-            box.innerHTML = ''; 
-            const p = getCurrentPage(); 
-            if(cId !== -1) { 
-                if (p.passable === true) { p.passable = false; document.getElementById('event-passable-select').value = "false"; } 
-                const char = projectCharacters.find(c => c.id === cId); 
-                if(char && char.image && char.image.width > 0) { 
-                    const charsPerRow = Math.floor(char.image.width / (TILE_SIZE * 3)) || 1; 
-                    const charsPerCol = Math.floor(char.image.height / (TILE_SIZE * 4)) || 1; 
-                    const totalChars = charsPerRow * charsPerCol; 
-                    const container = document.createElement('div'); 
-                    container.style.display = 'flex'; container.style.flexWrap = 'wrap'; container.style.gap = '4px'; container.style.maxWidth = '220px'; 
-                    for(let i = 0; i < totalChars; i++) { 
-                        const charDiv = document.createElement('div'); 
-                        charDiv.style.width = '64px'; charDiv.style.height = '64px'; charDiv.style.borderRadius = '4px'; charDiv.style.cursor = 'pointer'; 
-                        charDiv.style.border = i === (p.graphicCharIndex||0) ? '3px solid #4CAF50' : '3px solid #555'; charDiv.style.backgroundColor = '#111'; 
-                        charDiv.style.backgroundImage = `url(${char.imageSrc})`; charDiv.style.imageRendering = 'pixelated'; 
-                        const bgW = charsPerRow * 3 * 64; const bgH = charsPerCol * 4 * 64; 
-                        charDiv.style.backgroundSize = `${bgW}px ${bgH}px`; 
-                        const bgX = (i % charsPerRow) * 3 * 64 + 1 * 64; const bgY = Math.floor(i / charsPerRow) * 4 * 64; 
-                        charDiv.style.backgroundPosition = `-${bgX}px -${bgY}px`; 
-                        charDiv.onclick = () => { p.graphicCharIndex = i; updateEventGraphic(); }; 
-                        container.appendChild(charDiv); 
-                    } 
-                    box.appendChild(container); 
-                } 
-            } else { box.innerHTML = '<span style="color:#555;font-size:10px;">Нет графики</span>'; p.graphicCharIndex = 0; } 
-        }
+        function updateEventGraphic() { const cId = parseInt(document.getElementById('event-graphic-select').value); const box = document.getElementById('event-graphic-preview'); box.innerHTML = ''; const p = getCurrentPage(); if(cId !== -1) { if (p.passable === true) { p.passable = false; document.getElementById('event-passable-select').value = "false"; } const char = projectCharacters.find(c => c.id === cId); if(char && char.image && char.image.width > 0) { const charsPerRow = Math.floor(char.image.width / (TILE_SIZE * 3)) || 1; const charsPerCol = Math.floor(char.image.height / (TILE_SIZE * 4)) || 1; const totalChars = charsPerRow * charsPerCol; const container = document.createElement('div'); container.style.display = 'flex'; container.style.flexWrap = 'wrap'; container.style.gap = '4px'; container.style.maxWidth = '220px'; for(let i = 0; i < totalChars; i++) { const charDiv = document.createElement('div'); charDiv.style.width = '64px'; charDiv.style.height = '64px'; charDiv.style.borderRadius = '4px'; charDiv.style.cursor = 'pointer'; charDiv.style.border = i === (p.graphicCharIndex||0) ? '3px solid #4CAF50' : '3px solid #555'; charDiv.style.backgroundColor = '#111'; charDiv.style.backgroundImage = `url(${char.imageSrc})`; charDiv.style.imageRendering = 'pixelated'; const bgW = charsPerRow * 3 * 64; const bgH = charsPerCol * 4 * 64; charDiv.style.backgroundSize = `${bgW}px ${bgH}px`; const bgX = (i % charsPerRow) * 3 * 64 + 1 * 64; const bgY = Math.floor(i / charsPerRow) * 4 * 64; charDiv.style.backgroundPosition = `-${bgX}px -${bgY}px`; charDiv.onclick = () => { p.graphicCharIndex = i; updateEventGraphic(); }; container.appendChild(charDiv); } box.appendChild(container); } } else { box.innerHTML = '<span style="color:#555;font-size:10px;">Нет графики</span>'; p.graphicCharIndex = 0; } }
         function handleNewSwitchSelect(selectEl) { if (selectEl.value === "-2") { const name = prompt("Имя нового переключателя:"); if (name && name.trim() !== "") { const newId = gameSwitches.length > 0 ? Math.max(...gameSwitches.map(s=>s.id)) + 1 : 1; gameSwitches.push({id: newId, name: name.trim(), state: false}); populateCmdSelects(); populateConditionSelect(newId); } else { selectEl.value = "-1"; } } }
         function populateConditionSelect(selectedId) { const sel = document.getElementById('event-condition-sw-select'); sel.innerHTML = '<option value="-1">Нет</option>'; gameSwitches.forEach(sw => { const opt = document.createElement('option'); opt.value = sw.id; opt.innerText = `[S${sw.id}] ${sw.name}`; if (sw.id === selectedId) opt.selected = true; sel.appendChild(opt); }); const newOpt = document.createElement('option'); newOpt.value = "-2"; newOpt.innerText = "[ + Новый ]"; sel.appendChild(newOpt); }
-        
         function renderScriptLines(){ const c=document.getElementById('script-container'); c.innerHTML=''; if(!currentEditEventKey) return; const p = getCurrentPage(); if(!p) return; const cmds=p.commands; const lc=Math.max(10,cmds.length+2); let depth=0; for(let i=0;i<lc;i++){ const l=document.createElement('div'); l.className='script-line'; const cmd=cmds[i]; let currentDepth = depth; if(cmd && (cmd.type==='else' || cmd.type==='choice_branch' || cmd.type==='choice_end')) currentDepth = depth - 1; if(cmd && cmd.type==='if_end') currentDepth = depth - 1; l.style.paddingLeft=(10+currentDepth*20)+'px'; if(cmd){ const s=document.createElement('span'); if(cmd.type==='message'){s.className='cmd-message';s.innerText=`💬 "${cmd.text}"`;} else if(cmd.type==='switch'){s.className='cmd-switch';s.innerText=`🔧 Глоб. [S${cmd.switchId}] ${cmd.value?'ВКЛ':'ВЫКЛ'}`;} else if(cmd.type==='local_switch'){s.className='cmd-switch';s.innerText=`⚙️ Лок. [${cmd.switch}] ${cmd.value?'ВКЛ':'ВЫКЛ'}`;} else if(cmd.type==='variable'){s.className='cmd-variable';const v=gameVariables.find(x=>x.id===cmd.variableId);const op=cmd.operation==='set'?'=':cmd.operation==='add'?'+':'-';s.innerText=`🔢 [V${cmd.variableId}] ${v?v.name:'?'} ${op} ${cmd.operand}`;} else if(cmd.type==='teleport'){s.className='cmd-teleport';const tMap=maps.find(m=>m.mapId===cmd.mapId);s.innerText=`🚀 Телепорт: ${tMap?tMap.name:'?'} (X:${cmd.x}, Y:${cmd.y})`;} else if(cmd.type==='if_start'){s.className='cmd-if';let condTxt='';if(cmd.conditionType==='switch'){condTxt=`Глоб. [S${cmd.switchId}] ${cmd.conditionValue?'ВКЛ':'ВЫКЛ'}`} else if(cmd.conditionType==='local_switch'){condTxt=`Лок. [${cmd.switch}] ${cmd.conditionValue?'ВКЛ':'ВЫКЛ'}`} else {const v=gameVariables.find(x=>x.id===cmd.variableId);condTxt=`[V${cmd.variableId}] ${v?v.name:''} ${cmd.conditionOp} ${cmd.conditionVal}`;}s.innerText=`❓ Если ${condTxt}:`;depth++;} else if(cmd.type==='else'){s.className='cmd-else';s.innerText=`↪️ Иначе:`;} else if(cmd.type==='if_end'){s.className='cmd-if-end';s.innerText=`🛑 Конец Если`;depth--;} else if(cmd.type==='choice'){s.className='cmd-choice';s.innerText=`🔀 Выбор: ${cmd.choices.filter(c=>c).join(', ')}`; depth++;} else if(cmd.type==='choice_branch'){s.className='cmd-choice-branch';s.innerText=`↪️ Вариант ${cmd.branchIndex+1}: "${cmd.text}"`;} else if(cmd.type==='choice_end'){s.className='cmd-choice-end';s.innerText=`🛑 Конец Выбора`;depth--;} l.appendChild(s); if(cmd.type !== 'else' && cmd.type !== 'if_end' && cmd.type !== 'choice_branch' && cmd.type !== 'choice_end') l.onclick = () => editCommand(i, cmd); } else { l.classList.add('empty-line'); l.innerText='@ Пусто (нажмите)'; l.onclick=()=>{activeLineIndex=i; openAddCmdModal();}; } c.appendChild(l); } }
         function openAddCmdModal(){isEditingCommand = false; editCommandIndex = -1;document.getElementById('cmd-modal-title').innerText = "Добавить команду";document.getElementById('delete-cmd-btn').style.display = 'none';document.getElementById('cmd-choices').style.display='grid';document.getElementById('message-textarea').value = ''; ['message-input-area','switch-input-area','local-switch-input-area','var-input-area','if-input-area','choice-input-area','teleport-input-area'].forEach(id=>document.getElementById(id).classList.remove('active'));document.getElementById('add-cmd-modal').classList.add('active');populateCmdSelects();}
         function editCommand(index, cmd) {isEditingCommand = true; editCommandIndex = index;document.getElementById('cmd-modal-title').innerText = "Редактировать команду";document.getElementById('delete-cmd-btn').style.display = 'block';document.getElementById('add-cmd-modal').classList.add('active');populateCmdSelects(); ['message-input-area','switch-input-area','local-switch-input-area','var-input-area','if-input-area','choice-input-area','teleport-input-area'].forEach(id=>document.getElementById(id).classList.remove('active')); document.getElementById('cmd-choices').style.display='none'; if(cmd.type === 'message') { showMessageInput(); document.getElementById('message-textarea').value = cmd.text; } else if(cmd.type === 'switch') { showSwitchInput(); document.getElementById('cmd-switch-select').value = cmd.switchId; } else if(cmd.type === 'local_switch') { showLocalSwitchInput(); document.getElementById('cmd-lsw-select').value = cmd.switch; } else if(cmd.type === 'variable') { showVariableInput(); document.getElementById('cmd-var-select').value = cmd.variableId; document.getElementById('cmd-var-op').value = cmd.operation; document.getElementById('cmd-var-val').value = cmd.operand; }else if(cmd.type === 'teleport') { showTeleportInput(); document.getElementById('cmd-teleport-map').value = cmd.mapId; teleportTargetX = cmd.x; teleportTargetY = cmd.y; renderTeleportPreview(); }else if(cmd.type === 'if_start') { showIfInput(); document.getElementById('cmd-if-type').value = cmd.conditionType; toggleIfUI(); if(cmd.conditionType === 'switch') { document.getElementById('cmd-if-sw-select').value = cmd.switchId; document.getElementById('cmd-if-sw-val').value = cmd.conditionValue ? 'true' : 'false'; } else if(cmd.conditionType === 'local_switch') { document.getElementById('cmd-if-lsw-select').value = cmd.switch; document.getElementById('cmd-if-lsw-val').value = cmd.conditionValue ? 'true' : 'false'; } else { document.getElementById('cmd-if-var-select').value = cmd.variableId; document.getElementById('cmd-if-var-op').value = cmd.conditionOp; document.getElementById('cmd-if-var-val').value = cmd.conditionVal; } } else if(cmd.type === 'choice') { showChoiceInput(); document.getElementById('cmd-choice-1').value = cmd.choices[0] || ''; document.getElementById('cmd-choice-2').value = cmd.choices[1] || ''; document.getElementById('cmd-choice-3').value = cmd.choices[2] || ''; document.getElementById('cmd-choice-4').value = cmd.choices[3] || ''; document.getElementById('cmd-choice-cancel').value = cmd.cancelType; }}
@@ -359,7 +397,6 @@
         function saveTeleportCommand(){const mapId = document.getElementById('cmd-teleport-map').value; const cmds=getCurrentPage().commands;if(isEditingCommand) { cmds[editCommandIndex] = {type:'teleport', mapId: mapId, x: teleportTargetX, y: teleportTargetY}; } else { cmds.splice(activeLineIndex,0,{type:'teleport', mapId: mapId, x: teleportTargetX, y: teleportTargetY}); }renderScriptLines();closeAddCmdModal();}
         function deleteEditingCommand() { if(!isEditingCommand) return; const cmds=getCurrentPage().commands; const cmd = cmds[editCommandIndex]; if(cmd.type === 'choice' || cmd.type === 'if_start') { const targetType = cmd.type === 'choice' ? 'choice_end' : 'if_end'; const openType = cmd.type; let depth = 1; for (let j = editCommandIndex + 1; j < cmds.length; j++) { if (cmds[j] && cmds[j].type === openType) depth++; else if (cmds[j] && cmds[j].type === targetType) { depth--; if (depth === 0) { cmds.splice(editCommandIndex, j - editCommandIndex + 1); break; } } } } else { cmds.splice(editCommandIndex, 1); } renderScriptLines();closeAddCmdModal(); }
         function populateCmdSelects(){const swSel=document.getElementById('cmd-switch-select');swSel.innerHTML='';gameSwitches.forEach(s=>swSel.innerHTML+=`<option value="${s.id}">[S${s.id}] ${s.name}</option>`); const newSwOpt = document.createElement('option'); newSwOpt.value="-2"; newSwOpt.innerText="[ + Новый ]"; swSel.appendChild(newSwOpt); const vSel=document.getElementById('cmd-var-select');vSel.innerHTML='';gameVariables.forEach(v=>vSel.innerHTML+=`<option value="${v.id}">[V${v.id}] ${v.name}</option>`);const ifSwSel=document.getElementById('cmd-if-sw-select');ifSwSel.innerHTML='';gameSwitches.forEach(s=>ifSwSel.innerHTML+=`<option value="${s.id}">[S${s.id}] ${s.name}</option>`); const newIfSwOpt = document.createElement('option'); newIfSwOpt.value="-2"; newIfSwOpt.innerText="[ + Новый ]"; ifSwSel.appendChild(newIfSwOpt); const ifVarSel=document.getElementById('cmd-if-var-select');ifVarSel.innerHTML='';gameVariables.forEach(v=>ifVarSel.innerHTML+=`<option value="${v.id}">[V${v.id}] ${v.name}</option>`);}
-        
         function openCreateMapModal(){ editingMapIndex = -1; document.getElementById('new-map-name').value="MAP"+String(maps.length+1).padStart(3,'0'); document.getElementById('new-map-width').value=17; document.getElementById('new-map-height').value=13; document.querySelector('#create-map-modal .modal-header span').innerText = "Новая карта"; document.querySelector('#create-map-modal .create-map-save-btn').innerText = "Создать"; document.getElementById('create-map-modal').classList.add('active'); }
         function openMapSettingsModal(index) { editingMapIndex = index; const m = maps[index]; document.getElementById('new-map-name').value = m.name; document.getElementById('new-map-width').value = m.width; document.getElementById('new-map-height').value = m.height; document.querySelector('#create-map-modal .modal-header span').innerText = "Настройки карты"; document.querySelector('#create-map-modal .create-map-save-btn').innerText = "Сохранить"; document.getElementById('create-map-modal').classList.add('active'); }
         function saveMapOrCreate(){ const n=document.getElementById('new-map-name').value||"Map"; const w=parseInt(document.getElementById('new-map-width').value)||17; const h=parseInt(document.getElementById('new-map-height').value)||13; if (editingMapIndex >= 0) { const m = maps[editingMapIndex]; m.name = n; if (m.width !== w || m.height !== h) { const nd=createEmptyMap(w,h); for(let y=0;y<Math.min(h,m.height);y++) for(let x=0;x<Math.min(w,m.width);x++) nd[y][x]=m.mapData[y][x]; m.width=w; m.height=h; m.mapData=nd; if(m.playerStartPos&&(m.playerStartPos.x>=w||m.playerStartPos.y>=h)) m.playerStartPos=null; for (let key in m.eventsData) { const [ex, ey] = key.split(',').map(Number); if (ex >= w || ey >= h) delete m.eventsData[key]; } } switchMap(editingMapIndex); } else { const mapId = 'map_' + Date.now(); maps.push({mapId: mapId, name:n, width:w, height:h, mapData:createEmptyMap(w,h), eventsData:{}, playerStartPos:null}); switchMap(maps.length-1); } closeCreateMapModal(); }
@@ -384,66 +421,7 @@
         function toggleAdminMode() { isAdminMode = document.getElementById('admin-toggle').checked; if (currentDbTab === 'tilesets') renderDbContent(); }
         function savePassabilityAsDefault() { const passData = {}; projectTilesets.forEach(ts => { passData[ts.id] = ts.passability; }); localStorage.setItem('rpgmaker_default_passability', JSON.stringify(passData)); const jsonStr = JSON.stringify(passData); prompt("✅ Проходимость по умолчанию сохранена!\nДля встраивания в код скопируй JSON ниже и вставь в DEFAULT_RTP.tilesets[i].passability:", jsonStr); }
         function saveProject() { const saveData = JSON.parse(JSON.stringify({ maps, projectTilesets, projectCharacters, projectPlayer, gameSwitches, gameVariables })); saveData.projectTilesets.forEach(ts => { if(ts.isDefault) delete ts.imageSrc; }); saveData.projectCharacters.forEach(ch => { if(ch.isDefault) delete ch.imageSrc; }); if(projectPlayer.faceImg) delete projectPlayer.faceImg; const json = JSON.stringify(saveData, null, 2); const blob = new Blob([json], {type: "application/json"}); const url = URL.createObjectURL(blob); const a = document.createElement("a"); a.href = url; a.download = "project.rpgm"; a.click(); URL.revokeObjectURL(url); }
-                function loadProject(event) { 
-            const file = event.target.files[0]; 
-            if (!file) return; 
-            const reader = new FileReader(); 
-            reader.onload = function(e) { 
-                try { 
-                    const data = JSON.parse(e.target.result); 
-                    if(data.maps) maps = data.maps; 
-                    if(data.gameSwitches) gameSwitches = data.gameSwitches; 
-                    if(data.gameVariables) gameVariables = data.gameVariables; 
-                    if(data.projectPlayer) { 
-                        projectPlayer = data.projectPlayer; 
-                        if(projectPlayer.faceSrc) { 
-                            const img = new Image(); 
-                            img.onload = () => { projectPlayer.faceImg = img; }; 
-                            img.src = projectPlayer.faceSrc; 
-                        } 
-                    } 
-                    if(data.projectTilesets) { 
-                        projectTilesets = data.projectTilesets; 
-                        projectTilesets.forEach(ts => { 
-                            const defTs = DEFAULT_RTP.tilesets.find(d => d.id === ts.id); 
-                            if(ts.isDefault && defTs && !ts.imageSrc) ts.imageSrc = defTs.path; 
-                            if(ts.imageSrc) { 
-                                const img = new Image(); 
-                                img.onload = () => { 
-                                    ts.image = img; 
-                                    renderEditorMap(); 
-                                    // ИСПРАВЛЕНО: Обновляем палитру по мере загрузки картинок
-                                    renderTilesetTabs(); 
-                                    renderPalette(); 
-                                }; 
-                                img.src = ts.imageSrc; 
-                            } 
-                        }); 
-                    } 
-                    if(data.projectCharacters) { 
-                        projectCharacters = data.projectCharacters; 
-                        projectCharacters.forEach(ch => { 
-                            const defCh = DEFAULT_RTP.characters.find(d => d.id === ch.id); 
-                            if(ch.isDefault && defCh && !ch.imageSrc) ch.imageSrc = defCh.path; 
-                            if(ch.imageSrc) { 
-                                const img = new Image(); 
-                                img.onload = () => { ch.image = img; renderEditorMap(); }; 
-                                img.src = ch.imageSrc; 
-                            } 
-                        }); 
-                    } 
-                    currentMapIndex = 0; 
-                    switchMap(0); 
-                    
-                    // ИСПРАВЛЕНО: Принудительно обновляем вкладки тайлсетов при загрузке проекта
-                    renderTilesetTabs(); 
-                    renderPalette(); 
-                    
-                    alert("Проект загружен!"); 
-                } catch(ex) { alert("Ошибка загрузки: " + ex); } 
-            }; 
-            reader.readAsText(file); event.target.value = ""; 
-        }
+        function loadProject(event) { const file = event.target.files[0]; if (!file) return; const reader = new FileReader(); reader.onload = function(e) { try { const data = JSON.parse(e.target.result); if(data.maps) maps = data.maps; if(data.gameSwitches) gameSwitches = data.gameSwitches; if(data.gameVariables) gameVariables = data.gameVariables; if(data.projectPlayer) { projectPlayer = data.projectPlayer; if(projectPlayer.faceSrc) { const img = new Image(); img.onload = () => { projectPlayer.faceImg = img; }; img.src = projectPlayer.faceSrc; } } if(data.projectTilesets) { projectTilesets = data.projectTilesets; projectTilesets.forEach(ts => { const defTs = DEFAULT_RTP.tilesets.find(d => d.id === ts.id); if(ts.isDefault && defTs && !ts.imageSrc) ts.imageSrc = defTs.path; if(ts.imageSrc) { const img = new Image(); img.onload = () => { ts.image = img; renderEditorMap(); renderTilesetTabs(); renderPalette(); }; img.src = ts.imageSrc; } }); } if(data.projectCharacters) { projectCharacters = data.projectCharacters; projectCharacters.forEach(ch => { const defCh = DEFAULT_RTP.characters.find(d => d.id === ch.id); if(ch.isDefault && defCh && !ch.imageSrc) ch.imageSrc = defCh.path; if(ch.imageSrc) { const img = new Image(); img.onload = () => { ch.image = img; renderEditorMap(); }; img.src = ch.imageSrc; } }); } currentMapIndex = 0; switchMap(0); renderTilesetTabs(); renderPalette(); alert("Проект загружен!"); } catch(ex) { alert("Ошибка загрузки: " + ex); } }; reader.readAsText(file); event.target.value = ""; }
         function closeTopModal() { if(document.getElementById('database-modal').classList.contains('active'))closeDatabase();else if(document.getElementById('create-map-modal').classList.contains('active'))closeCreateMapModal();else if(document.getElementById('add-cmd-modal').classList.contains('active'))closeAddCmdModal();else closeEventModal(); }
 
         // ====================================================================
