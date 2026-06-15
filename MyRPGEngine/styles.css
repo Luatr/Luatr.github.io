@@ -353,9 +353,9 @@ div#toolbar {
 
 /*----- КАЛ -----*/
 
-/* ====== АДАПТИВНОСТЬ И МОДАЛКИ (MOBILE FIRST) ====== */
+/* ====== АДАПТИВНОСТЬ И МОДАЛКИ ====== */
 
-/* 1. Динамическая высота */
+/* 1. БАЗОВЫЙ МОБИЛЬНЫЙ ВИД (Вертикальный телефон) */
 body {
     margin: 0; padding: 0; overflow: hidden;
     height: 100vh; height: 100dvh;
@@ -371,7 +371,7 @@ body {
     flex-shrink: 0; flex-wrap: wrap; 
 }
 
-/* 2. САЙДБАР (ПО УМОЛЧАНИЮ - ВЫДВИЖНАЯ ШТОРКА ДЛЯ МОБИЛОК) */
+/* 2. САЙДБАР (ПО УМОЛЧАНИЮ - ШТОРКА) */
 #sidebar {
     display: flex; flex-direction: column;
     position: absolute; left: -260px; top: 0; bottom: 0; z-index: 50;
@@ -387,9 +387,9 @@ body {
 #map-section { height: auto; }
 #map-container { overflow: auto; }
 
-/* 3. Кнопка-треугольник (ПО УМОЛЧАНИЮ ВИДНА НА МОбИЛКАХ) */
+/* 3. Кнопка-треугольник (ПО УМОЛЧАНИЮ ВИДНА) */
 #sidebar-toggle-btn {
-    display: block; /* ВИДНА */
+    display: block; 
     position: absolute; right: -35px; top: 50%; transform: translateY(-50%); z-index: 60;
     background-color: #2a2a2a !important; -webkit-appearance: none; appearance: none;
     color: #aaa; border: 1px solid #444; border-left: none; border-radius: 0 8px 8px 0;
@@ -398,7 +398,6 @@ body {
 }
 #sidebar-toggle-btn:active { background-color: #555 !important; }
 
-/* Стрелки скролла */
 .scroll-arrow-btn {
     display: flex; align-items: center; justify-content: center; width: 100%;
     background: #333; color: #aaa; border: none; padding: 8px 0; font-size: 18px; cursor: pointer; flex-shrink: 0;
@@ -424,7 +423,7 @@ body {
 }
 .cycle-char-btn:active { background: #555; }
 
-/* 7. МОДАЛКИ (ПО УМОЛЧАНИЮ - ВЕРТИКАЛЬНО ДЛЯ МОБИЛОК) */
+/* 7. МОДАЛКИ (ПО УМОЛЧАНИЮ - ВЕРТИКАЛЬНО ДЛЯ УЗКИХ ЭКРАНОВ) */
 .modal-base { max-height: 95vh; flex-direction: column; overflow: hidden; }
 .modal-base.active { display: flex !important; }
 
@@ -444,25 +443,29 @@ body {
 }
 
 /* ============================================================ */
-/* ====== ДЕСКТОПНЫЙ ВИД (ТОЛЬКО ДЛЯ УСТРОЙСТВ С МЫШЬЮ) ====== */
+/* ====== ШИРОКИЕ ЭКРАНЫ (Горизонтальный телефон / ПК) ====== */
 /* ============================================================ */
-/* Если у устройства точный указатель (мышь) И экран широкий */
-@media (pointer: fine) and (min-width: 901px) {
-    /* Сайдбар становится обычным блоком */
+/* Если ширина > 700px, окнам событий места хватит бок о бок */
+@media (min-width: 700px) {
+    .modal-body { flex-direction: row !important; /* ГОРИЗОНТАЛЬНО */ }
+    .modal-left, .modal-right {
+        width: auto !important; max-height: none; border-bottom: none !important;
+        border-right: 1px solid #666;
+    }
+    .modal-left { width: 260px; flex-shrink: 0; }
+}
+
+/* ============================================================ */
+/* ============ ДЕСКТОП (Только устройства с мышью) =========== */
+/* ============================================================ */
+@media (pointer: fine) {
+    /* Сайдбар возвращается на место */
     #sidebar {
         position: relative; left: 0; width: 220px; background: #333;
         z-index: auto; box-shadow: none; transition: none;
     }
     /* Кнопка-треугольник скрыта */
     #sidebar-toggle-btn { display: none !important; }
-
-    /* Модалки становятся бок о бок */
-    .modal-body { flex-direction: row !important; }
-    .modal-left, .modal-right {
-        width: auto !important; max-height: none; border-bottom: none !important;
-        border-right: 1px solid #666;
-    }
-    .modal-left { width: 260px; flex-shrink: 0; }
 }
 
 /* ----- Мелкие фиксы ----- */
@@ -473,3 +476,10 @@ body {
 }
 .modal-left > div { width: calc(100% - 8px); }
 .modal-left { padding-left: 4px; }
+
+
+
+#database-modal {
+  width: 95vw;
+  height: 90vh;
+}
