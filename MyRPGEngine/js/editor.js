@@ -55,7 +55,26 @@ function floodFill(startX, startY) {
 
 function handleMapInteraction(e) { const m=getCurrentMap(); const {x, y, valid} = getGridCoordsFromEvent(e); if(!valid) return; if(currentMode==='tile'){ const tsId = activeTilesetId; const layerIdx = tsId - 1; let changed = false; if (isEraserActive) { if(m.mapData[y][x][layerIdx] !== "0") { m.mapData[y][x][layerIdx] = "0"; changed = true; } } else { const ts = projectTilesets.find(t => t.id === tsId); if (!ts || !ts.image) return; const imgW = ts.image.width / TILE_SIZE; const imgH = ts.image.height / TILE_SIZE; for (let dy = 0; dy < selectedArea.h; dy++) { for (let dx = 0; dx < selectedArea.w; dx++) { const targetX = x + dx; const targetY = y + dy; if (targetX >= m.width || targetY >= m.height) continue; const destX = selectedArea.x + dx; const destY = selectedArea.y + dy; const localX = destX; const chunkIndex = Math.floor(destY / imgH); const origY = destY % imgH; const origX = chunkIndex * paletteCols + localX; const tileIndex0Based = origY * imgW + origX; const tileStr = "T" + tsId + "_" + (tileIndex0Based + 1); if(m.mapData[targetY][targetX][layerIdx] !== tileStr) { m.mapData[targetY][targetX][layerIdx] = tileStr; changed = true; } }} } if (changed) renderEditorMap(); } else if(currentMode==='fill'){ floodFill(x, y); } else if(currentMode==='player'){ m.playerStartPos={x,y}; renderEditorMap(); } }
 
-function handlePointerDown(e) { if (currentMode === 'tile' || currentMode === 'fill') { isDrawing = true; handleMapInteraction(e); } else if (currentMode === 'event') { const {x, y, valid} = getGridCoordsFromEvent(e); if (!valid) return; const key = `${x},${y}`; if (Date.now() - lastClickTime < 300 && lastClickKey === key) { openEventModal(x, y); lastClickTime = 0; return; } lastClickTime = Date.now(); lastClickKey = key; const m = getCurrentMap(); if (m.eventsData[key]) { isDraggingEvent = true; draggedEventKey = key; } } else if (currentMode === 'player') { handleMapInteraction(e); } }
+function handlePointerDown(e) { 
+    // Если мы закрыли сайдбар этим кликом, рисовать тайл не нужно!
+    
+
+    if (currentMode === 'tile' || currentMode === 'fill') { 
+        isDrawing = true; handleMapInteraction(e); 
+    } else if (currentMode === 'event') { 
+        const {x, y, valid} = getGridCoordsFromEvent(e); 
+        if (!valid) return; 
+        const key = `${x},${y}`; 
+        if (Date.now() - lastClickTime < 300 && lastClickKey === key) { 
+            openEventModal(x, y); lastClickTime = 0; return; 
+        } 
+        lastClickTime = Date.now(); lastClickKey = key; 
+        const m = getCurrentMap(); 
+        if (m.eventsData[key]) { isDraggingEvent = true; draggedEventKey = key; } 
+    } else if (currentMode === 'player') { 
+        handleMapInteraction(e); 
+    } 
+}
 function handlePointerMove(e) { if (currentMode === 'tile' && isDrawing) { handleMapInteraction(e); } else if (currentMode === 'event' && isDraggingEvent && draggedEventKey) { const {x, y, valid} = getGridCoordsFromEvent(e); if (!valid) return; const newKey = `${x},${y}`; const m = getCurrentMap(); if (draggedEventKey !== newKey && !m.eventsData[newKey]) { m.eventsData[newKey] = m.eventsData[draggedEventKey]; delete m.eventsData[draggedEventKey]; draggedEventKey = newKey; renderEditorMap(); } } }
 function handlePointerUp(e) { isDrawing = false; isDraggingEvent = false; draggedEventKey = null; }
 
@@ -68,12 +87,69 @@ let panStartScrollLeft = 0, panStartScrollTop = 0;
 
 function getTouchDistance(touch1, touch2) { const dx = touch1.clientX - touch2.clientX; const dy = touch1.clientY - touch2.clientY; return Math.sqrt(dx * dx + dy * dy); }
 
-editorCanvas.addEventListener('mousedown', (e) => { if (currentMode === 'move') { isPanning = true; panStartX = e.clientX; panStartY = e.clientY; const container = document.getElementById('map-container'); panStartScrollLeft = container.scrollLeft; panStartScrollTop = container.scrollTop; editorCanvas.style.cursor = 'grabbing'; } else { handlePointerDown(e); } });
+editorCanvas.addEventListener('mousedown', (e) => { 
+    // Сначала пробуем закрыть сайдбар
+    closeSidebarIfOpen();
+    
+    // Если сайдбар только что закрылся, прерываем рисование!
+    if (didCloseSidebar) {
+        didCloseSidebar = false; // Сразу сбрасываем флаг
+        return;
+    }
+
+    if (currentMode === 'move') {
+        isPanning = true;
+        panStartX = e.clientX;
+        panStartY = e.clientY;
+        const container = document.getElementById('map-container');
+        panStartScrollLeft = container.scrollLeft;
+        panStartScrollTop = container.scrollTop;
+        editorCanvas.style.cursor = 'grabbing';
+    } else {
+        handlePointerDown(e); 
+    }
+});
 editorCanvas.addEventListener('mousemove', (e) => { if (isPanning) { const dx = e.clientX - panStartX; const dy = e.clientY - panStartY; const container = document.getElementById('map-container'); container.scrollLeft = panStartScrollLeft - dx; container.scrollTop = panStartScrollTop - dy; } else { handlePointerMove(e); } });
 editorCanvas.addEventListener('mouseup', () => { if (isPanning) { isPanning = false; if (currentMode === 'move') editorCanvas.style.cursor = 'grab'; } handlePointerUp(); });
 editorCanvas.addEventListener('mouseleave', () => { if (isPanning) { isPanning = false; if (currentMode === 'move') editorCanvas.style.cursor = 'grab'; } handlePointerUp(); });
 
-editorCanvas.addEventListener('touchstart', (e) => { if (e.touches.length === 2) { e.preventDefault(); isPinching = true; isPanning = false; isDrawing = false; isDraggingEvent = false; lastPinchDist = getTouchDistance(e.touches[0], e.touches[1]); } else if (e.touches.length === 1) { if (currentMode === 'move') { e.preventDefault(); isPanning = true; panStartX = e.touches[0].clientX; panStartY = e.touches[0].clientY; const container = document.getElementById('map-container'); panStartScrollLeft = container.scrollLeft; panStartScrollTop = container.scrollTop; } else { e.preventDefault(); handlePointerDown(e); } } }, {passive: false});
+editorCanvas.addEventListener('touchstart', (e) => {
+    // Сначала пробуем закрыть сайдбар
+    closeSidebarIfOpen();
+
+    // Если сайдбар закрылся, не рисуем!
+    if (didCloseSidebar) {
+        didCloseSidebar = false;
+        if (e.touches.length === 1) e.preventDefault(); // Гасим стандартное поведение
+        return;
+    }
+
+    if (e.touches.length === 2) {
+        // Начали касаться двумя пальцами - это ЗУМ
+        e.preventDefault();
+        isPinching = true;
+        isPanning = false; 
+        isDrawing = false; 
+        isDraggingEvent = false;
+        lastPinchDist = getTouchDistance(e.touches[0], e.touches[1]);
+    } else if (e.touches.length === 1) {
+        // Касание одним пальцем
+        if (currentMode === 'move') {
+            // Начали тянуть картой пальцем
+            e.preventDefault();
+            isPanning = true;
+            panStartX = e.touches[0].clientX;
+            panStartY = e.touches[0].clientY;
+            const container = document.getElementById('map-container');
+            panStartScrollLeft = container.scrollLeft;
+            panStartScrollTop = container.scrollTop;
+        } else {
+            // В остальных режимах запрещаем скролл и идём рисовать/ставить ивенты
+            e.preventDefault(); 
+            handlePointerDown(e);
+        }
+    }
+}, {passive: false});
 editorCanvas.addEventListener('touchmove', (e) => { if (e.touches.length === 2 && isPinching) { e.preventDefault(); const currentDist = getTouchDistance(e.touches[0], e.touches[1]); const diff = currentDist - lastPinchDist;                 if (Math.abs(diff) > 15) {
                     // Вычисляем центр жеста щипка
                     const rect = document.getElementById('map-container').getBoundingClientRect();
@@ -93,17 +169,17 @@ function toggleMapList() { const mapSection = document.getElementById('map-secti
 
 function toggleSidebar() { const sidebar = document.getElementById('sidebar'); const btn = document.getElementById('sidebar-toggle-btn'); sidebar.classList.toggle('open'); if (sidebar.classList.contains('open')) { btn.innerHTML = '◄'; } else { btn.innerHTML = '►'; } }
 
+let didCloseSidebar = false; // Флаг "мы только что закрыли меню"
+
 function closeSidebarIfOpen() {
     const sidebar = document.getElementById('sidebar');
     if (sidebar.classList.contains('open')) {
         sidebar.classList.remove('open');
         document.getElementById('sidebar-toggle-btn').innerHTML = '►';
+        didCloseSidebar = true; // Включаем замок!
     }
 }
 
-// Закрываем сайдбар при клике/тапе на рабочую область карты
-document.getElementById('map-container').addEventListener('mousedown', closeSidebarIfOpen);
-document.getElementById('map-container').addEventListener('touchstart', closeSidebarIfOpen);
 
 function scrollPalette(dir) { const el = document.getElementById('palette-area'); el.scrollBy({ top: dir * (TILE_SIZE * 2), behavior: 'smooth' }); }
 function scrollScript(dir) { const el = document.getElementById('script-container'); el.scrollBy({ top: dir * 60, behavior: 'smooth' }); }
@@ -122,21 +198,24 @@ function zoomEditor(dir, pivotX, pivotY) {
     
     editorZoom = editorZoomLevels[editorZoomIndex];
     
-    // Если точка привязки не передана (например, нажали кнопки +-/🔍), зумим в центр экрана
+    // Если масштаб не изменился (дошли до предела), выходим
+    if (editorZoom === oldZoom) return;
+
+    // Если точка привязки не передана, зумим в центр экрана
     if (pivotX === undefined || pivotY === undefined) {
         pivotX = container.clientWidth / 2;
         pivotY = container.clientHeight / 2;
     }
 
-    // Магия математики: сохраняем точку под курсором/пальцем на месте
-    const oldScrollLeft = container.scrollLeft;
-    const oldScrollTop = container.scrollTop;
+    // МАГИЯ МАТЕМАТИКИ: Вычисляем координаты на карте под курсором ДО зума
+    const mapX = (container.scrollLeft + pivotX) / oldZoom;
+    const mapY = (container.scrollTop + pivotY) / oldZoom;
 
-    applyEditorZoom(); // Меняем размер канваса
+    applyEditorZoom(); // Меняем размер канваса (применяем новый зум)
 
-    // Пересчитываем скролл с учетом нового зума
-    container.scrollLeft = (oldScrollLeft + pivotX) * (editorZoom / oldZoom) - pivotX;
-    container.scrollTop = (oldScrollTop + pivotY) * (editorZoom / oldZoom) - pivotY;
+    // Пересчитываем скролл так, чтобы точка mapX, mapY осталась ровно под курсором ПОСЛЕ зума
+    container.scrollLeft = mapX * editorZoom - pivotX;
+    container.scrollTop = mapY * editorZoom - pivotY;
 }
 
 function applyEditorZoom() { 
@@ -145,6 +224,7 @@ function applyEditorZoom() {
         editorCanvas.style.width = (m.width * TILE_SIZE * editorZoom) + 'px'; 
         editorCanvas.style.height = (m.height * TILE_SIZE * editorZoom) + 'px'; 
         editorCanvas.style.imageRendering = 'pixelated'; 
+        editorCanvas.style.flexShrink = '0'; // ЗАПРЕЩАЕМ канвасу сжиматься внутри flex-контейнера!
     } 
     document.getElementById('zoom-label').innerText = Math.round(editorZoom * 100) + '%'; 
 }
