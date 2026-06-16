@@ -56,14 +56,134 @@ let panStartScrollLeft = 0, panStartScrollTop = 0;
 
 function getTouchDistance(touch1, touch2) { const dx = touch1.clientX - touch2.clientX; const dy = touch1.clientY - touch2.clientY; return Math.sqrt(dx * dx + dy * dy); }
 
-editorCanvas.addEventListener('mousedown', (e) => { if (currentMode === 'move') { isPanning = true; panStartX = e.clientX; panStartY = e.clientY; const container = document.getElementById('map-container'); panStartScrollLeft = container.scrollLeft; panStartScrollTop = container.scrollTop; editorCanvas.style.cursor = 'grabbing'; } else { handlePointerDown(e); } });
-editorCanvas.addEventListener('mousemove', (e) => { if (isPanning) { const dx = e.clientX - panStartX; const dy = e.clientY - panStartY; const container = document.getElementById('map-container'); container.scrollLeft = panStartScrollLeft - dx; container.scrollTop = panStartScrollTop - dy; } else { handlePointerMove(e); } });
-editorCanvas.addEventListener('mouseup', () => { if (isPanning) { isPanning = false; if (currentMode === 'move') editorCanvas.style.cursor = 'grab'; } handlePointerUp(); });
-editorCanvas.addEventListener('mouseleave', () => { if (isPanning) { isPanning = false; if (currentMode === 'move') editorCanvas.style.cursor = 'grab'; } handlePointerUp(); });
+// --- Управление МЫШЬЮ (для ПК) ---
+editorCanvas.addEventListener('mousedown', (e) => { 
+    if (currentMode === 'move') {
+        isPanning = true;
+        panStartX = e.clientX;
+        panStartY = e.clientY;
+        const container = document.getElementById('map-container');
+        panStartScrollLeft = container.scrollLeft;
+        panStartScrollTop = container.scrollTop;
+        editorCanvas.style.cursor = 'grabbing';
+    } else {
+        handlePointerDown(e); 
+    }
+});
 
-editorCanvas.addEventListener('touchstart', (e) => { if (e.touches.length === 2) { e.preventDefault(); isPinching = true; isPanning = false; isDrawing = false; isDraggingEvent = false; lastPinchDist = getTouchDistance(e.touches[0], e.touches[1]); } else if (e.touches.length === 1) { if (currentMode === 'move') { e.preventDefault(); isPanning = true; panStartX = e.touches[0].clientX; panStartY = e.touches[0].clientY; const container = document.getElementById('map-container'); panStartScrollLeft = container.scrollLeft; panStartScrollTop = container.scrollTop; } else { e.preventDefault(); handlePointerDown(e); } } }, {passive: false});
-editorCanvas.addEventListener('touchmove', (e) => { if (e.touches.length === 2 && isPinching) { e.preventDefault(); const currentDist = getTouchDistance(e.touches[0], e.touches[1]); const diff = currentDist - lastPinchDist; if (Math.abs(diff) > 15) { if (diff > 0) zoomEditor(1); else zoomEditor(-1); lastPinchDist = currentDist; } } else if (isPanning && e.touches.length === 1) { e.preventDefault(); const dx = e.touches[0].clientX - panStartX; const dy = e.touches[0].clientY - panStartY; const container = document.getElementById('map-container'); container.scrollLeft = panStartScrollLeft - dx; container.scrollTop = panStartScrollTop - dy; } else if (e.touches.length === 1 && currentMode !== 'move') { e.preventDefault(); handlePointerMove(e); } }, {passive: false});
-editorCanvas.addEventListener('touchend', (e) => { if (e.touches.length < 2) isPinching = false; if (e.touches.length === 0) isPanning = false; if (currentMode !== 'move') handlePointerUp(e); });
+editorCanvas.addEventListener('mousemove', (e) => { 
+    if (isPanning) {
+        const dx = e.clientX - panStartX;
+        const dy = e.clientY - panStartY;
+        const container = document.getElementById('map-container');
+        container.scrollLeft = panStartScrollLeft - dx;
+        container.scrollTop = panStartScrollTop - dy;
+    } else {
+        handlePointerMove(e); 
+    }
+});
+
+editorCanvas.addEventListener('mouseup', () => { 
+    if (isPanning) {
+        isPanning = false;
+        if (currentMode === 'move') editorCanvas.style.cursor = 'grab';
+    }
+    handlePointerUp(); 
+});
+
+editorCanvas.addEventListener('mouseleave', () => { 
+    if (isPanning) {
+        isPanning = false;
+        if (currentMode === 'move') editorCanvas.style.cursor = 'grab';
+    }
+    handlePointerUp(); 
+});
+
+// ЗУМ КОЛЕСИКОМ МЫШИ
+editorCanvas.addEventListener('wheel', (e) => {
+    e.preventDefault(); // Отключаем стандартный скролл страницы
+    const rect = document.getElementById('map-container').getBoundingClientRect();
+    const focusX = e.clientX - rect.left;
+    const focusY = e.clientY - rect.top;
+    const dir = e.deltaY < 0 ? 1 : -1; // Вверх - приближаем, вниз - отдаляем
+    zoomEditor(dir, focusX, focusY);
+}, { passive: false });
+
+// --- Управление КАСАНИЯМИ (для Смартфонов) ---
+editorCanvas.addEventListener('touchstart', (e) => {
+    if (e.touches.length === 2) {
+        // Начали касаться двумя пальцами - это ЗУМ
+        e.preventDefault();
+        isPinching = true;
+        isPanning = false; 
+        isDrawing = false; // ОТМЕНА рисования при щипке!
+        isDraggingEvent = false;
+        
+        // Запоминаем центр жеста щипка
+        const rect = document.getElementById('map-container').getBoundingClientRect();
+        lastPinchFocus.x = (e.touches[0].clientX + e.touches[1].clientX) / 2 - rect.left;
+        lastPinchFocus.y = (e.touches[0].clientY + e.touches[1].clientY) / 2 - rect.top;
+        
+        lastPinchDist = getTouchDistance(e.touches[0], e.touches[1]);
+    } else if (e.touches.length === 1) {
+        // Касание одним пальцем
+        if (currentMode === 'move') {
+            e.preventDefault();
+            isPanning = true;
+            panStartX = e.touches[0].clientX;
+            panStartY = e.touches[0].clientY;
+            const container = document.getElementById('map-container');
+            panStartScrollLeft = container.scrollLeft;
+            panStartScrollTop = container.scrollTop;
+        } else {
+            e.preventDefault(); 
+            handlePointerDown(e);
+        }
+    }
+}, {passive: false});
+
+editorCanvas.addEventListener('touchmove', (e) => {
+    if (e.touches.length === 2 && isPinching) {
+        // Двигаем двумя пальцами - считаем ЗУМ
+        e.preventDefault();
+        const currentDist = getTouchDistance(e.touches[0], e.touches[1]);
+        const diff = currentDist - lastPinchDist;
+
+        if (Math.abs(diff) > 15) {
+            // Зумимся в центр запомненного жеста
+            if (diff > 0) zoomEditor(1, lastPinchFocus.x, lastPinchFocus.y);
+            else zoomEditor(-1, lastPinchFocus.x, lastPinchFocus.y);
+            
+            // Пересчитываем центр, так как размер канваса изменился
+            const rect = document.getElementById('map-container').getBoundingClientRect();
+            lastPinchFocus.x = (e.touches[0].clientX + e.touches[1].clientX) / 2 - rect.left;
+            lastPinchFocus.y = (e.touches[0].clientY + e.touches[1].clientY) / 2 - rect.top;
+            lastPinchDist = currentDist; 
+        }
+    } else if (isPanning && e.touches.length === 1) {
+        e.preventDefault();
+        const dx = e.touches[0].clientX - panStartX;
+        const dy = e.touches[0].clientY - panStartY;
+        const container = document.getElementById('map-container');
+        container.scrollLeft = panStartScrollLeft - dx;
+        container.scrollTop = panStartScrollTop - dy;
+    } else if (e.touches.length === 1 && currentMode !== 'move') {
+        e.preventDefault();
+        handlePointerMove(e);
+    }
+}, {passive: false});
+
+editorCanvas.addEventListener('touchend', (e) => {
+    if (e.touches.length < 2) {
+        isPinching = false;
+    }
+    if (e.touches.length === 0) {
+        isPanning = false;
+    }
+    if (currentMode !== 'move') {
+        handlePointerUp(e);
+    }
+});
 
 // --- Сайдбар, Карты, Зум, Режимы ---
 let lastMapTapTime = 0; let lastMapTapIndex = -1;
@@ -79,8 +199,48 @@ function switchMap(i) { currentMapIndex=i; ensureLayerFormat(getCurrentMap()); c
 function loadCurrentMapToUI() { const m=getCurrentMap();document.getElementById('map-width').value=m.width;document.getElementById('map-height').value=m.height; }
 function applyMapSize() { const m=getCurrentMap();const nw=parseInt(document.getElementById('map-width').value)||m.width;const nh=parseInt(document.getElementById('map-height').value)||m.height;const nd=createEmptyMap(nw,nh);for(let y=0;y<Math.min(nh,m.height);y++)for(let x=0;x<Math.min(nw,m.width);x++)nd[y][x]=m.mapData[y][x];m.width=nw;m.height=nh;m.mapData=nd;if(m.playerStartPos&&(m.playerStartPos.x>=nw||m.playerStartPos.y>=nh))m.playerStartPos=null;renderEditorMap(); }
 function setMode(mode) { currentMode = mode;['move','tile','fill','event','player'].forEach(m=>document.getElementById('mode-'+m).classList.toggle('active',mode===m)); if(mode === 'move') editorCanvas.style.cursor = 'grab'; else if(mode === 'fill') editorCanvas.style.cursor = 'cell'; else if(mode === 'event') editorCanvas.style.cursor = 'pointer'; else editorCanvas.style.cursor = 'crosshair'; }
-function zoomEditor(dir) { editorZoomIndex += dir; if (editorZoomIndex < 0) editorZoomIndex = 0; if (editorZoomIndex >= editorZoomLevels.length) editorZoomIndex = editorZoomLevels.length - 1; applyEditorZoom(); }
-function applyEditorZoom() { editorZoom = editorZoomLevels[editorZoomIndex]; const m = getCurrentMap(); if (m) { editorCanvas.style.width = (m.width * TILE_SIZE * editorZoom) + 'px'; editorCanvas.style.height = (m.height * TILE_SIZE * editorZoom) + 'px'; editorCanvas.style.imageRendering = 'pixelated'; } document.getElementById('zoom-label').innerText = Math.round(editorZoom * 100) + '%'; }
+let lastPinchFocus = { x: 0, y: 0 };
+
+function zoomEditor(dir, focusX, focusY) { 
+    const container = document.getElementById('map-container');
+    // Если координат фокуса нет (нажали кнопки + / -), зумимся в центр экрана
+    if (focusX === undefined || focusY === undefined) {
+        focusX = container.clientWidth / 2;
+        focusY = container.clientHeight / 2;
+    }
+
+    const oldZoom = editorZoom;
+    editorZoomIndex += dir; 
+    if (editorZoomIndex < 0) editorZoomIndex = 0; 
+    if (editorZoomIndex >= editorZoomLevels.length) editorZoomIndex = editorZoomLevels.length - 1; 
+    
+    const newZoom = editorZoomLevels[editorZoomIndex];
+    if (oldZoom === newZoom) return; // Если зум не изменился, ничего не делаем
+
+    // Вычисляем мировые координаты точки под курсором/пальцем
+    const scrollX = container.scrollLeft;
+    const scrollY = container.scrollTop;
+    const worldX = (scrollX + focusX) / oldZoom;
+    const worldY = (scrollY + focusY) / oldZoom;
+
+    // Применяем новый зум
+    editorZoom = newZoom;
+    applyEditorZoom(); 
+
+    // Корректируем скролл, чтобы точка worldX, worldY осталась под курсором
+    container.scrollLeft = (worldX * newZoom) - focusX;
+    container.scrollTop = (worldY * newZoom) - focusY;
+}
+
+function applyEditorZoom() { 
+    const m = getCurrentMap(); 
+    if (m) { 
+        editorCanvas.style.width = (m.width * TILE_SIZE * editorZoom) + 'px'; 
+        editorCanvas.style.height = (m.height * TILE_SIZE * editorZoom) + 'px'; 
+        editorCanvas.style.imageRendering = 'pixelated'; 
+    } 
+    document.getElementById('zoom-label').innerText = Math.round(editorZoom * 100) + '%'; 
+}
 
 // ====================================================================
 // ==================== МОДАЛКА СОБЫТИЙ ====================
