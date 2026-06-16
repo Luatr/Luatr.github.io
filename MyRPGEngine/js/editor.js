@@ -6,9 +6,21 @@ function renderTilesetTabs() { const c = document.getElementById('tileset-tabs-c
 
 function renderPalette() { const ts = projectTilesets.find(t => t.id === activeTilesetId); if (!ts || !ts.image) { paletteCanvas.width = 48; paletteCanvas.height = 48; paletteCtx.fillStyle = '#333'; paletteCtx.fillRect(0,0,48,48); return; } const containerWidth = document.getElementById('palette-canvas-container').clientWidth; paletteCols = Math.max(1, Math.floor(containerWidth / TILE_SIZE)); const imgW = ts.image.width / TILE_SIZE; const imgH = ts.image.height / TILE_SIZE; const numChunks = Math.ceil(imgW / paletteCols); const newW = paletteCols * TILE_SIZE; const newH = numChunks * imgH * TILE_SIZE; paletteCanvas.width = newW; paletteCanvas.height = newH; paletteCtx.clearRect(0, 0, newW, newH); for (let origY = 0; origY < imgH; origY++) { for (let origX = 0; origX < imgW; origX++) { const chunkIndex = Math.floor(origX / paletteCols); const localX = origX % paletteCols; const srcX = origX * TILE_SIZE; const srcY = origY * TILE_SIZE; const destX = localX * TILE_SIZE; const destY = (chunkIndex * imgH + origY) * TILE_SIZE; paletteCtx.drawImage(ts.image, srcX, srcY, TILE_SIZE, TILE_SIZE, destX, destY, TILE_SIZE, TILE_SIZE); } } updatePaletteSelection(); }
 
-function updatePaletteSelection() { const sel = document.getElementById('palette-selection'); if (isEraserActive) { sel.style.display = 'none'; return; } sel.style.display = 'block'; sel.style.left = selectedArea.x * TILE_SIZE + 'px'; sel.style.top = selectedArea.y * TILE_SIZE + 'px'; sel.style.width = selectedArea.w * TILE_SIZE + 'px'; sel.style.height = selectedArea.h * TILE_SIZE + 'px'; }
+function updatePaletteSelection() { 
+    const sel = document.getElementById('palette-selection'); 
+    if (isEraserActive) { sel.style.display = 'none'; return; } 
+    sel.style.display = 'block'; 
+    sel.style.left = selectedArea.x * TILE_SIZE + 'px'; 
+    sel.style.top = selectedArea.y * TILE_SIZE + 'px'; 
+    sel.style.width = selectedArea.w * TILE_SIZE + 'px'; 
+    sel.style.height = selectedArea.h * TILE_SIZE + 'px'; 
+    // Фиолетовая подсветка выделения
+    sel.style.backgroundColor = 'rgba(128, 0, 255, 0.3)'; 
+    sel.style.border = '2px solid #9b59b6'; 
+    sel.style.pointerEvents = 'none'; // Чтобы не мешал кликам
+}
 
-function startPaletteDrag(e) { const rect = paletteCanvas.getBoundingClientRect(); const clientX = e.clientX || (e.touches && e.touches[0].clientX); const clientY = e.clientY || (e.touches && e.touches[0].clientY); const x = Math.floor((clientX - rect.left) * (paletteCanvas.width / rect.width) / TILE_SIZE); const y = Math.floor((clientY - rect.top) * (paletteCanvas.height / rect.height) / TILE_SIZE); if (x >= 0 && y >= 0) { isDraggingPalette = true; paletteDragStart = { x, y }; selectedArea = { x, y, w: 1, h: 1 }; isEraserActive = false; document.getElementById('eraser-btn').classList.remove('active'); setMode('tile'); updatePaletteSelection(); } if (window.innerWidth <= 800) { document.getElementById('sidebar').classList.remove('open'); document.getElementById('sidebar-toggle-btn').innerHTML = '►'; } }
+function startPaletteDrag(e) { const rect = paletteCanvas.getBoundingClientRect(); const clientX = e.clientX || (e.touches && e.touches[0].clientX); const clientY = e.clientY || (e.touches && e.touches[0].clientY); const x = Math.floor((clientX - rect.left) * (paletteCanvas.width / rect.width) / TILE_SIZE); const y = Math.floor((clientY - rect.top) * (paletteCanvas.height / rect.height) / TILE_SIZE); if (x >= 0 && y >= 0) { isDraggingPalette = true; paletteDragStart = { x, y }; selectedArea = { x, y, w: 1, h: 1 }; isEraserActive = false; document.getElementById('eraser-btn').classList.remove('active'); setMode('tile'); updatePaletteSelection(); } }
 
 function movePaletteDrag(e) { if (!isDraggingPalette) return; e.preventDefault(); const rect = paletteCanvas.getBoundingClientRect(); const clientX = e.clientX || (e.touches && e.touches[0].clientX); const clientY = e.clientY || (e.touches && e.touches[0].clientY); let x = Math.floor((clientX - rect.left) * (paletteCanvas.width / rect.width) / TILE_SIZE); let y = Math.floor((clientY - rect.top) * (paletteCanvas.height / rect.height) / TILE_SIZE); x = Math.max(0, Math.min(x, paletteCols - 1)); y = Math.max(0, Math.min(y, (paletteCanvas.height / TILE_SIZE) - 1)); selectedArea.x = Math.min(paletteDragStart.x, x); selectedArea.y = Math.min(paletteDragStart.y, y); selectedArea.w = Math.abs(x - paletteDragStart.x) + 1; selectedArea.h = Math.abs(y - paletteDragStart.y) + 1; updatePaletteSelection(); }
 
@@ -56,134 +68,23 @@ let panStartScrollLeft = 0, panStartScrollTop = 0;
 
 function getTouchDistance(touch1, touch2) { const dx = touch1.clientX - touch2.clientX; const dy = touch1.clientY - touch2.clientY; return Math.sqrt(dx * dx + dy * dy); }
 
-// --- Управление МЫШЬЮ (для ПК) ---
-editorCanvas.addEventListener('mousedown', (e) => { 
-    if (currentMode === 'move') {
-        isPanning = true;
-        panStartX = e.clientX;
-        panStartY = e.clientY;
-        const container = document.getElementById('map-container');
-        panStartScrollLeft = container.scrollLeft;
-        panStartScrollTop = container.scrollTop;
-        editorCanvas.style.cursor = 'grabbing';
-    } else {
-        handlePointerDown(e); 
-    }
-});
+editorCanvas.addEventListener('mousedown', (e) => { if (currentMode === 'move') { isPanning = true; panStartX = e.clientX; panStartY = e.clientY; const container = document.getElementById('map-container'); panStartScrollLeft = container.scrollLeft; panStartScrollTop = container.scrollTop; editorCanvas.style.cursor = 'grabbing'; } else { handlePointerDown(e); } });
+editorCanvas.addEventListener('mousemove', (e) => { if (isPanning) { const dx = e.clientX - panStartX; const dy = e.clientY - panStartY; const container = document.getElementById('map-container'); container.scrollLeft = panStartScrollLeft - dx; container.scrollTop = panStartScrollTop - dy; } else { handlePointerMove(e); } });
+editorCanvas.addEventListener('mouseup', () => { if (isPanning) { isPanning = false; if (currentMode === 'move') editorCanvas.style.cursor = 'grab'; } handlePointerUp(); });
+editorCanvas.addEventListener('mouseleave', () => { if (isPanning) { isPanning = false; if (currentMode === 'move') editorCanvas.style.cursor = 'grab'; } handlePointerUp(); });
 
-editorCanvas.addEventListener('mousemove', (e) => { 
-    if (isPanning) {
-        const dx = e.clientX - panStartX;
-        const dy = e.clientY - panStartY;
-        const container = document.getElementById('map-container');
-        container.scrollLeft = panStartScrollLeft - dx;
-        container.scrollTop = panStartScrollTop - dy;
-    } else {
-        handlePointerMove(e); 
-    }
-});
-
-editorCanvas.addEventListener('mouseup', () => { 
-    if (isPanning) {
-        isPanning = false;
-        if (currentMode === 'move') editorCanvas.style.cursor = 'grab';
-    }
-    handlePointerUp(); 
-});
-
-editorCanvas.addEventListener('mouseleave', () => { 
-    if (isPanning) {
-        isPanning = false;
-        if (currentMode === 'move') editorCanvas.style.cursor = 'grab';
-    }
-    handlePointerUp(); 
-});
-
-// ЗУМ КОЛЕСИКОМ МЫШИ
-editorCanvas.addEventListener('wheel', (e) => {
-    e.preventDefault(); // Отключаем стандартный скролл страницы
-    const rect = document.getElementById('map-container').getBoundingClientRect();
-    const focusX = e.clientX - rect.left;
-    const focusY = e.clientY - rect.top;
-    const dir = e.deltaY < 0 ? 1 : -1; // Вверх - приближаем, вниз - отдаляем
-    zoomEditor(dir, focusX, focusY);
-}, { passive: false });
-
-// --- Управление КАСАНИЯМИ (для Смартфонов) ---
-editorCanvas.addEventListener('touchstart', (e) => {
-    if (e.touches.length === 2) {
-        // Начали касаться двумя пальцами - это ЗУМ
-        e.preventDefault();
-        isPinching = true;
-        isPanning = false; 
-        isDrawing = false; // ОТМЕНА рисования при щипке!
-        isDraggingEvent = false;
-        
-        // Запоминаем центр жеста щипка
-        const rect = document.getElementById('map-container').getBoundingClientRect();
-        lastPinchFocus.x = (e.touches[0].clientX + e.touches[1].clientX) / 2 - rect.left;
-        lastPinchFocus.y = (e.touches[0].clientY + e.touches[1].clientY) / 2 - rect.top;
-        
-        lastPinchDist = getTouchDistance(e.touches[0], e.touches[1]);
-    } else if (e.touches.length === 1) {
-        // Касание одним пальцем
-        if (currentMode === 'move') {
-            e.preventDefault();
-            isPanning = true;
-            panStartX = e.touches[0].clientX;
-            panStartY = e.touches[0].clientY;
-            const container = document.getElementById('map-container');
-            panStartScrollLeft = container.scrollLeft;
-            panStartScrollTop = container.scrollTop;
-        } else {
-            e.preventDefault(); 
-            handlePointerDown(e);
-        }
-    }
-}, {passive: false});
-
-editorCanvas.addEventListener('touchmove', (e) => {
-    if (e.touches.length === 2 && isPinching) {
-        // Двигаем двумя пальцами - считаем ЗУМ
-        e.preventDefault();
-        const currentDist = getTouchDistance(e.touches[0], e.touches[1]);
-        const diff = currentDist - lastPinchDist;
-
-        if (Math.abs(diff) > 15) {
-            // Зумимся в центр запомненного жеста
-            if (diff > 0) zoomEditor(1, lastPinchFocus.x, lastPinchFocus.y);
-            else zoomEditor(-1, lastPinchFocus.x, lastPinchFocus.y);
-            
-            // Пересчитываем центр, так как размер канваса изменился
-            const rect = document.getElementById('map-container').getBoundingClientRect();
-            lastPinchFocus.x = (e.touches[0].clientX + e.touches[1].clientX) / 2 - rect.left;
-            lastPinchFocus.y = (e.touches[0].clientY + e.touches[1].clientY) / 2 - rect.top;
-            lastPinchDist = currentDist; 
-        }
-    } else if (isPanning && e.touches.length === 1) {
-        e.preventDefault();
-        const dx = e.touches[0].clientX - panStartX;
-        const dy = e.touches[0].clientY - panStartY;
-        const container = document.getElementById('map-container');
-        container.scrollLeft = panStartScrollLeft - dx;
-        container.scrollTop = panStartScrollTop - dy;
-    } else if (e.touches.length === 1 && currentMode !== 'move') {
-        e.preventDefault();
-        handlePointerMove(e);
-    }
-}, {passive: false});
-
-editorCanvas.addEventListener('touchend', (e) => {
-    if (e.touches.length < 2) {
-        isPinching = false;
-    }
-    if (e.touches.length === 0) {
-        isPanning = false;
-    }
-    if (currentMode !== 'move') {
-        handlePointerUp(e);
-    }
-});
+editorCanvas.addEventListener('touchstart', (e) => { if (e.touches.length === 2) { e.preventDefault(); isPinching = true; isPanning = false; isDrawing = false; isDraggingEvent = false; lastPinchDist = getTouchDistance(e.touches[0], e.touches[1]); } else if (e.touches.length === 1) { if (currentMode === 'move') { e.preventDefault(); isPanning = true; panStartX = e.touches[0].clientX; panStartY = e.touches[0].clientY; const container = document.getElementById('map-container'); panStartScrollLeft = container.scrollLeft; panStartScrollTop = container.scrollTop; } else { e.preventDefault(); handlePointerDown(e); } } }, {passive: false});
+editorCanvas.addEventListener('touchmove', (e) => { if (e.touches.length === 2 && isPinching) { e.preventDefault(); const currentDist = getTouchDistance(e.touches[0], e.touches[1]); const diff = currentDist - lastPinchDist;                 if (Math.abs(diff) > 15) {
+                    // Вычисляем центр жеста щипка
+                    const rect = document.getElementById('map-container').getBoundingClientRect();
+                    const midX = (e.touches[0].clientX + e.touches[1].clientX) / 2 - rect.left;
+                    const midY = (e.touches[0].clientY + e.touches[1].clientY) / 2 - rect.top;
+                    
+                    const dir = diff > 0 ? 1 : -1;
+                    zoomEditor(dir, midX, midY);
+                    lastPinchDist = currentDist; 
+                } } else if (isPanning && e.touches.length === 1) { e.preventDefault(); const dx = e.touches[0].clientX - panStartX; const dy = e.touches[0].clientY - panStartY; const container = document.getElementById('map-container'); container.scrollLeft = panStartScrollLeft - dx; container.scrollTop = panStartScrollTop - dy; } else if (e.touches.length === 1 && currentMode !== 'move') { e.preventDefault(); handlePointerMove(e); } }, {passive: false});
+editorCanvas.addEventListener('touchend', (e) => { if (e.touches.length < 2) isPinching = false; if (e.touches.length === 0) isPanning = false; if (currentMode !== 'move') handlePointerUp(e); });
 
 // --- Сайдбар, Карты, Зум, Режимы ---
 let lastMapTapTime = 0; let lastMapTapIndex = -1;
@@ -192,6 +93,18 @@ function toggleMapList() { const mapSection = document.getElementById('map-secti
 
 function toggleSidebar() { const sidebar = document.getElementById('sidebar'); const btn = document.getElementById('sidebar-toggle-btn'); sidebar.classList.toggle('open'); if (sidebar.classList.contains('open')) { btn.innerHTML = '◄'; } else { btn.innerHTML = '►'; } }
 
+function closeSidebarIfOpen() {
+    const sidebar = document.getElementById('sidebar');
+    if (sidebar.classList.contains('open')) {
+        sidebar.classList.remove('open');
+        document.getElementById('sidebar-toggle-btn').innerHTML = '►';
+    }
+}
+
+// Закрываем сайдбар при клике/тапе на рабочую область карты
+document.getElementById('map-container').addEventListener('mousedown', closeSidebarIfOpen);
+document.getElementById('map-container').addEventListener('touchstart', closeSidebarIfOpen);
+
 function scrollPalette(dir) { const el = document.getElementById('palette-area'); el.scrollBy({ top: dir * (TILE_SIZE * 2), behavior: 'smooth' }); }
 function scrollScript(dir) { const el = document.getElementById('script-container'); el.scrollBy({ top: dir * 60, behavior: 'smooth' }); }
 function toggleFullscreen() { if (!document.fullscreenElement) { document.documentElement.requestFullscreen().catch(err => { alert(`Ошибка полного экрана: ${err.message}`); }); } else { document.exitFullscreen(); } }
@@ -199,37 +112,31 @@ function switchMap(i) { currentMapIndex=i; ensureLayerFormat(getCurrentMap()); c
 function loadCurrentMapToUI() { const m=getCurrentMap();document.getElementById('map-width').value=m.width;document.getElementById('map-height').value=m.height; }
 function applyMapSize() { const m=getCurrentMap();const nw=parseInt(document.getElementById('map-width').value)||m.width;const nh=parseInt(document.getElementById('map-height').value)||m.height;const nd=createEmptyMap(nw,nh);for(let y=0;y<Math.min(nh,m.height);y++)for(let x=0;x<Math.min(nw,m.width);x++)nd[y][x]=m.mapData[y][x];m.width=nw;m.height=nh;m.mapData=nd;if(m.playerStartPos&&(m.playerStartPos.x>=nw||m.playerStartPos.y>=nh))m.playerStartPos=null;renderEditorMap(); }
 function setMode(mode) { currentMode = mode;['move','tile','fill','event','player'].forEach(m=>document.getElementById('mode-'+m).classList.toggle('active',mode===m)); if(mode === 'move') editorCanvas.style.cursor = 'grab'; else if(mode === 'fill') editorCanvas.style.cursor = 'cell'; else if(mode === 'event') editorCanvas.style.cursor = 'pointer'; else editorCanvas.style.cursor = 'crosshair'; }
-let lastPinchFocus = { x: 0, y: 0 };
-
-function zoomEditor(dir, focusX, focusY) { 
+function zoomEditor(dir, pivotX, pivotY) { 
     const container = document.getElementById('map-container');
-    // Если координат фокуса нет (нажали кнопки + / -), зумимся в центр экрана
-    if (focusX === undefined || focusY === undefined) {
-        focusX = container.clientWidth / 2;
-        focusY = container.clientHeight / 2;
-    }
-
     const oldZoom = editorZoom;
+    
     editorZoomIndex += dir; 
     if (editorZoomIndex < 0) editorZoomIndex = 0; 
     if (editorZoomIndex >= editorZoomLevels.length) editorZoomIndex = editorZoomLevels.length - 1; 
     
-    const newZoom = editorZoomLevels[editorZoomIndex];
-    if (oldZoom === newZoom) return; // Если зум не изменился, ничего не делаем
+    editorZoom = editorZoomLevels[editorZoomIndex];
+    
+    // Если точка привязки не передана (например, нажали кнопки +-/🔍), зумим в центр экрана
+    if (pivotX === undefined || pivotY === undefined) {
+        pivotX = container.clientWidth / 2;
+        pivotY = container.clientHeight / 2;
+    }
 
-    // Вычисляем мировые координаты точки под курсором/пальцем
-    const scrollX = container.scrollLeft;
-    const scrollY = container.scrollTop;
-    const worldX = (scrollX + focusX) / oldZoom;
-    const worldY = (scrollY + focusY) / oldZoom;
+    // Магия математики: сохраняем точку под курсором/пальцем на месте
+    const oldScrollLeft = container.scrollLeft;
+    const oldScrollTop = container.scrollTop;
 
-    // Применяем новый зум
-    editorZoom = newZoom;
-    applyEditorZoom(); 
+    applyEditorZoom(); // Меняем размер канваса
 
-    // Корректируем скролл, чтобы точка worldX, worldY осталась под курсором
-    container.scrollLeft = (worldX * newZoom) - focusX;
-    container.scrollTop = (worldY * newZoom) - focusY;
+    // Пересчитываем скролл с учетом нового зума
+    container.scrollLeft = (oldScrollLeft + pivotX) * (editorZoom / oldZoom) - pivotX;
+    container.scrollTop = (oldScrollTop + pivotY) * (editorZoom / oldZoom) - pivotY;
 }
 
 function applyEditorZoom() { 
@@ -241,6 +148,16 @@ function applyEditorZoom() {
     } 
     document.getElementById('zoom-label').innerText = Math.round(editorZoom * 100) + '%'; 
 }
+
+// Зум колёсиком мыши
+document.getElementById('map-container').addEventListener('wheel', (e) => {
+    e.preventDefault();
+    const rect = document.getElementById('map-container').getBoundingClientRect();
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+    const dir = e.deltaY < 0 ? 1 : -1; // Вверх = приближение, вниз = отдаление
+    zoomEditor(dir, mouseX, mouseY);
+}, { passive: false });
 
 // ====================================================================
 // ==================== МОДАЛКА СОБЫТИЙ ====================
